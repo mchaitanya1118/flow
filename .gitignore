@@ -33,10 +33,7 @@ pnpm-debug.log*
 *.swo
 .DS_Store
 
-# Media files
-*.mp4
-*.mov
-
 # Turbo
 .turbo
+
 
