@@ -51,18 +51,23 @@ export default function HomePage() {
     const el = videoRef.current;
     if (!el) return;
 
-    // Force native DOM muted attributes required by browser autoplay security policies
+    // Force native DOM muted attributes required by browser autoplay security policies (Safari/iOS/Chrome)
     el.setAttribute('muted', '');
     el.setAttribute('playsinline', '');
+    el.setAttribute('webkit-playsinline', 'true');
     el.setAttribute('autoplay', '');
     el.defaultMuted = true;
     el.muted = true;
 
     const attemptPlay = () => {
       if (el) {
-        el.play().catch((err) => {
-          console.warn('Autoplay waiting for user interaction:', err);
-        });
+        el.muted = true;
+        const p = el.play();
+        if (p !== undefined) {
+          p.catch((err) => {
+            console.warn('Safari autoplay pending interaction:', err);
+          });
+        }
       }
     };
 
