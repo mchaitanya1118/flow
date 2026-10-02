@@ -6,15 +6,15 @@ services:
     container_name: estateflow-postgres
     restart: always
     environment:
-      POSTGRES_USER: estateflow
-      POSTGRES_PASSWORD: estateflow_password
-      POSTGRES_DB: estateflow_db
+      POSTGRES_USER: ${POSTGRES_USER:-estateflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-estateflow_password}
+      POSTGRES_DB: ${POSTGRES_DB:-estateflow_db}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U estateflow -d estateflow_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-estateflow} -d ${POSTGRES_DB:-estateflow_db}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -44,8 +44,9 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
-      - DATABASE_URL=postgresql://estateflow:estateflow_password@postgres:5432/estateflow_db?schema=public
-      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=${DATABASE_URL:-postgresql://estateflow:estateflow_password@postgres:5432/estateflow_db?schema=public}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - JWT_SECRET=${JWT_SECRET:-estateflow-secret-key-2026}
     depends_on:
       postgres:
         condition: service_healthy
@@ -63,8 +64,9 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3001
-      - DATABASE_URL=postgresql://estateflow:estateflow_password@postgres:5432/estateflow_db?schema=public
-      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=${DATABASE_URL:-postgresql://estateflow:estateflow_password@postgres:5432/estateflow_db?schema=public}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - JWT_SECRET=${JWT_SECRET:-estateflow-secret-key-2026}
     depends_on:
       postgres:
         condition: service_healthy
