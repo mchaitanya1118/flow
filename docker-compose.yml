@@ -39,8 +39,8 @@ services:
       dockerfile: Dockerfile
     container_name: estateflow-web
     restart: always
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     environment:
       - NODE_ENV=production
       - PORT=3000
@@ -59,8 +59,8 @@ services:
       dockerfile: Dockerfile.admin
     container_name: estateflow-admin
     restart: always
-    ports:
-      - "3001:3001"
+    expose:
+      - "3001"
     environment:
       - NODE_ENV=production
       - PORT=3001
