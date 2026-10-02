@@ -1,4 +1,4 @@
-# Production Multi-Stage Dockerfile for @estateflow/web on Hostinger VPS
+# Production Multi-Stage Dockerfile for @estateflow/web on Hostinger VPS / Coolify
 
 FROM node:20-alpine AS base
 RUN apk add --no-cache libc6-compat
@@ -7,7 +7,8 @@ RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 FROM base AS builder
 WORKDIR /app
 COPY . .
-RUN pnpm install --frozen-lockfile
+# Ensure devDependencies (TypeScript, Tailwind, Webpack) are installed during build step
+RUN pnpm install --frozen-lockfile --prod=false
 RUN pnpm db:generate || true
 RUN pnpm --filter @estateflow/web build
 

@@ -9,8 +9,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-estateflow}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-estateflow_password}
       POSTGRES_DB: ${POSTGRES_DB:-estateflow_db}
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -23,8 +23,8 @@ services:
     image: redis:7-alpine
     container_name: estateflow-redis
     restart: always
-    ports:
-      - "6379:6379"
+    expose:
+      - "6379"
     volumes:
       - redis_data:/data
     healthcheck:
