@@ -1,0 +1,14 @@
+{
+  "name": "@estateflow/tests",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@estateflow/auth": "workspace:*",
+    "@estateflow/search": "workspace:*",
+    "@estateflow/types": "workspace:*",
+    "vitest": "^2.1.8"
+  }
+}

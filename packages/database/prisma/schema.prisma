@@ -1,0 +1,679 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  USER
+  OWNER
+  AGENT
+  AGENCY_ADMIN
+  DEVELOPER
+  DEVELOPER_ADMIN
+  CONTENT_EDITOR
+  MODERATOR
+  SUPPORT
+  FINANCE
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum TransactionType {
+  BUY
+  RENT
+  NEW_PROJECT
+  COMMERCIAL
+}
+
+enum PropertyType {
+  APARTMENT
+  VILLA
+  HOUSE
+  PLOT
+  LAND
+  STUDIO
+  PENTHOUSE
+  OFFICE
+  SHOP
+  WAREHOUSE
+  INDUSTRIAL
+  FARM
+  OTHER
+}
+
+enum ListingStatus {
+  DRAFT
+  PENDING_REVIEW
+  VERIFIED
+  PUBLISHED
+  REJECTED
+  SUSPENDED
+  EXPIRED
+  SOLD
+  RENTED
+  ARCHIVED
+}
+
+enum VerificationStatus {
+  PENDING
+  IN_REVIEW
+  VERIFIED
+  REJECTED
+}
+
+enum UnitAvailability {
+  AVAILABLE
+  RESERVED
+  SOLD
+  BLOCKED
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  VIEWING_SCHEDULED
+  NEGOTIATION
+  WON
+  LOST
+  CLOSED
+}
+
+enum LeadScoreCategory {
+  HOT
+  WARM
+  COLD
+}
+
+enum ViewingStatus {
+  REQUESTED
+  CONFIRMED
+  RESCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+enum PromotionType {
+  BOOST
+  FEATURED
+  PREMIUM
+  SPONSORED
+}
+
+enum SubscriptionTier {
+  BASIC
+  PROFESSIONAL
+  PREMIUM
+  ENTERPRISE
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum ReviewTarget {
+  AGENT
+  AGENCY
+  DEVELOPER
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  phone         String?   @unique
+  passwordHash  String
+  fullName      String
+  avatarUrl     String?
+  role          Role      @default(USER)
+  isEmailVerified Boolean @default(false)
+  isPhoneVerified Boolean @default(false)
+  isSuspended   Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  agentProfile     Agent?
+  developerProfile Developer?
+  agencyProfile    Agency?        @relation("AgencyOwner")
+  agencyMembership AgencyMember?
+  developerMember  DeveloperMember?
+
+  properties       Property[]
+  leads            Lead[]         @relation("LeadSeeker")
+  assignedLeads    Lead[]         @relation("LeadAgent")
+  savedSearches    SavedSearch[]
+  favourites       Favourite[]
+  recentlyViewed   RecentlyViewed[]
+  reviews          Review[]
+  reports          Report[]
+  messagesSent     Message[]      @relation("SentMessages")
+  conversationsAsUser Conversation[] @relation("UserConversations")
+  conversationsAsAgent Conversation[] @relation("AgentConversations")
+  notifications    Notification[]
+  auditLogs        AuditLog[]
+  creditWallet     CreditWallet?
+  subscriptions    Subscription[]
+  payments         Payment[]
+  viewingsAsUser   Viewing[]      @relation("UserViewings")
+  viewingsAsAgent  Viewing[]      @relation("AgentViewings")
+
+  @@index([email])
+  @@index([phone])
+}
+
+model Agency {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  logoUrl     String?
+  description String?
+  ownerId     String   @unique
+  owner       User     @relation("AgencyOwner", fields: [ownerId], references: [id])
+  licenseNo   String?
+  isVerified  Boolean  @default(false)
+  rating      Float    @default(0.0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members     AgencyMember[]
+  agents      Agent[]
+  properties  Property[]
+  reviews     Review[]       @relation("AgencyReviews")
+}
+
+model AgencyMember {
+  id        String   @id @default(uuid())
+  agencyId  String
+  agency    Agency   @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      String   @default("AGENT")
+  createdAt DateTime @default(now())
+}
+
+model Agent {
+  id             String    @id @default(uuid())
+  userId         String    @unique
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  agencyId       String?
+  agency         Agency?   @relation(fields: [agencyId], references: [id], onDelete: SetNull)
+  licenseNumber  String?
+  experienceYears Int      @default(1)
+  specializations String[]
+  areasServed    String[]
+  languages      String[]
+  bio            String?
+  isVerified     Boolean   @default(false)
+  rating         Float     @default(0.0)
+  totalReviews   Int       @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  properties     Property[]
+  reviews        Review[]  @relation("AgentReviews")
+}
+
+model Developer {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  logoUrl     String?
+  description String?
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  website     String?
+  isVerified  Boolean  @default(false)
+  rating      Float    @default(0.0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  projects    Project[]
+  members     DeveloperMember[]
+  reviews     Review[]  @relation("DeveloperReviews")
+}
+
+model DeveloperMember {
+  id          String    @id @default(uuid())
+  developerId String
+  developer   Developer @relation(fields: [developerId], references: [id], onDelete: Cascade)
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+}
+
+model Location {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  locality    String
+  city        String
+  state       String
+  country     String   @default("India")
+  postalCode  String?
+  latitude    Float
+  longitude   Float
+  popularRank Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  properties  PropertyLocation[]
+
+  @@index([city, locality])
+}
+
+model Property {
+  id                 String           @id @default(uuid())
+  title              String
+  slug               String           @unique
+  description        String
+  transactionType    TransactionType
+  propertyType       PropertyType
+  price              Float
+  currency           String           @default("INR")
+  areaSqFt           Float
+  bedrooms           Int              @default(1)
+  bathrooms          Int              @default(1)
+  floorNumber        Int?
+  totalFloors        Int?
+  furnishing         String           @default("UNFURNISHED")
+  facing             String?
+  ageYears           Int?             @default(0)
+  readyToMove        Boolean          @default(true)
+  qualityScore       Int              @default(70)
+  
+  ownerId            String
+  owner              User             @relation(fields: [ownerId], references: [id])
+  agentId            String?
+  agent              Agent?           @relation(fields: [agentId], references: [id], onDelete: SetNull)
+  agencyId           String?
+  agency             Agency?          @relation(fields: [agencyId], references: [id], onDelete: SetNull)
+  projectId          String?
+  project            Project?         @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  status             ListingStatus    @default(DRAFT)
+  verificationStatus VerificationStatus @default(PENDING)
+  isPromoted         Boolean          @default(false)
+  promotionType      PromotionType?
+
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  location           PropertyLocation?
+  media              PropertyMedia[]
+  amenities          PropertyAmenity[]
+  statusHistory      ListingStatusHistory[]
+  favourites         Favourite[]
+  recentlyViewed     RecentlyViewed[]
+  leads              Lead[]
+  viewings           Viewing[]
+
+  @@index([transactionType, propertyType, price])
+  @@index([status, verificationStatus])
+}
+
+model PropertyLocation {
+  id          String    @id @default(uuid())
+  propertyId  String    @unique
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  locationId  String?
+  location    Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  address     String
+  locality    String
+  city        String
+  state       String
+  country     String    @default("India")
+  postalCode  String?
+  latitude    Float
+  longitude   Float
+
+  @@index([city, locality])
+  @@index([latitude, longitude])
+}
+
+model PropertyMedia {
+  id          String   @id @default(uuid())
+  propertyId  String
+  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  url         String
+  mediaType   String   @default("IMAGE") // IMAGE, VIDEO, FLOOR_PLAN, TOUR_360
+  isThumbnail Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model PropertyAmenity {
+  id          String   @id @default(uuid())
+  propertyId  String
+  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  name        String
+  category    String   @default("GENERAL")
+
+  @@unique([propertyId, name])
+}
+
+model ListingStatusHistory {
+  id         String        @id @default(uuid())
+  propertyId String
+  property   Property      @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  fromStatus ListingStatus
+  toStatus   ListingStatus
+  reason     String?
+  changedBy  String
+  createdAt  DateTime      @default(now())
+}
+
+model Project {
+  id             String    @id @default(uuid())
+  title          String
+  slug           String    @unique
+  description    String
+  developerId    String
+  developer      Developer @relation(fields: [developerId], references: [id], onDelete: Cascade)
+  city           String
+  locality       String
+  address        String
+  latitude       Float
+  longitude      Float
+  startingPrice  Float
+  completionDate DateTime?
+  status         String    @default("UNDER_CONSTRUCTION")
+  totalUnits     Int       @default(100)
+  availableUnits Int       @default(100)
+  brochureUrl    String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  properties     Property[]
+  units          ProjectUnit[]
+  buildings      ProjectBuilding[]
+  amenities      ProjectAmenity[]
+  media          ProjectMedia[]
+}
+
+model ProjectBuilding {
+  id          String        @id @default(uuid())
+  projectId   String
+  project     Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name        String
+  totalFloors Int           @default(10)
+  totalUnits  Int           @default(40)
+  units       ProjectUnit[]
+}
+
+model ProjectUnit {
+  id           String           @id @default(uuid())
+  projectId    String
+  project      Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  buildingId   String?
+  building     ProjectBuilding? @relation(fields: [buildingId], references: [id], onDelete: SetNull)
+  unitNumber   String
+  floor        Int              @default(1)
+  bedrooms     Int              @default(2)
+  bathrooms    Int              @default(2)
+  areaSqFt     Float
+  price        Float
+  availability UnitAvailability @default(AVAILABLE)
+  facing       String?
+  floorPlanUrl String?
+  createdAt    DateTime         @default(now())
+}
+
+model ProjectAmenity {
+  id        String  @id @default(uuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name      String
+}
+
+model ProjectMedia {
+  id        String  @id @default(uuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  url       String
+  mediaType String  @default("IMAGE")
+}
+
+model Lead {
+  id            String            @id @default(uuid())
+  seekerId      String
+  seeker        User              @relation("LeadSeeker", fields: [seekerId], references: [id])
+  agentId       String?
+  agent         User?             @relation("LeadAgent", fields: [agentId], references: [id])
+  propertyId    String?
+  property      Property?         @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+  status        LeadStatus        @default(NEW)
+  scoreCategory LeadScoreCategory @default(WARM)
+  scoreValue    Int               @default(65)
+  source        String            @default("WEBSITE")
+  notes         String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  events        LeadEvent[]
+}
+
+model LeadEvent {
+  id        String   @id @default(uuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  eventType String
+  detail    String
+  createdAt DateTime @default(now())
+}
+
+model Viewing {
+  id          String        @id @default(uuid())
+  propertyId  String
+  property    Property      @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User          @relation("UserViewings", fields: [userId], references: [id])
+  agentId     String?
+  agent       User?         @relation("AgentViewings", fields: [agentId], references: [id])
+  scheduledAt DateTime
+  status      ViewingStatus @default(REQUESTED)
+  notes       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Conversation {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation("UserConversations", fields: [userId], references: [id])
+  agentId   String
+  agent     User      @relation("AgentConversations", fields: [agentId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  messages  Message[]
+
+  @@unique([userId, agentId])
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation("SentMessages", fields: [senderId], references: [id])
+  content        String
+  isRead         Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+}
+
+model Favourite {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  collection String   @default("Default")
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, propertyId])
+}
+
+model SavedSearch {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  filters   Json
+  createdAt DateTime @default(now())
+}
+
+model RecentlyViewed {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  viewedAt   DateTime @default(now())
+
+  @@unique([userId, propertyId])
+}
+
+model Review {
+  id          String       @id @default(uuid())
+  authorId    String
+  author      User         @relation(fields: [authorId], references: [id])
+  targetType  ReviewTarget
+  agentId     String?
+  agent       Agent?       @relation("AgentReviews", fields: [agentId], references: [id], onDelete: Cascade)
+  agencyId    String?
+  agency      Agency?      @relation("AgencyReviews", fields: [agencyId], references: [id], onDelete: Cascade)
+  developerId String?
+  developer   Developer?   @relation("DeveloperReviews", fields: [developerId], references: [id], onDelete: Cascade)
+  rating      Int
+  title       String
+  comment     String
+  isApproved  Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+}
+
+model Report {
+  id          String   @id @default(uuid())
+  reporterId  String
+  reporter    User     @relation(fields: [reporterId], references: [id])
+  entityType  String   // PROPERTY, AGENT, REVIEW
+  entityId    String
+  reason      String
+  description String?
+  status      String   @default("OPEN")
+  createdAt   DateTime @default(now())
+}
+
+model Plan {
+  id            String           @id @default(uuid())
+  name          String
+  tier          SubscriptionTier @default(BASIC)
+  monthlyPrice  Float
+  listingLimit  Int              @default(5)
+  leadLimit     Int              @default(50)
+  features      String[]
+  isFeatured    Boolean          @default(false)
+  createdAt     DateTime         @default(now())
+
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id        String           @id @default(uuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId    String
+  plan      Plan             @relation(fields: [planId], references: [id])
+  status    String           @default("ACTIVE")
+  startDate DateTime         @default(now())
+  endDate   DateTime
+  createdAt DateTime         @default(now())
+}
+
+model CreditWallet {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  balance   Int      @default(0)
+  updatedAt DateTime @updatedAt
+
+  transactions CreditTransaction[]
+}
+
+model CreditTransaction {
+  id          String       @id @default(uuid())
+  walletId    String
+  wallet      CreditWallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  amount      Int
+  type        String       // PURCHASE, PROMOTION, REFUND, BONUS
+  description String
+  createdAt   DateTime     @default(now())
+}
+
+model Payment {
+  id          String        @id @default(uuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+  amount      Float
+  currency    String        @default("INR")
+  status      PaymentStatus @default(PENDING)
+  provider    String        @default("RAZORPAY")
+  orderId     String        @unique
+  paymentId   String?       @unique
+  signature   String?
+  purpose     String
+  createdAt   DateTime      @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      String   @default("INFO")
+  isRead    Boolean  @default(false)
+  linkUrl   String?
+  createdAt DateTime @default(now())
+}
+
+model ModerationQueue {
+  id         String   @id @default(uuid())
+  entityType String   // LISTING, AGENT, REVIEW
+  entityId   String
+  reason     String
+  riskScore  Int      @default(0)
+  status     String   @default("PENDING")
+  assignedTo String?
+  createdAt  DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  entity    String
+  entityId  String?
+  oldValue  Json?
+  newValue  Json?
+  ipAddress String?
+  timestamp DateTime @default(now())
+}
+
+model CMSArticle {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  content     String
+  summary     String
+  coverImage  String?
+  category    String   @default("GUIDE")
+  author      String   @default("EstateFlow Editorial")
+  isPublished Boolean  @default(true)
+  publishedAt DateTime @default(now())
+}
