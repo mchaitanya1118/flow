@@ -285,9 +285,9 @@ export default function HomePage() {
                 <span className="uppercase tracking-widest text-[11px] font-black">INDIA'S PREMIER LUXURY REAL ESTATE MARKETPLACE</span>
               </div>
 
-              <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-[1.08] text-white drop-shadow-md">
+              <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-[1.08] text-white drop-shadow-md font-serif-editorial">
                 Architectural Mastery <br />
-                <span className="text-emerald-400 underline decoration-emerald-500/60">
+                <span className="text-emerald-400 underline decoration-emerald-500/60 italic">
                   Meets Capital Growth
                 </span>
               </h1>
@@ -424,8 +424,78 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 2.5. 3D ANTIGRAVITY FLOATING ARCHITECTURE SHOWCASE */}
+      <section className="relative py-16 bg-slate-950 overflow-hidden border-b border-slate-800">
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/10 blur-[150px] rounded-full pointer-events-none"></div>
+
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            {/* LEFT TEXT & CONCEPT OVERVIEW */}
+            <div className="lg:col-span-5 space-y-6 text-left">
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-950/40 px-3.5 py-1.5 text-xs font-bold text-emerald-400">
+                <Sparkles className="w-3.5 h-3.5 text-emerald-400 animate-spin" />
+                <span className="uppercase tracking-widest text-[10px] font-black">LEVTIATING ARCHITECTURE SUITE</span>
+              </div>
+
+              <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight font-serif-editorial leading-tight">
+                Zero-Gravity <br />
+                <span className="text-gradient-emerald italic">Structural Perfection</span>
+              </h2>
+
+              <p className="text-slate-300 text-sm leading-relaxed font-medium">
+                Experience next-generation ultra-luxury living. Featuring magnetic levitation gardens, cantilevered infinity pools spilling into misty canyons, and 100% TS-RERA verified title clearance.
+              </p>
+
+              <div className="grid grid-cols-2 gap-4 pt-2">
+                <div className="p-4 rounded-2xl glass-panel-dark border border-slate-800 space-y-1">
+                  <div className="text-xl font-black text-emerald-400 font-cinzel">100% RERA</div>
+                  <div className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Audited Clearance</div>
+                </div>
+                <div className="p-4 rounded-2xl glass-panel-dark border border-slate-800 space-y-1">
+                  <div className="text-xl font-black text-amber-400 font-cinzel">+14.2% YoY</div>
+                  <div className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Capital Yield</div>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT FLOATING VILLA LEVITATION DISPLAY */}
+            <div className="lg:col-span-7 relative flex items-center justify-center">
+              {/* LEVITATION GLOW RING */}
+              <div className="absolute w-[90%] h-[90%] rounded-full border-2 border-emerald-500/30 animate-ring-glow pointer-events-none"></div>
+
+              {/* FLOATING VILLA CONTAINER */}
+              <div className="relative z-10 w-full animate-levitate-slow rounded-3xl overflow-hidden glass-card-antigravity border border-slate-800 shadow-2xl">
+                <img
+                  src="/antigravity_hero_villa.jpg"
+                  alt="Antigravity Floating Luxury Villa"
+                  className="w-full h-[420px] sm:h-[480px] object-cover object-center transform hover:scale-105 transition-transform duration-700"
+                />
+
+                {/* FLOATING SPECIFICATIONS OVERLAY BADGE 1 */}
+                <div className="absolute top-6 left-6 glass-panel-emerald p-3.5 rounded-2xl border border-emerald-500/40 text-left shadow-xl animate-levitate">
+                  <div className="text-[10px] text-emerald-300 font-black tracking-widest uppercase">TS-RERA AUDITED</div>
+                  <div className="text-sm font-black text-white font-serif-editorial">Kokapet Neopolis Sky Villa</div>
+                  <div className="text-[11px] text-emerald-400 font-bold">Score: 98/100 • ₹18.5 Cr</div>
+                </div>
+
+                {/* FLOATING SPECIFICATIONS OVERLAY BADGE 2 */}
+                <div className="absolute bottom-6 right-6 glass-panel-dark p-3.5 rounded-2xl border border-slate-700 text-left shadow-xl animate-levitate" style={{ animationDelay: '1.5s' }}>
+                  <div className="flex items-center gap-2 text-xs font-black text-amber-400">
+                    <Sparkles className="w-4 h-4 text-amber-400" />
+                    <span>Levitating Helipad & Infinity Pool</span>
+                  </div>
+                  <div className="text-[11px] text-slate-400 font-medium">Cantilevered Glass Terrace</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* 3. FLOATING CRISP WHITE SEARCH CARD */}
-      <section className="-mt-14 relative z-30 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+      <section className="-mt-10 relative z-30 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
         <div className="glass-panel-light-glow p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-2xl space-y-6 bg-white text-left">
           
           {/* SEARCH TABS */}
