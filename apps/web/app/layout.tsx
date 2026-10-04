@@ -9,7 +9,7 @@ import { OrganizationJsonLd, WebsiteJsonLd } from '../components/JsonLd';
 export const metadata: Metadata = {
   metadataBase: new URL('https://estateflow.io'),
   title: {
-    default: 'EstateFlow — Enterprise Real Estate & Verified Property Marketplace',
+    default: 'EstateFlow — Sovereign Real Estate Marketplace',
     template: '%s | EstateFlow',
   },
   description:
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: 'EstateFlow — Enterprise Real Estate Marketplace',
+    title: 'EstateFlow — Sovereign Real Estate Marketplace',
     description:
       'Explore verified luxury villas, apartments, new builder projects, and commercial spaces with EstateFlow.',
     url: 'https://estateflow.io',
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#059669',
+  themeColor: '#006948',
   width: 'device-width',
   initialScale: 1,
 };
@@ -82,6 +82,18 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+          rel="stylesheet"
+        />
+      </head>
       <body className="flex min-h-screen flex-col bg-slate-50 text-slate-900 font-sans antialiased" suppressHydrationWarning>
         <OrganizationJsonLd />
         <WebsiteJsonLd />
