@@ -270,7 +270,7 @@ export default function HomePage() {
             <div className="lg:col-span-7 flex flex-col justify-center space-y-4">
               {/* Top Tagline Pill */}
               <div>
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 text-emerald-400 shadow-md border border-emerald-500/30 backdrop-blur-xl">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800/90 text-emerald-400 shadow-md border border-emerald-500/30 backdrop-blur-xl">
                   <span className="material-symbols-outlined text-[15px] text-emerald-400">verified</span>
                   <span className="font-sans tracking-widest uppercase text-emerald-400 font-extrabold text-[11px]">
                     India's Premier Sovereign Real Estate Marketplace
@@ -291,31 +291,31 @@ export default function HomePage() {
 
               {/* High-Impact Trust KPI Metrics */}
               <div className="pt-2 grid grid-cols-3 gap-3 sm:gap-4">
-                <div className="bg-slate-900/70 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-slate-700/60 hover:border-emerald-500/50 hover:bg-slate-900/90 transition-all flex flex-col group">
+                <div className="bg-slate-800/80 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-slate-700/80 hover:border-emerald-500/50 hover:bg-slate-800/95 transition-all flex flex-col group">
                   <div className="flex items-center justify-between mb-1">
                     <span className="material-symbols-outlined text-emerald-400 text-lg">trending_up</span>
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                   </div>
                   <span className="font-sans text-xl sm:text-2xl text-emerald-400 font-black tracking-tight drop-shadow-sm">₹8,400+ Cr</span>
-                  <span className="font-sans text-[11px] text-slate-300 font-bold tracking-wider uppercase mt-1">Transacted GMV</span>
+                  <span className="font-sans text-[11px] text-slate-200 font-bold tracking-wider uppercase mt-1">Transacted GMV</span>
                 </div>
 
-                <div className="bg-slate-900/70 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-slate-700/60 hover:border-amber-400/50 hover:bg-slate-900/90 transition-all flex flex-col group">
+                <div className="bg-slate-800/80 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-slate-700/80 hover:border-amber-400/50 hover:bg-slate-800/95 transition-all flex flex-col group">
                   <div className="flex items-center justify-between mb-1">
                     <span className="material-symbols-outlined text-amber-400 text-lg">verified_user</span>
                     <span className="h-1.5 w-1.5 rounded-full bg-amber-400"></span>
                   </div>
                   <span className="font-sans text-xl sm:text-2xl text-amber-400 font-black tracking-tight drop-shadow-sm">99.4%</span>
-                  <span className="font-sans text-[11px] text-slate-300 font-bold tracking-wider uppercase mt-1">Verified Titles</span>
+                  <span className="font-sans text-[11px] text-slate-200 font-bold tracking-wider uppercase mt-1">Verified Titles</span>
                 </div>
 
-                <div className="bg-slate-900/70 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-slate-700/60 hover:border-cyan-400/50 hover:bg-slate-900/90 transition-all flex flex-col group">
+                <div className="bg-slate-800/80 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-slate-700/80 hover:border-cyan-400/50 hover:bg-slate-800/95 transition-all flex flex-col group">
                   <div className="flex items-center justify-between mb-1">
                     <span className="material-symbols-outlined text-cyan-400 text-lg">villa</span>
                     <span className="h-1.5 w-1.5 rounded-full bg-cyan-400"></span>
                   </div>
                   <span className="font-sans text-xl sm:text-2xl text-cyan-300 font-black tracking-tight drop-shadow-sm">14,200+</span>
-                  <span className="font-sans text-[11px] text-slate-300 font-bold tracking-wider uppercase mt-1">Luxury Homes</span>
+                  <span className="font-sans text-[11px] text-slate-200 font-bold tracking-wider uppercase mt-1">Luxury Homes</span>
                 </div>
               </div>
             </div>
