@@ -229,14 +229,14 @@ export default function HomePage() {
             preload="auto"
             suppressHydrationWarning
             style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-            className="h-full w-full object-cover object-center transform scale-105 pointer-events-none opacity-25"
+            className="h-full w-full object-cover object-center transform scale-105 pointer-events-none opacity-65"
           >
             <source src="/herovideo.mp4" type="video/mp4" />
           </video>
         </div>
 
-        {/* Ambient architectural dark contrast overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/85 to-slate-950/65 pointer-events-none z-0"></div>
+        {/* Ambient architectural overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/50 via-slate-950/35 to-slate-950/20 pointer-events-none z-0"></div>
         <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-emerald-600/10 blur-3xl pointer-events-none z-0"></div>
         <div className="absolute top-1/2 -right-20 w-[500px] h-[500px] rounded-full bg-amber-500/10 blur-3xl pointer-events-none z-0"></div>
 
