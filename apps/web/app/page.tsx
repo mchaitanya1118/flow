@@ -378,7 +378,7 @@ export default function HomePage() {
                   <button
                     type="button"
                     onClick={() => setShowAiModal(true)}
-                    className="w-full bg-gradient-to-r from-primary to-primary-container hover:opacity-95 text-on-primary font-headline-sm text-xs sm:text-sm font-black py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.99]"
+                    className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-headline-sm text-xs sm:text-sm font-black py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/25 border border-emerald-500/30 transition-all active:scale-[0.98]"
                   >
                     <span className="material-symbols-outlined text-[18px]">verified</span>
                     <span>Generate Detailed Valuation Audit Report</span>
@@ -407,8 +407,8 @@ export default function HomePage() {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`px-4 py-2.5 rounded-full font-headline-sm text-xs sm:text-sm font-bold flex items-center gap-2 transition-all shrink-0 ${
                   activeTab === tab.id
-                    ? 'bg-primary text-on-primary shadow-md'
-                    : 'bg-surface-container-high text-on-surface hover:bg-slate-200'
+                    ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-black shadow-lg shadow-emerald-600/25 border border-emerald-500/30'
+                    : 'bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white border border-slate-800 font-bold'
                 }`}
               >
                 <span className="material-symbols-outlined text-[16px]">{tab.icon}</span>
@@ -471,7 +471,7 @@ export default function HomePage() {
             <div>
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-primary to-primary-container hover:opacity-95 text-on-primary font-headline-sm text-xs sm:text-sm font-black py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.99]"
+                className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-headline-sm text-xs sm:text-sm font-black py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/25 border border-emerald-500/30 transition-all active:scale-[0.98]"
               >
                 <span className="material-symbols-outlined text-[18px]">search</span>
                 <span>Explore 4,500+ Verified Homes</span>
@@ -512,8 +512,8 @@ export default function HomePage() {
                 onClick={() => setInventoryTab(pill.id as any)}
                 className={`px-4 py-2 rounded-full font-body-sm text-xs font-bold transition-all ${
                   inventoryTab === pill.id
-                    ? 'bg-primary text-on-primary shadow-sm'
-                    : 'bg-surface-container-high text-on-surface hover:bg-slate-200'
+                    ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-bold shadow-md shadow-emerald-600/25 border border-emerald-500/30'
+                    : 'bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white border border-slate-800 font-bold'
                 }`}
               >
                 {pill.label}
@@ -614,7 +614,7 @@ export default function HomePage() {
                     href="https://wa.me/919000072227"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-subtle text-primary font-body-sm text-xs font-bold hover:bg-primary hover:text-on-primary transition-all border border-emerald-200"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-body-sm text-xs font-bold hover:from-emerald-500 hover:to-emerald-600 shadow-md shadow-emerald-600/20 border border-emerald-500/30 transition-all active:scale-[0.97]"
                   >
                     <span className="material-symbols-outlined text-[16px]">chat</span> WhatsApp
                   </a>
@@ -633,7 +633,7 @@ export default function HomePage() {
             <button
               type="button"
               onClick={() => setShowCompareModal(true)}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black px-4 py-2 rounded-full shadow-md transition"
+              className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-xs font-black px-4 py-2 rounded-full shadow-lg shadow-amber-500/25 border border-amber-400/40 transition active:scale-[0.98]"
             >
               Open Comparison Matrix
             </button>
@@ -885,7 +885,7 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => setSelectedDeveloper(dev)}
-                className="w-full bg-surface-container-high hover:bg-slate-200 text-on-surface font-headline-sm text-xs font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors border border-slate-200"
+                className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-headline-sm text-xs font-black py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md shadow-amber-500/20 border border-amber-400/40 active:scale-[0.98]"
               >
                 <span className="material-symbols-outlined text-[16px]">support_agent</span>
                 <span>Connect Developer Concierge</span>
@@ -1004,7 +1004,7 @@ export default function HomePage() {
               </div>
               <button
                 type="submit"
-                className="w-full sm:w-auto shrink-0 bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-xs sm:text-sm font-black px-6 py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto shrink-0 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-headline-sm text-xs sm:text-sm font-black px-6 py-3.5 rounded-xl shadow-lg shadow-emerald-600/25 border border-emerald-500/30 transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
               >
                 <span>Join VIP Circle</span>
                 <span className="material-symbols-outlined text-[18px]">arrow_forward</span>

@@ -17,15 +17,20 @@ export function Button({
   ...props
 }: ButtonProps): any {
   const baseStyles =
-    'inline-flex items-center justify-center font-semibold whitespace-nowrap transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg shadow-sm';
+    'inline-flex items-center justify-center font-bold whitespace-nowrap transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-sm active:scale-[0.98]';
 
   const variants = {
-    primary: 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/20 hover:shadow-md font-bold',
-    secondary: 'bg-slate-900 hover:bg-slate-800 text-white font-bold',
-    outline: 'border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 hover:text-slate-900 font-bold shadow-sm',
-    ghost: 'hover:bg-slate-100 text-slate-700 hover:text-slate-900 shadow-none font-bold',
-    danger: 'bg-rose-600 hover:bg-rose-700 text-white shadow-rose-600/20 font-bold',
-    amber: 'bg-amber-500 hover:bg-amber-600 text-white shadow-amber-500/20 font-bold',
+    primary:
+      'bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white shadow-lg shadow-emerald-600/25 font-black border border-emerald-500/30',
+    secondary:
+      'bg-slate-900 hover:bg-slate-800 text-slate-100 font-bold border border-slate-800 shadow-md shadow-slate-950/50',
+    outline:
+      'border border-slate-800 bg-slate-900/60 text-slate-200 hover:bg-slate-800 hover:border-slate-700 font-bold backdrop-blur-md shadow-sm',
+    ghost: 'hover:bg-slate-800/60 text-slate-300 hover:text-white font-bold shadow-none',
+    danger:
+      'bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white shadow-lg shadow-rose-600/25 font-bold border border-rose-500/30',
+    amber:
+      'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black shadow-lg shadow-amber-500/25 border border-amber-400/40',
   };
 
   const sizes = {

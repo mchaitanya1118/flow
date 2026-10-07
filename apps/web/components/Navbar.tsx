@@ -260,10 +260,10 @@ export const Navbar: React.FC = () => {
           {/* RIGHT ACTION BUTTONS */}
           <div className="hidden items-center gap-3 md:flex">
             <Link href="/post-property">
-              <Button variant="outline" size="sm" className="border-slate-800 bg-slate-900 text-white hover:bg-slate-800 hover:border-slate-700 font-black text-xs rounded-xl shadow-md flex items-center gap-1.5">
-                <PlusCircle className="w-3.5 h-3.5 text-emerald-400" />
+              <Button variant="amber" size="sm" className="font-black text-xs rounded-xl shadow-lg flex items-center gap-1.5">
+                <PlusCircle className="w-3.5 h-3.5 text-slate-950" />
                 <span>Post Property</span>
-                <span className="text-[9px] bg-emerald-950 text-emerald-400 font-bold px-1.5 py-0.2 rounded-full uppercase border border-emerald-800">Free</span>
+                <span className="text-[9px] bg-slate-950 text-amber-300 font-bold px-1.5 py-0.5 rounded-full uppercase border border-amber-400/40">Free</span>
               </Button>
             </Link>
 
