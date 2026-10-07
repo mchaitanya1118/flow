@@ -187,8 +187,8 @@ export default function HomePage() {
   return (
     <div className="w-full bg-surface-canvas font-body-md text-on-surface antialiased">
       {/* 1. LIVE MARKET TICKER STRIP */}
-      <div className="w-full bg-slate-950 text-slate-200 py-2.5 px-4 sm:px-6 overflow-hidden flex items-center justify-between text-[11px] tracking-wide border-b border-slate-800 relative z-30">
-        <div className="flex items-center gap-2 shrink-0 pr-4 bg-slate-950 z-10 border-r border-slate-800/80">
+      <div className="w-full bg-slate-800 text-slate-200 py-2.5 px-4 sm:px-6 overflow-hidden flex items-center justify-between text-[11px] tracking-wide border-b border-slate-700 relative z-30">
+        <div className="flex items-center gap-2 shrink-0 pr-4 bg-slate-800 z-10 border-r border-slate-700/80">
           <span className="flex h-2 w-2 relative">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
@@ -201,37 +201,37 @@ export default function HomePage() {
             <div className="flex items-center gap-4">
               <strong className="text-amber-400 font-bold">DEMAND SPIKE:</strong>
               <span className="text-slate-200">Kokapet Neopolis 3 BHK prices +14.2% YoY (Avg ₹10,800/sq.ft)</span>
-              <span className="text-slate-600">•</span>
+              <span className="text-slate-500">•</span>
               <strong className="text-emerald-400 font-bold">JUST TRANSACTED:</strong>
               <span className="text-slate-200">Triplex Villa in Jubilee Hills closed for ₹6.85 Cr</span>
-              <span className="text-slate-600">•</span>
+              <span className="text-slate-500">•</span>
               <strong className="text-amber-400 font-bold">NEW RERA APPROVAL:</strong>
               <span className="text-slate-200">Prestigio Sky Tower Phase 2</span>
-              <span className="text-slate-600">•</span>
+              <span className="text-slate-500">•</span>
               <span className="text-teal-400 font-bold">1,480+ Active HNW Buyers</span>
-              <span className="text-slate-600">•</span>
+              <span className="text-slate-500">•</span>
             </div>
 
             {/* DUPLICATE FOR CONTINUOUS 100% INFINITE LOOP */}
             <div className="flex items-center gap-4" aria-hidden="true">
               <strong className="text-amber-400 font-bold">DEMAND SPIKE:</strong>
               <span className="text-slate-200">Kokapet Neopolis 3 BHK prices +14.2% YoY (Avg ₹10,800/sq.ft)</span>
-              <span className="text-slate-600">•</span>
+              <span className="text-slate-500">•</span>
               <strong className="text-emerald-400 font-bold">JUST TRANSACTED:</strong>
               <span className="text-slate-200">Triplex Villa in Jubilee Hills closed for ₹6.85 Cr</span>
-              <span className="text-slate-600">•</span>
+              <span className="text-slate-500">•</span>
               <strong className="text-amber-400 font-bold">NEW RERA APPROVAL:</strong>
               <span className="text-slate-200">Prestigio Sky Tower Phase 2</span>
-              <span className="text-slate-600">•</span>
+              <span className="text-slate-500">•</span>
               <span className="text-teal-400 font-bold">1,480+ Active HNW Buyers</span>
-              <span className="text-slate-600">•</span>
+              <span className="text-slate-500">•</span>
             </div>
           </div>
         </div>
 
-        <div className="hidden md:flex items-center gap-4 text-slate-400 shrink-0 pl-4 bg-slate-950 z-10 border-l border-slate-800/80">
+        <div className="hidden md:flex items-center gap-4 text-slate-400 shrink-0 pl-4 bg-slate-800 z-10 border-l border-slate-700/80">
           <span className="font-semibold text-slate-300">INR (₹)</span>
-          <span className="text-slate-700">|</span>
+          <span className="text-slate-600">|</span>
           <span className="text-emerald-400 font-bold flex items-center gap-1">
             <span className="material-symbols-outlined text-[14px]">verified</span> TS-RERA Monitored
           </span>
@@ -270,7 +270,7 @@ export default function HomePage() {
             <div className="lg:col-span-7 flex flex-col justify-center space-y-4">
               {/* Top Tagline Pill */}
               <div>
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800/90 text-emerald-400 shadow-md border border-emerald-500/30 backdrop-blur-xl">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 text-emerald-400 shadow-md border border-emerald-500/30 backdrop-blur-xl">
                   <span className="material-symbols-outlined text-[15px] text-emerald-400">verified</span>
                   <span className="font-sans tracking-widest uppercase text-emerald-400 font-extrabold text-[11px]">
                     India's Premier Sovereign Real Estate Marketplace
@@ -291,31 +291,31 @@ export default function HomePage() {
 
               {/* High-Impact Trust KPI Metrics */}
               <div className="pt-2 grid grid-cols-3 gap-3 sm:gap-4">
-                <div className="bg-slate-800/80 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-slate-700/80 hover:border-emerald-500/50 hover:bg-slate-800/95 transition-all flex flex-col group">
+                <div className="bg-slate-900/70 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-slate-700/60 hover:border-emerald-500/50 hover:bg-slate-900/90 transition-all flex flex-col group">
                   <div className="flex items-center justify-between mb-1">
                     <span className="material-symbols-outlined text-emerald-400 text-lg">trending_up</span>
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                   </div>
                   <span className="font-sans text-xl sm:text-2xl text-emerald-400 font-black tracking-tight drop-shadow-sm">₹8,400+ Cr</span>
-                  <span className="font-sans text-[11px] text-slate-200 font-bold tracking-wider uppercase mt-1">Transacted GMV</span>
+                  <span className="font-sans text-[11px] text-slate-300 font-bold tracking-wider uppercase mt-1">Transacted GMV</span>
                 </div>
 
-                <div className="bg-slate-800/80 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-slate-700/80 hover:border-amber-400/50 hover:bg-slate-800/95 transition-all flex flex-col group">
+                <div className="bg-slate-900/70 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-slate-700/60 hover:border-amber-400/50 hover:bg-slate-900/90 transition-all flex flex-col group">
                   <div className="flex items-center justify-between mb-1">
                     <span className="material-symbols-outlined text-amber-400 text-lg">verified_user</span>
                     <span className="h-1.5 w-1.5 rounded-full bg-amber-400"></span>
                   </div>
                   <span className="font-sans text-xl sm:text-2xl text-amber-400 font-black tracking-tight drop-shadow-sm">99.4%</span>
-                  <span className="font-sans text-[11px] text-slate-200 font-bold tracking-wider uppercase mt-1">Verified Titles</span>
+                  <span className="font-sans text-[11px] text-slate-300 font-bold tracking-wider uppercase mt-1">Verified Titles</span>
                 </div>
 
-                <div className="bg-slate-800/80 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-slate-700/80 hover:border-cyan-400/50 hover:bg-slate-800/95 transition-all flex flex-col group">
+                <div className="bg-slate-900/70 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-slate-700/60 hover:border-cyan-400/50 hover:bg-slate-900/90 transition-all flex flex-col group">
                   <div className="flex items-center justify-between mb-1">
                     <span className="material-symbols-outlined text-cyan-400 text-lg">villa</span>
                     <span className="h-1.5 w-1.5 rounded-full bg-cyan-400"></span>
                   </div>
                   <span className="font-sans text-xl sm:text-2xl text-cyan-300 font-black tracking-tight drop-shadow-sm">14,200+</span>
-                  <span className="font-sans text-[11px] text-slate-200 font-bold tracking-wider uppercase mt-1">Luxury Homes</span>
+                  <span className="font-sans text-[11px] text-slate-300 font-bold tracking-wider uppercase mt-1">Luxury Homes</span>
                 </div>
               </div>
             </div>
