@@ -9,7 +9,7 @@ import { OrganizationJsonLd, WebsiteJsonLd } from '../components/JsonLd';
 export const metadata: Metadata = {
   metadataBase: new URL('https://estateflow.io'),
   title: {
-    default: 'EstateFlow — Sovereign Real Estate Marketplace',
+    default: 'EstateFlow — Sovereign Real Estate & Verified Property Marketplace',
     template: '%s | EstateFlow',
   },
   description:
@@ -81,7 +81,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="light" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
@@ -94,7 +94,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body className="flex min-h-screen flex-col bg-slate-50 text-slate-900 font-sans antialiased" suppressHydrationWarning>
+      <body className="bg-surface font-body-md text-on-surface antialiased flex min-h-screen flex-col selection:bg-primary-fixed selection:text-on-primary-fixed" suppressHydrationWarning>
         <OrganizationJsonLd />
         <WebsiteJsonLd />
         <Navbar />

@@ -5,16 +5,12 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   Button,
-  Input,
   Badge,
-  Card,
-  PropertyCard,
   formatNumber,
 } from '@estateflow/ui';
 import { DEMO_PROPERTIES, DEMO_PROJECTS } from '../lib/mockData';
 import {
   TrendingUp,
-  Zap,
   ShieldCheck,
   Users,
   Bot,
@@ -26,20 +22,21 @@ import {
   MapPin,
   Search,
   Building,
-  Crown,
   Calculator,
   Percent,
   ArrowRight,
   X,
   FileText,
-  BarChart3,
   PhoneCall,
   Mail,
   CheckCircle2,
-  Award,
   Coins,
   Layers,
   Star,
+  ExternalLink,
+  Lock,
+  Heart,
+  MessageSquare,
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -51,7 +48,6 @@ export default function HomePage() {
     const el = videoRef.current;
     if (!el) return;
 
-    // Force native DOM muted attributes required by browser autoplay security policies (Safari/iOS/Chrome)
     el.setAttribute('muted', '');
     el.setAttribute('playsinline', '');
     el.setAttribute('webkit-playsinline', 'true');
@@ -73,7 +69,6 @@ export default function HomePage() {
 
     attemptPlay();
 
-    // Interaction fallback for strict browser autoplay policies
     const handleUserInteraction = () => {
       attemptPlay();
       window.removeEventListener('pointerdown', handleUserInteraction);
@@ -99,7 +94,7 @@ export default function HomePage() {
   const [bedrooms, setBedrooms] = useState('ANY');
   const [maxPrice, setMaxPrice] = useState('ANY');
 
-  // Inventory Filter State
+  // Inventory Filter Pill State
   const [inventoryTab, setInventoryTab] = useState<'ALL' | 'VILLA' | 'PENTHOUSE' | 'COMMERCIAL' | 'RENT'>('ALL');
 
   // Property Comparison State
@@ -107,7 +102,7 @@ export default function HomePage() {
   const [showCompareModal, setShowCompareModal] = useState(false);
 
   // AI Price Estimator Widget State
-  const [aiLocality, setAiLocality] = useState('Kokapet Neopolis');
+  const [aiLocality, setAiLocality] = useState('kokapet');
   const [aiBhk, setAiBhk] = useState(3);
   const [aiSqft, setAiSqft] = useState(2250);
   const [showAiModal, setShowAiModal] = useState(false);
@@ -128,9 +123,9 @@ export default function HomePage() {
 
   // AI Valuation Calculations
   const baseRatePerSqft =
-    aiLocality === 'Jubilee Hills' ? 14500 :
-    aiLocality === 'Kokapet Neopolis' ? 10800 :
-    aiLocality === 'Financial District' ? 9600 : 8200;
+    aiLocality === 'jubilee_hills' ? 14500 :
+    aiLocality === 'kokapet' ? 10800 :
+    aiLocality === 'financial_district' ? 9800 : 7900;
 
   const estimatedValue = aiSqft * baseRatePerSqft;
   const projected1YrAppreciation = Math.round(estimatedValue * 0.125);
@@ -189,66 +184,39 @@ export default function HomePage() {
     return true;
   });
 
-  const developersList = [
-    {
-      id: 'dev-1',
-      name: 'Prestigio Luxury Builders',
-      reraId: 'P02400003891',
-      rating: 4.9,
-      deliveredProjects: 42,
-      activeProjects: 6,
-      logo: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=200&q=80',
-      highlights: 'Pioneer in Ultra-High-Rise Sky Villas & Platinum LEED Green Certified Enclaves.',
-    },
-    {
-      id: 'dev-2',
-      name: 'Aparna Heritage Infrastructure',
-      reraId: 'P02400004102',
-      rating: 4.8,
-      deliveredProjects: 68,
-      activeProjects: 9,
-      logo: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=200&q=80',
-      highlights: 'Telangana’s Most Trusted Developer with 100% On-Time Delivery Record for 20 Years.',
-    },
-    {
-      id: 'dev-3',
-      name: 'My Home Real Estate Group',
-      reraId: 'P02400002954',
-      rating: 4.9,
-      deliveredProjects: 55,
-      activeProjects: 8,
-      logo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=200&q=80',
-      highlights: 'Integrated Mega-Townships & Grade-A Commercial Towers in Financial District.',
-    },
-  ];
-
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 text-slate-900 selection:bg-emerald-600 selection:text-white" suppressHydrationWarning>
-      
-      {/* 1. LIVE MARKET TICKER BAR WITH LUCIDE ICONS */}
-      <div className="bg-slate-100 text-slate-800 text-xs py-2.5 overflow-hidden sticky top-0 z-40 shadow-sm border-b border-slate-200 font-medium">
-        <div className="animate-marquee whitespace-nowrap flex items-center gap-12">
-          <span className="flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-emerald-600" />
-            <strong className="text-emerald-700">DEMAND SPIKE:</strong> Kokapet Neopolis 3 BHK prices +14.2% YoY (Avg ₹10,800/sq.ft)
+    <div className="w-full bg-surface-canvas font-body-md text-on-surface antialiased">
+      {/* 1. LIVE MARKET TICKER STRIP */}
+      <div className="w-full bg-surface-dark text-surface-canvas py-2 px-4 sm:px-6 overflow-hidden flex items-center justify-between text-[11px] tracking-wide border-b border-slate-800">
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="flex h-2 w-2 relative">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-glow opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-glow"></span>
           </span>
-          <span className="flex items-center gap-2">
-            <Zap className="w-4 h-4 text-amber-600" />
-            <span className="text-amber-700 font-bold">JUST TRANSACTED:</span> Triplex Villa in Jubilee Hills closed for ₹6.85 Cr
-          </span>
-          <span className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-teal-600" />
-            <span className="text-teal-700 font-bold">NEW RERA APPROVAL:</span> Prestigio Sky Tower Phase 2 (RERA #P0240000512)
-          </span>
-          <span className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-purple-600" />
-            <span className="text-purple-700 font-bold">ACTIVE BUYERS:</span> 1,480+ HNW Investors actively bidding in Financial District
+          <span className="font-label-caps uppercase text-emerald-glow font-bold">Live Corridor Pulse</span>
+        </div>
+        <div className="whitespace-nowrap overflow-hidden flex-1 mx-4 sm:mx-6">
+          <p className="font-body-sm text-surface-container-high/90 tracking-normal truncate">
+            <strong className="text-champagne-gold font-semibold">DEMAND SPIKE:</strong> Kokapet Neopolis 3 BHK prices +14.2% YoY (Avg ₹10,800/sq.ft){' '}
+            <span className="text-border-glass mx-2">•</span>{' '}
+            <strong className="text-emerald-glow font-semibold">JUST TRANSACTED:</strong> Triplex Villa in Jubilee Hills closed for ₹6.85 Cr{' '}
+            <span className="text-border-glass mx-2">•</span>{' '}
+            <strong className="text-champagne-gold font-semibold">NEW RERA APPROVAL:</strong> Prestigio Sky Tower Phase 2{' '}
+            <span className="text-border-glass mx-2">•</span>{' '}
+            <span className="text-primary-fixed-dim font-medium">1,480+ Active HNW Buyers</span>
+          </p>
+        </div>
+        <div className="hidden md:flex items-center gap-4 text-secondary-fixed shrink-0">
+          <span className="font-body-sm">INR (₹)</span>
+          <span className="text-slate-700">|</span>
+          <span className="font-body-sm text-primary-fixed-dim flex items-center gap-1">
+            <span className="material-symbols-outlined text-[14px]">verified</span> TS-RERA Monitored
           </span>
         </div>
       </div>
 
-      {/* 2. HERO SECTION WITH LOCAL HERO VIDEO BACKGROUND */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-slate-950 pt-10 pb-20 border-b border-slate-800">
+      {/* 2. SOVEREIGN ARCHITECTURAL HERO SECTION WITH BACKGROUND VIDEO */}
+      <section className="relative w-full bg-surface-dark text-on-tertiary overflow-hidden pb-24 pt-12 border-b border-slate-800">
         {/* BACKGROUND LOCAL MP4 VIDEO (/herovideo.mp4) */}
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
           <video
@@ -260,113 +228,107 @@ export default function HomePage() {
             playsInline
             preload="auto"
             suppressHydrationWarning
-            onCanPlay={(e) => e.currentTarget.play().catch(() => {})}
-            onLoadedData={(e) => e.currentTarget.play().catch(() => {})}
             style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-            className="h-full w-full object-cover object-center transform scale-105 pointer-events-none"
+            className="h-full w-full object-cover object-center transform scale-105 pointer-events-none opacity-40"
           >
             <source src="/herovideo.mp4" type="video/mp4" />
           </video>
         </div>
 
-        {/* HIGH-CONTRAST VIGNETTE OVERLAY TO GUARANTEE 100% TEXT READABILITY */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/65 via-slate-950/45 to-slate-950/20 pointer-events-none z-0"></div>
+        {/* Ambient architectural overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-surface-dark/90 via-surface-dark/80 to-surface-dark pointer-events-none z-0"></div>
+        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-primary/20 blur-3xl pointer-events-none z-0"></div>
+        <div className="absolute top-1/2 -right-20 w-[500px] h-[500px] rounded-full bg-champagne-gold/10 blur-3xl pointer-events-none z-0"></div>
 
-        {/* AMBIENT GLOW ACCENT */}
-        <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[450px] bg-emerald-500/20 blur-[130px] rounded-full pointer-events-none z-0"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 z-10">
+          {/* Top Tagline Pill */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-dark-elevated/90 text-primary-fixed shadow-sm mb-6 border border-slate-800 backdrop-blur-md">
+            <span className="material-symbols-outlined text-[15px] text-emerald-glow">verified</span>
+            <span className="font-label-caps tracking-widest uppercase text-emerald-glow font-bold text-[11px]">
+              India's Premier Luxury Real Estate Marketplace
+            </span>
+          </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* HERO LEFT COLUMN - HIGH CONTRAST LIGHT TYPOGRAPHY */}
-            <div className="lg:col-span-7 space-y-7 text-left">
-              <div className="inline-flex items-center gap-2.5 rounded-full border border-emerald-500/40 bg-slate-950/80 px-4 py-2 text-xs font-bold text-emerald-400 backdrop-blur-md shadow-md">
-                <Sparkles className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-                <span className="uppercase tracking-widest text-[11px] font-black">INDIA'S PREMIER LUXURY REAL ESTATE MARKETPLACE</span>
-              </div>
-
-              <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-[1.08] text-white drop-shadow-md font-serif-editorial">
-                Architectural Mastery <br />
-                <span className="text-emerald-400 underline decoration-emerald-500/60 italic">
+          {/* Grid: Hero Typography & AI Valuation Engine Cockpit */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+            {/* Left: Sovereign Title & Stats */}
+            <div className="lg:col-span-7 flex flex-col space-y-6">
+              <h1 className="font-display-hero text-4xl sm:text-5xl lg:text-display-hero text-on-tertiary font-bold tracking-tight leading-tight">
+                Architectural Mastery<br />
+                <span className="bg-gradient-to-r from-primary-fixed via-emerald-glow to-champagne-gold bg-clip-text text-transparent italic">
                   Meets Capital Growth
                 </span>
               </h1>
-
-              <p className="text-slate-200 text-sm sm:text-base font-medium max-w-2xl leading-relaxed drop-shadow-sm">
+              <p className="font-body-lg text-base sm:text-body-lg text-secondary-fixed max-w-xl leading-relaxed">
                 Discover Telangana’s finest collection of 100% RERA-cleared luxury villas, high-rise penthouses, and commercial yields across Kokapet, Jubilee Hills, and Gachibowli with instant AI valuation guarantees.
               </p>
 
-              {/* STATS PILL BAR */}
-              <div className="grid grid-cols-3 gap-6 pt-6 border-t border-slate-700/80 max-w-2xl">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 whitespace-nowrap">
-                    <TrendingUp className="w-5 h-5 text-emerald-400 shrink-0" />
-                    <span className="text-xl sm:text-3xl font-black text-white tracking-tight drop-shadow-sm">₹8,400+ Cr</span>
-                  </div>
-                  <span className="text-[10px] font-extrabold text-slate-300 uppercase tracking-widest block whitespace-nowrap">Transacted GMV</span>
+              {/* High-Impact Trust KPI Metrics */}
+              <div className="pt-4 grid grid-cols-3 gap-3 sm:gap-6">
+                <div className="bg-surface-dark-elevated/80 rounded-2xl p-4 shadow-sm border border-slate-800 flex flex-col backdrop-blur-md">
+                  <span className="font-numeric-metric text-xl sm:text-numeric-metric text-emerald-glow font-extrabold">₹8,400+ Cr</span>
+                  <span className="font-body-sm text-xs sm:text-body-sm text-secondary-fixed font-medium mt-1">Transacted GMV</span>
                 </div>
-                <div className="space-y-1 border-x border-slate-700/80 px-4">
-                  <div className="flex items-center gap-1.5 whitespace-nowrap">
-                    <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0" />
-                    <span className="text-xl sm:text-3xl font-black text-emerald-400 tracking-tight drop-shadow-sm">99.4%</span>
-                  </div>
-                  <span className="text-[10px] font-extrabold text-slate-300 uppercase tracking-widest block whitespace-nowrap">Verified Titles</span>
+                <div className="bg-surface-dark-elevated/80 rounded-2xl p-4 shadow-sm border border-slate-800 flex flex-col backdrop-blur-md">
+                  <span className="font-numeric-metric text-xl sm:text-numeric-metric text-champagne-gold font-extrabold">99.4%</span>
+                  <span className="font-body-sm text-xs sm:text-body-sm text-secondary-fixed font-medium mt-1">Verified Titles</span>
                 </div>
-                <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 whitespace-nowrap">
-                    <Building className="w-5 h-5 text-amber-400 shrink-0" />
-                    <span className="text-xl sm:text-3xl font-black text-amber-400 tracking-tight drop-shadow-sm">14,200+</span>
-                  </div>
-                  <span className="text-[10px] font-extrabold text-slate-300 uppercase tracking-widest block whitespace-nowrap">Luxury Homes</span>
+                <div className="bg-surface-dark-elevated/80 rounded-2xl p-4 shadow-sm border border-slate-800 flex flex-col backdrop-blur-md">
+                  <span className="font-numeric-metric text-xl sm:text-numeric-metric text-on-tertiary font-extrabold">14,200+</span>
+                  <span className="font-body-sm text-xs sm:text-body-sm text-secondary-fixed font-medium mt-1">Luxury Homes</span>
                 </div>
               </div>
             </div>
 
-            {/* HERO RIGHT COLUMN: AI PROPERTY PRICE ESTIMATOR WIDGET */}
+            {/* Right: AI Valuation Engine Cockpit */}
             <div className="lg:col-span-5 relative">
-              <div className="glass-panel-light-glow rounded-3xl p-6 sm:p-8 space-y-6 text-slate-900 border border-slate-200 shadow-2xl relative overflow-hidden bg-white/95 text-left">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="relative bg-white rounded-3xl shadow-2xl overflow-hidden text-on-surface border border-slate-200">
+                {/* Header bar of Cockpit */}
+                <div className="bg-surface-container-low px-6 py-4 flex items-center justify-between border-b border-slate-200">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800">
-                      <Bot className="w-5 h-5" />
-                    </div>
+                    <span className="material-symbols-outlined text-primary text-[22px]">analytics</span>
                     <div>
-                      <h3 className="font-black text-base text-slate-900">AI Valuation Engine</h3>
-                      <p className="text-[11px] text-slate-500 font-medium">Instant Real-Time Market Valuation & Yield Forecast</p>
+                      <h2 className="font-headline-sm text-base font-bold leading-none text-on-surface">AI Valuation Engine</h2>
+                      <span className="font-body-sm text-xs text-secondary mt-0.5 block">Instant Real-Time Market Valuation & Yield Forecast</span>
                     </div>
                   </div>
-                  <Badge variant="emerald" className="text-[10px] font-black px-2.5 py-1 uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-300">
-                    LIVE ML V3
-                  </Badge>
+                  <span className="px-2.5 py-1 rounded-md bg-emerald-subtle text-primary font-label-caps text-[10px] font-bold tracking-wider uppercase border border-emerald-200">
+                    Live ML v3
+                  </span>
                 </div>
 
-                {/* ESTIMATOR INPUT FORM */}
-                <div className="space-y-4 text-xs font-bold">
-                  <div>
-                    <label className="text-slate-600 uppercase tracking-wider text-[10px] block mb-1.5 font-black flex items-center gap-1">
-                      <MapPin className="w-3.5 h-3.5 text-emerald-600" /> Select Target Micro-Market
+                {/* Cockpit Form Interactive Fields */}
+                <div className="p-6 space-y-4">
+                  {/* Select Micro Market */}
+                  <div className="space-y-1.5">
+                    <label className="font-label-caps text-xs uppercase text-secondary font-bold flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-[14px]">pin_drop</span> Target Micro-Market
                     </label>
-                    <select
-                      value={aiLocality}
-                      onChange={(e) => setAiLocality(e.target.value)}
-                      className="w-full rounded-xl bg-white border border-slate-200 px-3.5 py-3 text-slate-900 focus:ring-2 focus:ring-emerald-500 font-bold shadow-xs cursor-pointer"
-                    >
-                      <option value="Kokapet Neopolis">Kokapet Neopolis (Golden Mile)</option>
-                      <option value="Financial District">Financial District (Gachibowli)</option>
-                      <option value="Jubilee Hills">Jubilee Hills (Luxury Ridge)</option>
-                      <option value="Kondapur">Kondapur (IT Hub)</option>
-                    </select>
+                    <div className="relative">
+                      <select
+                        value={aiLocality}
+                        onChange={(e) => setAiLocality(e.target.value)}
+                        className="w-full bg-surface-canvas rounded-xl px-3.5 py-2.5 font-body-md text-sm text-on-surface appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-200 font-semibold"
+                      >
+                        <option value="kokapet">Kokapet Neopolis (Golden Mile)</option>
+                        <option value="financial_district">Financial District (Gachibowli)</option>
+                        <option value="jubilee_hills">Jubilee Hills (Luxury Ridge)</option>
+                        <option value="kondapur">Kondapur (IT Hub)</option>
+                      </select>
+                      <span className="material-symbols-outlined absolute right-3 top-3 text-secondary text-[18px] pointer-events-none">unfold_more</span>
+                    </div>
                   </div>
 
+                  {/* Configuration Rows: BHK & Area */}
                   <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="text-slate-600 uppercase tracking-wider text-[10px] block mb-1.5 font-black flex items-center gap-1">
-                        <Home className="w-3.5 h-3.5 text-slate-500" /> BHK Layout
+                    <div className="space-y-1.5">
+                      <label className="font-label-caps text-xs uppercase text-secondary font-bold flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[14px]">bed</span> BHK Layout
                       </label>
                       <select
                         value={aiBhk}
                         onChange={(e) => setAiBhk(Number(e.target.value))}
-                        className="w-full rounded-xl bg-white border border-slate-200 px-3.5 py-3 text-slate-900 focus:ring-2 focus:ring-emerald-500 font-bold shadow-xs cursor-pointer"
+                        className="w-full bg-surface-canvas rounded-xl px-3 py-2.5 font-body-md text-sm text-on-surface appearance-none focus:outline-none border border-slate-200 font-semibold"
                       >
                         <option value={2}>2 BHK Suite</option>
                         <option value={3}>3 BHK Luxury</option>
@@ -374,594 +336,652 @@ export default function HomePage() {
                       </select>
                     </div>
 
-                    <div>
-                      <label className="text-slate-600 uppercase tracking-wider text-[10px] block mb-1.5 font-black flex items-center gap-1">
-                        <Layers className="w-3.5 h-3.5 text-slate-500" /> Area (Sq.Ft)
+                    <div className="space-y-1.5">
+                      <label className="font-label-caps text-xs uppercase text-secondary font-bold flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[14px]">straighten</span> Area (Sq.Ft)
                       </label>
                       <input
                         type="number"
                         value={aiSqft}
                         onChange={(e) => setAiSqft(Number(e.target.value))}
-                        className="w-full rounded-xl bg-white border border-slate-200 px-3.5 py-3 text-slate-900 focus:ring-2 focus:ring-emerald-500 font-bold shadow-xs"
+                        className="w-full bg-surface-canvas rounded-xl px-3.5 py-2.5 font-body-md text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-200 font-bold"
                       />
                     </div>
                   </div>
 
-                  {/* ESTIMATED RESULT BOX WITH VALID PADDING */}
-                  <div className="p-5 rounded-2xl bg-emerald-50/90 border border-emerald-200 text-slate-900 space-y-3 shadow-sm">
-                    <div className="flex justify-between items-center gap-2">
-                      <span className="text-slate-600 text-xs font-semibold">Estimated Fair Value:</span>
-                      <span className="text-2xl font-black text-emerald-800 tracking-tight">
+                  {/* Real-time Live Valuation Card output */}
+                  <div className="bg-surface-container-low rounded-2xl p-4 space-y-3 border border-slate-200/80">
+                    <div className="flex items-center justify-between">
+                      <span className="font-body-sm text-xs text-secondary font-medium">Estimated Fair Value</span>
+                      <span className="font-headline-md text-2xl text-primary font-black">
                         ₹{(estimatedValue / 10000000).toFixed(2)} Crore
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 pt-3 border-t border-emerald-200/80 text-[11px]">
-                      <div>
-                        <span className="text-slate-500 block font-medium">1-Yr Appreciation:</span>
-                        <span className="font-black text-amber-700">+₹{(projected1YrAppreciation / 100000).toFixed(1)} Lakhs (+12.5%)</span>
+                    <div className="grid grid-cols-2 gap-2 pt-1 text-on-surface-variant">
+                      <div className="bg-white p-3 rounded-xl flex flex-col border border-slate-200">
+                        <span className="font-label-caps text-[10px] uppercase text-secondary font-bold">1-Yr Appreciation</span>
+                        <span className="font-body-sm text-xs font-black text-primary mt-0.5">
+                          +₹{(projected1YrAppreciation / 100000).toFixed(1)} L (+12.5%)
+                        </span>
                       </div>
-                      <div>
-                        <span className="text-slate-500 block font-medium">Est. Monthly Rent:</span>
-                        <span className="font-black text-slate-900">₹{formatNumber(estimatedMonthlyRent)}/mo</span>
+                      <div className="bg-white p-3 rounded-xl flex flex-col border border-slate-200">
+                        <span className="font-label-caps text-[10px] uppercase text-secondary font-bold">Est. Monthly Rent</span>
+                        <span className="font-body-sm text-xs font-black text-on-surface mt-0.5">
+                          ₹{estimatedMonthlyRent.toLocaleString()}/mo
+                        </span>
                       </div>
                     </div>
                   </div>
 
-                  <Button
+                  {/* Valuation Report CTA */}
+                  <button
+                    type="button"
                     onClick={() => setShowAiModal(true)}
-                    variant="primary"
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3.5 rounded-xl shadow-md flex items-center justify-center gap-2 text-xs"
+                    className="w-full bg-gradient-to-r from-primary to-primary-container hover:opacity-95 text-on-primary font-headline-sm text-xs sm:text-sm font-black py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.99]"
                   >
+                    <span className="material-symbols-outlined text-[18px]">verified</span>
                     <span>Generate Detailed Valuation Audit Report</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* 2.5. 3D ANTIGRAVITY FLOATING ARCHITECTURE SHOWCASE */}
-      <section className="relative py-16 bg-slate-950 overflow-hidden border-b border-slate-800">
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/10 blur-[150px] rounded-full pointer-events-none"></div>
-
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* LEFT TEXT & CONCEPT OVERVIEW */}
-            <div className="lg:col-span-5 space-y-6 text-left">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-950/40 px-3.5 py-1.5 text-xs font-bold text-emerald-400">
-                <Sparkles className="w-3.5 h-3.5 text-emerald-400 animate-spin" />
-                <span className="uppercase tracking-widest text-[10px] font-black">LEVTIATING ARCHITECTURE SUITE</span>
-              </div>
-
-              <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight font-serif-editorial leading-tight">
-                Zero-Gravity <br />
-                <span className="text-gradient-emerald italic">Structural Perfection</span>
-              </h2>
-
-              <p className="text-slate-300 text-sm leading-relaxed font-medium">
-                Experience next-generation ultra-luxury living. Featuring magnetic levitation gardens, cantilevered infinity pools spilling into misty canyons, and 100% TS-RERA verified title clearance.
-              </p>
-
-              <div className="grid grid-cols-2 gap-4 pt-2">
-                <div className="p-4 rounded-2xl glass-panel-dark border border-slate-800 space-y-1">
-                  <div className="text-xl font-black text-emerald-400 font-cinzel">100% RERA</div>
-                  <div className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Audited Clearance</div>
-                </div>
-                <div className="p-4 rounded-2xl glass-panel-dark border border-slate-800 space-y-1">
-                  <div className="text-xl font-black text-amber-400 font-cinzel">+14.2% YoY</div>
-                  <div className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Capital Yield</div>
-                </div>
-              </div>
-            </div>
-
-            {/* RIGHT FLOATING VILLA LEVITATION DISPLAY */}
-            <div className="lg:col-span-7 relative flex items-center justify-center">
-              {/* LEVITATION GLOW RING */}
-              <div className="absolute w-[90%] h-[90%] rounded-full border-2 border-emerald-500/30 animate-ring-glow pointer-events-none"></div>
-
-              {/* FLOATING VILLA CONTAINER */}
-              <div className="relative z-10 w-full animate-levitate-slow rounded-3xl overflow-hidden glass-card-antigravity border border-slate-800 shadow-2xl">
-                <img
-                  src="/antigravity_hero_villa.jpg"
-                  alt="Antigravity Floating Luxury Villa"
-                  className="w-full h-[420px] sm:h-[480px] object-cover object-center transform hover:scale-105 transition-transform duration-700"
-                />
-
-                {/* FLOATING SPECIFICATIONS OVERLAY BADGE 1 */}
-                <div className="absolute top-6 left-6 glass-panel-emerald p-3.5 rounded-2xl border border-emerald-500/40 text-left shadow-xl animate-levitate">
-                  <div className="text-[10px] text-emerald-300 font-black tracking-widest uppercase">TS-RERA AUDITED</div>
-                  <div className="text-sm font-black text-white font-serif-editorial">Kokapet Neopolis Sky Villa</div>
-                  <div className="text-[11px] text-emerald-400 font-bold">Score: 98/100 • ₹18.5 Cr</div>
-                </div>
-
-                {/* FLOATING SPECIFICATIONS OVERLAY BADGE 2 */}
-                <div className="absolute bottom-6 right-6 glass-panel-dark p-3.5 rounded-2xl border border-slate-700 text-left shadow-xl animate-levitate" style={{ animationDelay: '1.5s' }}>
-                  <div className="flex items-center gap-2 text-xs font-black text-amber-400">
-                    <Sparkles className="w-4 h-4 text-amber-400" />
-                    <span>Levitating Helipad & Infinity Pool</span>
-                  </div>
-                  <div className="text-[11px] text-slate-400 font-medium">Cantilevered Glass Terrace</div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* 3. FLOATING CRISP WHITE SEARCH CARD */}
-      <section className="-mt-10 relative z-30 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
-        <div className="glass-panel-light-glow p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-2xl space-y-6 bg-white text-left">
-          
-          {/* SEARCH TABS */}
-          <div className="flex flex-wrap gap-2 border-b border-slate-200 pb-4">
+      {/* 3. OMNICHANNEL PROPERTY DISCOVERY & FILTER BAR */}
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 -mt-10 z-20 w-full">
+        <div className="bg-white rounded-3xl shadow-2xl p-4 lg:p-6 border border-slate-200">
+          {/* Transaction Tabs */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-4 scrollbar-none">
             {[
-              { id: 'BUY', label: 'Buy Property', icon: Home },
-              { id: 'RENT', label: 'Luxury Rent', icon: Key },
-              { id: 'NEW_PROJECT', label: 'New Launches', icon: Building2 },
-              { id: 'COMMERCIAL', label: 'Commercial Yield', icon: Briefcase },
-              { id: 'FRACTIONAL', label: 'Fractional Tokens', icon: Coins },
-            ].map((tab) => {
-              const IconComp = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-5 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${
-                    activeTab === tab.id
-                      ? 'bg-emerald-600 text-white shadow-md scale-105'
-                      : 'bg-slate-100 text-slate-700 hover:text-slate-900 hover:bg-slate-200'
-                  }`}
-                >
-                  <IconComp className="w-3.5 h-3.5" />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
+              { id: 'BUY', label: 'Buy Property', icon: 'apartment' },
+              { id: 'RENT', label: 'Luxury Rent', icon: 'key' },
+              { id: 'NEW_PROJECT', label: 'New Launches', icon: 'domain_add' },
+              { id: 'COMMERCIAL', label: 'Commercial Yield', icon: 'trending_up' },
+              { id: 'FRACTIONAL', label: 'Fractional Tokens', icon: 'token' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`px-4 py-2.5 rounded-full font-headline-sm text-xs sm:text-sm font-bold flex items-center gap-2 transition-all shrink-0 ${
+                  activeTab === tab.id
+                    ? 'bg-primary text-on-primary shadow-md'
+                    : 'bg-surface-container-high text-on-surface hover:bg-slate-200'
+                }`}
+              >
+                <span className="material-symbols-outlined text-[16px]">{tab.icon}</span>
+                <span>{tab.label}</span>
+              </button>
+            ))}
           </div>
 
-          {/* SEARCH FORM CONTROLS */}
-          <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 items-end">
-            <div className="lg:col-span-4 space-y-1.5">
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-1">
-                <MapPin className="w-3 h-3 text-emerald-600" /> Locality or Corridor
-              </label>
-              <Input
-                placeholder="e.g. Kondapur, Gachibowli, Kokapet Neopolis..."
-                value={searchLocation}
-                onChange={(e: any) => setSearchLocation(e.target.value)}
-                className="bg-slate-50 text-slate-900 border-slate-200 focus:border-slate-400 text-xs font-bold rounded-xl"
-              />
+          {/* Discovery Search Fields Grid */}
+          <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-2 items-end">
+            <div className="space-y-1.5">
+              <label className="font-label-caps text-[11px] uppercase text-secondary font-extrabold">Locality or Corridor</label>
+              <div className="relative">
+                <span className="material-symbols-outlined absolute left-3.5 top-3.5 text-secondary text-[18px]">location_on</span>
+                <input
+                  type="text"
+                  value={searchLocation}
+                  onChange={(e) => setSearchLocation(e.target.value)}
+                  className="w-full bg-surface-canvas rounded-xl pl-10 pr-3.5 py-3 font-body-md text-xs sm:text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-200 font-semibold"
+                  placeholder="Enter locality e.g. Kondapur"
+                />
+              </div>
             </div>
 
-            <div className="lg:col-span-3 space-y-1.5">
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-1">
-                <Building className="w-3 h-3 text-slate-500" /> Asset Category
-              </label>
-              <select
-                value={propertyType}
-                onChange={(e) => setPropertyType(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs font-bold text-slate-900 focus:ring-2 focus:ring-slate-400"
-              >
-                <option value="ALL">All Asset Types</option>
-                <option value="APARTMENT">High-Rise Apartments</option>
-                <option value="VILLA">Luxury Gated Villas</option>
-                <option value="PENTHOUSE">Sky Penthouses</option>
-                <option value="OFFICE">Commercial Office</option>
-              </select>
+            <div className="space-y-1.5">
+              <label className="font-label-caps text-[11px] uppercase text-secondary font-extrabold">Asset Category</label>
+              <div className="relative">
+                <select
+                  value={propertyType}
+                  onChange={(e) => setPropertyType(e.target.value)}
+                  className="w-full bg-surface-canvas rounded-xl px-3.5 py-3 font-body-md text-xs sm:text-sm text-on-surface appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-200 font-semibold"
+                >
+                  <option value="ALL">All Asset Types</option>
+                  <option value="APARTMENT">High-Rise Apartments</option>
+                  <option value="VILLA">Luxury Gated Villas</option>
+                  <option value="PENTHOUSE">Sky Penthouses</option>
+                  <option value="COMMERCIAL">Commercial Office</option>
+                </select>
+                <span className="material-symbols-outlined absolute right-3.5 top-3.5 text-secondary text-[18px] pointer-events-none">expand_more</span>
+              </div>
             </div>
 
-            <div className="lg:col-span-2 space-y-1.5">
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-1">
-                <Home className="w-3 h-3 text-slate-500" /> BHK Layout
-              </label>
-              <select
-                value={bedrooms}
-                onChange={(e) => setBedrooms(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs font-bold text-slate-900 focus:ring-2 focus:ring-slate-400"
-              >
-                <option value="ANY">Any BHK</option>
-                <option value="2">2 BHK</option>
-                <option value="3">3 BHK</option>
-                <option value="4">4+ BHK</option>
-              </select>
+            <div className="space-y-1.5">
+              <label className="font-label-caps text-[11px] uppercase text-secondary font-extrabold">BHK Layout</label>
+              <div className="relative">
+                <select
+                  value={bedrooms}
+                  onChange={(e) => setBedrooms(e.target.value)}
+                  className="w-full bg-surface-canvas rounded-xl px-3.5 py-3 font-body-md text-xs sm:text-sm text-on-surface appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-200 font-semibold"
+                >
+                  <option value="ANY">Any BHK</option>
+                  <option value="2">2 BHK</option>
+                  <option value="3">3 BHK</option>
+                  <option value="4">4+ BHK</option>
+                </select>
+                <span className="material-symbols-outlined absolute right-3.5 top-3.5 text-secondary text-[18px] pointer-events-none">expand_more</span>
+              </div>
             </div>
 
-            <div className="lg:col-span-3">
-              <Button
+            <div>
+              <button
                 type="submit"
-                variant="primary"
-                size="lg"
-                className="w-full font-black text-xs py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg rounded-xl flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-primary to-primary-container hover:opacity-95 text-on-primary font-headline-sm text-xs sm:text-sm font-black py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.99]"
               >
-                <Search className="w-4 h-4" />
+                <span className="material-symbols-outlined text-[18px]">search</span>
                 <span>Explore 4,500+ Verified Homes</span>
-              </Button>
+              </button>
             </div>
           </form>
         </div>
       </section>
 
-      {/* 4. INTERACTIVE PROPERTY COMPARISON CAROUSEL & FAST FILTERS */}
-      <section className="py-24 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10 w-full">
-        <div className="flex flex-wrap justify-between items-end gap-6 border-b border-slate-200 pb-6 text-left">
-          <div className="space-y-2">
-            <Badge variant="emerald" className="font-bold text-[11px] px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5 w-fit">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> RERA AUDITED INVENTORY
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900">
+      {/* 4. FEATURED RERA-AUDITED VERIFIED LISTINGS SECTION */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 pt-20 pb-16 w-full">
+        {/* Section Heading */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+          <div>
+            <div className="inline-flex items-center gap-1.5 text-primary font-label-caps text-xs uppercase font-extrabold tracking-widest mb-2">
+              <span className="material-symbols-outlined text-[16px]">verified_user</span>
+              <span>RERA Audited Inventory</span>
+            </div>
+            <h2 className="font-headline-lg text-3xl sm:text-headline-lg font-bold text-on-surface">
               Featured Verified Listings & Comparison
             </h2>
-            <p className="text-slate-500 text-xs sm:text-sm font-medium">
-              Select up to 3 listings to compare title scores, floor plans, and pricing metrics.
+            <p className="font-body-md text-xs sm:text-sm text-secondary mt-1">
+              Select up to 3 listings to compare title scores, floor plans, and pricing metrics side-by-side.
             </p>
           </div>
 
-          {/* INVENTORY FILTER BUTTONS */}
-          <div className="flex flex-wrap gap-2 bg-slate-100 p-1.5 rounded-2xl border border-slate-200 text-xs font-bold">
+          {/* Segment Pills */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 shrink-0">
             {[
               { id: 'ALL', label: 'All Inventory' },
               { id: 'VILLA', label: 'Luxury Villas' },
               { id: 'PENTHOUSE', label: 'Penthouses' },
               { id: 'COMMERCIAL', label: 'Commercial Yield' },
               { id: 'RENT', label: 'High-End Rent' },
-            ].map((tab) => (
+            ].map((pill) => (
               <button
-                key={tab.id}
-                onClick={() => setInventoryTab(tab.id as any)}
-                className={`px-4 py-2 rounded-xl transition-all ${
-                  inventoryTab === tab.id
-                    ? 'bg-emerald-600 text-white font-black shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+                key={pill.id}
+                onClick={() => setInventoryTab(pill.id as any)}
+                className={`px-4 py-2 rounded-full font-body-sm text-xs font-bold transition-all ${
+                  inventoryTab === pill.id
+                    ? 'bg-primary text-on-primary shadow-sm'
+                    : 'bg-surface-container-high text-on-surface hover:bg-slate-200'
                 }`}
               >
-                {tab.label}
+                {pill.label}
               </button>
             ))}
           </div>
         </div>
 
-        {/* PROPERTY GRID */}
+        {/* 6 Premium Property Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProperties.map((prop) => (
-            <PropertyCard
+            <div
               key={prop.id}
-              property={prop}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* FLOATING COMPARE BAR DRAWER */}
-      {comparedProperties.length > 0 && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 glass-panel-light-glow px-6 py-4 rounded-3xl border border-slate-300 shadow-2xl flex items-center gap-6 bg-white/95 max-w-2xl w-[90%]">
-          <div className="flex items-center gap-3">
-            <BarChart3 className="w-6 h-6 text-emerald-600" />
-            <div className="text-left">
-              <span className="text-xs font-black text-slate-900 block">
-                {comparedProperties.length} Properties Selected for Comparison
-              </span>
-              <span className="text-[10px] text-slate-500">Compare pricing, sq.ft rate & RERA compliance</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 ml-auto">
-            <Button
-              onClick={() => setComparedProperties([])}
-              variant="outline"
-              size="sm"
-              className="text-xs font-bold border-slate-300 text-slate-600 hover:text-slate-900"
+              className="group bg-white rounded-3xl shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col overflow-hidden border border-slate-200"
             >
-              Clear
-            </Button>
-            <Button
-              onClick={() => setShowCompareModal(true)}
-              variant="primary"
-              size="sm"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs px-4"
-            >
-              Compare Now →
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {/* 5. INSTANT MORTGAGE & ROI YIELD CALCULATOR */}
-      <section className="py-24 bg-white border-y border-slate-200 relative overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12 w-full">
-          <div className="text-center space-y-3 max-w-3xl mx-auto">
-            <Badge variant="emerald" className="font-bold text-[11px] px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5 w-fit mx-auto">
-              <Calculator className="w-3.5 h-3.5 text-emerald-600" /> FINANCIAL CONCIERGE WIDGET
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900">
-              Instant Mortgage EMI & Annual Yield Calculator
-            </h2>
-            <p className="text-slate-500 text-xs sm:text-sm font-medium">
-              Simulate loan installments, tax benefits under Sec 24, and net capitalization rates before investing.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            
-            {/* CALCULATOR INPUT CONTROL SLIDERS */}
-            <div className="lg:col-span-7 bg-slate-50 p-8 rounded-3xl border border-slate-200 space-y-6 text-left shadow-sm">
-              <div className="space-y-2">
-                <div className="flex justify-between text-xs font-black">
-                  <span className="text-slate-600">Property Acquisition Cost</span>
-                  <span className="text-emerald-700">₹{(calcPropertyPrice / 10000000).toFixed(2)} Cr</span>
-                </div>
-                <input
-                  type="range"
-                  min={5000000}
-                  max={100000000}
-                  step={1000000}
-                  value={calcPropertyPrice}
-                  onChange={(e) => setCalcPropertyPrice(Number(e.target.value))}
-                  className="w-full accent-emerald-600 bg-slate-200 rounded-lg h-2"
+              <div className="relative h-64 w-full overflow-hidden bg-surface-dark">
+                <img
+                  src={prop.mainImage}
+                  alt={prop.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-              </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-surface-dark/85 via-transparent to-transparent"></div>
 
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs font-black">
-                    <span className="text-slate-600">Down Payment ({calcDownPaymentPercent}%)</span>
-                    <span className="text-slate-900">₹{(downPaymentAmount / 100000).toFixed(1)} L</span>
-                  </div>
-                  <input
-                    type="range"
-                    min={10}
-                    max={50}
-                    step={5}
-                    value={calcDownPaymentPercent}
-                    onChange={(e) => setCalcDownPaymentPercent(Number(e.target.value))}
-                    className="w-full accent-emerald-600 bg-slate-200 rounded-lg h-2"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs font-black">
-                    <span className="text-slate-600">Interest Rate ({calcInterestRate}%)</span>
-                    <span className="text-slate-900">HDFC / SBI Rate</span>
-                  </div>
-                  <input
-                    type="range"
-                    min={7.5}
-                    max={12.0}
-                    step={0.1}
-                    value={calcInterestRate}
-                    onChange={(e) => setCalcInterestRate(Number(e.target.value))}
-                    className="w-full accent-emerald-600 bg-slate-200 rounded-lg h-2"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs font-black">
-                    <span className="text-slate-600">Loan Tenure ({calcTenureYears} Years)</span>
-                    <span className="text-slate-900">{calcTenureYears * 12} Months</span>
-                  </div>
-                  <input
-                    type="range"
-                    min={5}
-                    max={30}
-                    step={1}
-                    value={calcTenureYears}
-                    onChange={(e) => setCalcTenureYears(Number(e.target.value))}
-                    className="w-full accent-emerald-600 bg-slate-200 rounded-lg h-2"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs font-black">
-                    <span className="text-slate-600">Est. Monthly Rental Income</span>
-                    <span className="text-emerald-700">₹{formatNumber(calcMonthlyRent)}</span>
-                  </div>
-                  <input
-                    type="range"
-                    min={20000}
-                    max={300000}
-                    step={5000}
-                    value={calcMonthlyRent}
-                    onChange={(e) => setCalcMonthlyRent(Number(e.target.value))}
-                    className="w-full accent-emerald-600 bg-slate-200 rounded-lg h-2"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* CALCULATOR OUTPUT SUMMARY CARD */}
-            <div className="lg:col-span-5 bg-white p-8 rounded-3xl border border-slate-200 space-y-6 text-left text-slate-900 shadow-xl">
-              <h3 className="font-black text-xl text-slate-900 border-b border-slate-100 pb-4">
-                Financial Yield Summary
-              </h3>
-
-              <div className="space-y-4">
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex justify-between items-center">
-                  <div>
-                    <span className="text-slate-500 text-xs block font-medium">Estimated Monthly EMI</span>
-                    <span className="text-2xl font-black text-emerald-700">₹{formatNumber(calculatedEmi)}</span>
-                  </div>
-                  <span className="text-xs text-slate-500 font-bold">Principal: ₹{(loanPrincipal / 100000).toFixed(1)} L</span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 text-xs font-bold">
-                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
-                    <span className="text-slate-500 text-[10px] uppercase block font-extrabold flex items-center gap-1">
-                      <Percent className="w-3 h-3 text-emerald-600" /> Gross Rental Yield
-                    </span>
-                    <span className="text-xl font-black text-emerald-800">{rentalYieldPercent}% p.a.</span>
-                  </div>
-                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
-                    <span className="text-slate-500 text-[10px] uppercase block font-extrabold flex items-center gap-1">
-                      <Award className="w-3 h-3 text-amber-600" /> Sec 24 Tax Benefit
-                    </span>
-                    <span className="text-xl font-black text-amber-700">Up to ₹2.0 L/yr</span>
-                  </div>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200 text-xs text-slate-700 space-y-1">
-                  <span className="font-black text-emerald-800 block flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Banking Concierge Available
+                {/* Badges */}
+                <div className="absolute top-3 left-3 flex flex-wrap items-center gap-2">
+                  <span className="bg-champagne-subtle text-tertiary font-label-caps text-[10px] font-extrabold px-2.5 py-1 rounded-md flex items-center gap-1 shadow-sm border border-amber-200">
+                    <span className="material-symbols-outlined text-[13px] text-champagne-gold">verified</span> TS-RERA VERIFIED
                   </span>
-                  <p className="text-[11px] text-slate-600 leading-relaxed">
-                    EstateFlow buyers get pre-approved home loan rates starting at 8.35% p.a. with zero bank processing fee via SBI, HDFC, and ICICI.
+                  <span className="bg-emerald-subtle text-primary font-label-caps text-[10px] font-extrabold px-2.5 py-1 rounded-md flex items-center gap-1 shadow-sm border border-emerald-200">
+                    <span className="material-symbols-outlined text-[13px]">star</span> {prop.qualityScore || 94}/100
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={(e) => toggleCompare(prop.id, e)}
+                  title="Compare property"
+                  className={`absolute top-3 right-3 w-9 h-9 rounded-full backdrop-blur-md flex items-center justify-center transition-all ${
+                    comparedProperties.includes(prop.id)
+                      ? 'bg-primary text-white shadow-lg'
+                      : 'bg-white/80 text-on-surface hover:text-error'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-[18px]">
+                    {comparedProperties.includes(prop.id) ? 'check' : 'favorite'}
+                  </span>
+                </button>
+
+                {/* Price Tag floating bottom */}
+                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-on-tertiary">
+                  <span className="font-headline-md text-2xl font-black text-white">
+                    {prop.transactionType === 'RENT' ? `₹${(prop.price / 1000).toFixed(0)}k/mo` : `₹${(prop.price / 10000000).toFixed(2)} Cr`}
+                  </span>
+                  <span className="px-3 py-1 rounded-full bg-primary font-label-caps text-[10px] font-black text-on-primary uppercase tracking-wider">
+                    {prop.transactionType}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                <div>
+                  <h3 className="font-headline-sm text-base font-bold text-on-surface group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+                    {prop.title}
+                  </h3>
+                  <p className="font-body-sm text-xs text-secondary flex items-center gap-1 mt-1.5">
+                    <span className="material-symbols-outlined text-[15px] text-outline">location_on</span> {prop.location.locality}, {prop.location.city}
                   </p>
                 </div>
 
-                <Button
-                  onClick={() => router.push('/home-loans')}
-                  variant="primary"
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3.5 rounded-xl shadow-md flex items-center justify-center gap-2"
-                >
-                  <span>Apply for Instant Pre-Approval</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
+                {/* Specs Matrix */}
+                <div className="grid grid-cols-3 gap-2 py-3 bg-surface-container-low rounded-2xl text-center border border-slate-100">
+                  <div className="flex flex-col">
+                    <span className="font-label-caps text-[10px] uppercase text-secondary font-bold">Beds</span>
+                    <span className="font-body-md text-xs sm:text-sm font-black text-on-surface mt-0.5">{prop.bedrooms} BHK</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-label-caps text-[10px] uppercase text-secondary font-bold">Baths</span>
+                    <span className="font-body-md text-xs sm:text-sm font-black text-on-surface mt-0.5">{prop.bathrooms} Baths</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-label-caps text-[10px] uppercase text-secondary font-bold">Area</span>
+                    <span className="font-body-md text-xs sm:text-sm font-black text-on-surface mt-0.5">{prop.areaSqFt.toLocaleString()} sq.ft</span>
+                  </div>
+                </div>
+
+                {/* Agent attribution and WhatsApp action */}
+                <div className="pt-2 flex items-center justify-between border-t border-slate-100">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center font-black text-primary text-xs border border-emerald-300">
+                      {prop.agent?.name ? prop.agent.name.substring(0, 2).toUpperCase() : 'EF'}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-body-sm text-xs font-bold text-on-surface leading-tight">{prop.agent?.name || 'Rajesh Sharma'}</span>
+                      <span className="font-label-caps text-[10px] text-secondary font-medium">{prop.agent?.agencyName || 'Apex Prime Realty'}</span>
+                    </div>
+                  </div>
+                  <a
+                    href="https://wa.me/919000072227"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-subtle text-primary font-body-sm text-xs font-bold hover:bg-primary hover:text-on-primary transition-all border border-emerald-200"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">chat</span> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Compare Floating Bar Trigger */}
+        {comparedProperties.length > 0 && (
+          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white px-6 py-3.5 rounded-full shadow-2xl flex items-center gap-4 border border-slate-700 animate-fade-in">
+            <span className="text-xs font-bold">
+              Comparing <strong className="text-emerald-400">{comparedProperties.length}</strong> properties
+            </span>
+            <button
+              type="button"
+              onClick={() => setShowCompareModal(true)}
+              className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black px-4 py-2 rounded-full shadow-md transition"
+            >
+              Open Comparison Matrix
+            </button>
+            <button
+              type="button"
+              onClick={() => setComparedProperties([])}
+              className="text-slate-400 hover:text-white text-xs"
+            >
+              ✕ Clear
+            </button>
+          </div>
+        )}
+      </section>
+
+      {/* 5. FINANCIAL CONCIERGE WIDGET: INSTANT MORTGAGE EMI & ANNUAL YIELD CALCULATOR */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-16 w-full">
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-subtle text-primary font-label-caps text-xs uppercase font-extrabold tracking-widest mb-3 border border-emerald-200">
+            <span className="material-symbols-outlined text-[16px]">account_balance</span>
+            <span>Financial Concierge Widget</span>
+          </div>
+          <h2 className="font-headline-lg text-3xl sm:text-headline-lg font-bold text-on-surface">
+            Instant Mortgage EMI & Annual Yield Calculator
+          </h2>
+          <p className="font-body-md text-xs sm:text-sm text-secondary mt-2">
+            Simulate loan installments, tax benefits under Sec 24, and net capitalization rates before investing.
+          </p>
+        </div>
+
+        {/* Asymmetric 7:5 Ratio Calculator Layout */}
+        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 border border-slate-200">
+          {/* Left: Interactive Sliders & Inputs */}
+          <div className="lg:col-span-7 p-6 sm:p-10 space-y-6">
+            {/* Property Cost Input */}
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="font-body-md text-sm font-bold text-on-surface">Property Acquisition Cost</span>
+                <span className="font-headline-sm text-xl font-black text-primary">
+                  ₹{(calcPropertyPrice / 10000000).toFixed(2)} Cr
+                </span>
+              </div>
+              <input
+                type="range"
+                min={5000000}
+                max={100000000}
+                step={1000000}
+                value={calcPropertyPrice}
+                onChange={(e) => setCalcPropertyPrice(Number(e.target.value))}
+                className="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-primary"
+              />
+            </div>
+
+            {/* Down Payment Input */}
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="font-body-md text-sm font-bold text-on-surface">Down Payment ({calcDownPaymentPercent}%)</span>
+                <span className="font-headline-sm text-base font-bold text-on-surface">
+                  ₹{(downPaymentAmount / 100000).toFixed(1)} L
+                </span>
+              </div>
+              <input
+                type="range"
+                min={10}
+                max={50}
+                step={5}
+                value={calcDownPaymentPercent}
+                onChange={(e) => setCalcDownPaymentPercent(Number(e.target.value))}
+                className="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-primary"
+              />
+            </div>
+
+            {/* Loan Tenure & Interest Rate Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div className="bg-surface-canvas p-4 rounded-2xl space-y-1 border border-slate-200">
+                <div className="flex justify-between items-center">
+                  <span className="font-label-caps text-[10px] uppercase text-secondary font-bold">Interest Rate</span>
+                  <span className="font-body-sm text-xs font-bold text-primary">{calcInterestRate}% p.a.</span>
+                </div>
+                <p className="font-body-sm text-xs text-on-surface font-bold">HDFC / SBI Benchmark Rate</p>
+              </div>
+              <div className="bg-surface-canvas p-4 rounded-2xl space-y-1 border border-slate-200">
+                <div className="flex justify-between items-center">
+                  <span className="font-label-caps text-[10px] uppercase text-secondary font-bold">Loan Tenure</span>
+                  <span className="font-body-sm text-xs font-bold text-on-surface">{calcTenureYears} Years</span>
+                </div>
+                <p className="font-body-sm text-xs text-secondary font-medium">{calcTenureYears * 12} Months Amortization</p>
               </div>
             </div>
 
+            {/* Est. Monthly Rental Income */}
+            <div className="space-y-2 pt-2">
+              <div className="flex justify-between items-center">
+                <span className="font-body-md text-sm font-bold text-on-surface">Est. Monthly Rental Income</span>
+                <span className="font-headline-sm text-base font-bold text-champagne-gold">
+                  ₹{calcMonthlyRent.toLocaleString()}
+                </span>
+              </div>
+              <input
+                type="range"
+                min={20000}
+                max={250000}
+                step={5000}
+                value={calcMonthlyRent}
+                onChange={(e) => setCalcMonthlyRent(Number(e.target.value))}
+                className="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-amber-500"
+              />
+            </div>
+          </div>
+
+          {/* Right: Financial Yield Summary */}
+          <div className="lg:col-span-5 bg-surface-container-low p-6 sm:p-10 flex flex-col justify-between space-y-6 border-l border-slate-200">
+            <div>
+              <div className="flex items-center justify-between pb-4 border-b border-slate-200">
+                <h3 className="font-headline-sm text-lg font-bold text-on-surface">Financial Yield Summary</h3>
+                <span className="material-symbols-outlined text-primary text-[20px]">account_balance_wallet</span>
+              </div>
+
+              {/* Main Estimated EMI Highlight */}
+              <div className="bg-white p-5 rounded-2xl shadow-sm space-y-2 my-5 border border-slate-200">
+                <span className="font-label-caps text-[10px] uppercase text-secondary font-extrabold">Estimated Monthly EMI</span>
+                <div className="flex items-baseline justify-between">
+                  <span className="font-numeric-metric text-2xl sm:text-3xl text-primary font-black">
+                    ₹{calculatedEmi.toLocaleString()}
+                  </span>
+                  <span className="font-body-sm text-xs text-secondary font-medium">
+                    Principal: ₹{(loanPrincipal / 100000).toFixed(1)} L
+                  </span>
+                </div>
+              </div>
+
+              {/* Gross Rental Yield & Tax Benefit Stats */}
+              <div className="grid grid-cols-2 gap-3 mb-5">
+                <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+                  <span className="font-label-caps text-[10px] uppercase text-secondary font-bold block mb-1">Gross Rental Yield</span>
+                  <span className="font-headline-sm text-lg text-primary font-black">{rentalYieldPercent}% p.a.</span>
+                </div>
+                <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+                  <span className="font-label-caps text-[10px] uppercase text-secondary font-bold block mb-1">Sec 24 Tax Benefit</span>
+                  <span className="font-headline-sm text-lg text-champagne-gold font-black">Up to ₹2.0 L/yr</span>
+                </div>
+              </div>
+
+              {/* Banking Concierge Offer Box */}
+              <div className="bg-emerald-subtle rounded-2xl p-4 flex gap-3 text-on-surface border border-emerald-200">
+                <span className="material-symbols-outlined text-primary text-[22px] shrink-0">verified_user</span>
+                <div className="space-y-1 text-xs">
+                  <span className="font-body-sm font-bold text-primary block leading-tight">Banking Concierge Available</span>
+                  <p className="font-body-sm text-on-surface-variant leading-snug">
+                    EstateFlow buyers get pre-approved home loan rates starting at 8.35% p.a. with zero bank processing fee via SBI, HDFC, and ICICI.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <Link href="/home-loans" className="w-full">
+              <button
+                type="button"
+                className="w-full bg-gradient-to-r from-primary to-primary-container hover:opacity-95 text-on-primary font-headline-sm text-xs sm:text-sm font-black py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all"
+              >
+                <span>Apply for Instant Pre-Approval</span>
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </button>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* 6. FEATURED DEVELOPER SPOTLIGHTS & RERA VERIFIED SEALS */}
-      <section className="py-24 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12 w-full">
-        <div className="flex flex-wrap justify-between items-end gap-6 border-b border-slate-200 pb-6 text-left">
-          <div className="space-y-2">
-            <Badge variant="emerald" className="font-bold text-[11px] px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5 w-fit">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> TRUST & COMPLIANCE
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900">
+      {/* 6. TRUST & COMPLIANCE: TIER-1 RERA VERIFIED MASTER DEVELOPERS */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-16 w-full">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+          <div>
+            <div className="inline-flex items-center gap-1.5 text-primary font-label-caps text-xs uppercase font-extrabold tracking-widest mb-2">
+              <span className="material-symbols-outlined text-[16px]">verified</span>
+              <span>Trust & Compliance</span>
+            </div>
+            <h2 className="font-headline-lg text-3xl sm:text-headline-lg font-bold text-on-surface">
               Tier-1 RERA Verified Master Developers
             </h2>
-            <p className="text-slate-500 text-xs sm:text-sm font-medium">
+            <p className="font-body-md text-xs sm:text-sm text-secondary mt-1">
               Direct partnership with Hyderabad’s top builders with zero brokerage guarantees.
             </p>
           </div>
         </div>
 
+        {/* 3 Developer Showcase Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {developersList.map((dev) => (
+          {[
+            {
+              name: 'Prestigio Luxury Builders',
+              rera: 'P02400003891',
+              desc: 'Pioneer in Ultra-High-Rise Sky Villas & Platinum LEED Green Certified Enclaves.',
+              delivered: '42 Projects',
+              active: '6 Enclaves',
+              icon: 'domain',
+            },
+            {
+              name: 'Aparna Heritage Infrastructure',
+              rera: 'P02400004102',
+              desc: 'Telangana’s Most Trusted Developer with 100% On-Time Delivery Record for 20 Years.',
+              delivered: '68 Projects',
+              active: '9 Enclaves',
+              icon: 'apartment',
+            },
+            {
+              name: 'My Home Real Estate Group',
+              rera: 'P02400002954',
+              desc: 'Integrated Mega-Townships & Grade-A Commercial Towers in Financial District.',
+              delivered: '55 Projects',
+              active: '8 Enclaves',
+              icon: 'corporate_fare',
+            },
+          ].map((dev, idx) => (
             <div
-              key={dev.id}
-              className="bg-white p-8 rounded-3xl border border-slate-200 hover:border-emerald-500/50 glass-card-hover-light space-y-6 flex flex-col justify-between text-left shadow-md"
+              key={idx}
+              className="bg-white rounded-3xl shadow-md p-6 flex flex-col justify-between space-y-6 hover:shadow-2xl transition-all border border-slate-200"
             >
               <div className="space-y-4">
-                <div className="flex justify-between items-start">
-                  <img src={dev.logo} alt={dev.name} className="w-14 h-14 rounded-2xl object-cover border border-slate-200 shadow-sm" />
-                  <span className="bg-emerald-50 text-emerald-800 text-[10px] font-black px-3 py-1 rounded-full border border-emerald-200 uppercase tracking-widest flex items-center gap-1">
-                    <ShieldCheck className="w-3 h-3 text-emerald-600" /> RERA VERIFIED
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-surface-dark text-white flex items-center justify-center font-bold text-lg">
+                    <span className="material-symbols-outlined text-emerald-glow">{dev.icon}</span>
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full bg-champagne-subtle text-tertiary font-label-caps text-[10px] font-extrabold flex items-center gap-1 border border-amber-200">
+                    <span className="material-symbols-outlined text-[13px] text-champagne-gold">verified</span> RERA VERIFIED
                   </span>
                 </div>
 
-                <div className="space-y-1">
-                  <h3 className="text-xl font-black text-slate-900">{dev.name}</h3>
-                  <p className="text-xs text-slate-500 font-medium">RERA Reg: <strong className="text-slate-800">{dev.reraId}</strong></p>
+                <div>
+                  <h3 className="font-headline-sm text-base font-bold text-on-surface">{dev.name}</h3>
+                  <span className="font-body-sm text-xs text-secondary block mt-0.5">
+                    RERA Reg: <strong className="text-on-surface">{dev.rera}</strong>
+                  </span>
+                  <p className="font-body-md text-xs text-on-surface-variant mt-2.5 leading-relaxed font-medium">
+                    {dev.desc}
+                  </p>
                 </div>
 
-                <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                  {dev.highlights}
-                </p>
-
-                <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-100 text-xs font-bold">
-                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                    <span className="text-[10px] text-slate-500 block uppercase">Delivered</span>
-                    <span className="text-base font-black text-slate-900">{dev.deliveredProjects} Projects</span>
+                <div className="grid grid-cols-2 gap-3 pt-2">
+                  <div className="bg-surface-container-low p-3 rounded-2xl text-center border border-slate-100">
+                    <span className="font-label-caps text-[10px] uppercase text-secondary font-bold">Delivered</span>
+                    <span className="font-headline-sm text-sm font-black text-on-surface block mt-0.5">{dev.delivered}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                    <span className="text-[10px] text-slate-500 block uppercase">Active Inventory</span>
-                    <span className="text-base font-black text-emerald-700">{dev.activeProjects} Enclaves</span>
+                  <div className="bg-surface-container-low p-3 rounded-2xl text-center border border-slate-100">
+                    <span className="font-label-caps text-[10px] uppercase text-secondary font-bold">Active Inventory</span>
+                    <span className="font-headline-sm text-sm font-black text-primary block mt-0.5">{dev.active}</span>
                   </div>
                 </div>
               </div>
 
-              <Button
+              <button
+                type="button"
                 onClick={() => setSelectedDeveloper(dev)}
-                variant="outline"
-                className="w-full border-slate-300 text-slate-900 hover:bg-emerald-600 hover:text-white font-black text-xs py-3 rounded-xl flex items-center justify-center gap-2"
+                className="w-full bg-surface-container-high hover:bg-slate-200 text-on-surface font-headline-sm text-xs font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors border border-slate-200"
               >
-                <PhoneCall className="w-3.5 h-3.5" />
+                <span className="material-symbols-outlined text-[16px]">support_agent</span>
                 <span>Connect Developer Concierge</span>
-              </Button>
+              </button>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 7. BENTO GRID MICRO-MARKET EXPLORER */}
-      <section className="py-24 bg-white border-t border-slate-200">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12 w-full">
-          <div className="text-center space-y-2">
-            <Badge variant="emerald" className="font-bold text-[11px] px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5 w-fit mx-auto">
-              <MapPin className="w-3.5 h-3.5 text-emerald-600" /> PRIME CORRIDORS
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Explore Top Telangana Growth Corridors</h2>
-            <p className="text-slate-500 text-xs sm:text-sm font-medium">Micro-market analytics, capital growth velocity, and active listing counts</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div
-              onClick={() => router.push('/search?locality=Gachibowli')}
-              className="md:col-span-2 relative aspect-[16/9] rounded-3xl overflow-hidden cursor-pointer border border-slate-200 group glass-card-hover-light shadow-xl text-left"
-            >
-              <img
-                src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80"
-                alt="Gachibowli Financial District"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
-              <div className="absolute bottom-8 left-8 right-8 space-y-2">
-                <span className="bg-emerald-600 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1 w-fit">
-                  <Building2 className="w-3 h-3" /> Financial District SEZ
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-black text-white">Gachibowli & Nanakramguda</h3>
-                <p className="text-xs text-slate-200 font-medium">Avg Rate: ₹9,800/sq.ft • 3,450 Active Verified Listings • 12% YoY Capital Appreciation</p>
-              </div>
+      {/* 7. PRIME CORRIDORS: HIGH-FIDELITY VISUAL HUBS */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-16 w-full">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+          <div>
+            <div className="inline-flex items-center gap-1.5 text-primary font-label-caps text-xs uppercase font-extrabold tracking-widest mb-2">
+              <span className="material-symbols-outlined text-[16px]">explore</span>
+              <span>Prime Corridors</span>
             </div>
-
-            <div
-              onClick={() => router.push('/search?locality=Kokapet')}
-              className="relative aspect-[16/9] md:aspect-auto rounded-3xl overflow-hidden cursor-pointer border border-slate-200 group glass-card-hover-light shadow-xl text-left"
-            >
-              <img
-                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
-                alt="Kokapet Neopolis"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
-              <div className="absolute bottom-8 left-8 right-8 space-y-2">
-                <span className="bg-amber-500 text-slate-950 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1 w-fit">
-                  <Crown className="w-3 h-3" /> Golden Mile High-Rise
-                </span>
-                <h3 className="text-2xl font-black text-white">Kokapet Neopolis</h3>
-                <p className="text-xs text-slate-200 font-medium">Avg Rate: ₹10,800/sq.ft • 1,820 Active Listings</p>
-              </div>
-            </div>
+            <h2 className="font-headline-lg text-3xl sm:text-headline-lg font-bold text-on-surface">
+              Explore Top Telangana Growth Corridors
+            </h2>
+            <p className="font-body-md text-xs sm:text-sm text-secondary mt-1">
+              Micro-market analytics, capital growth velocity, and active listing counts
+            </p>
           </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Corridor 1 */}
+          <Link
+            href="/search?locality=Gachibowli"
+            className="group relative rounded-3xl overflow-hidden shadow-lg h-96 flex flex-col justify-end p-8 text-on-tertiary border border-slate-800"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80"
+              alt="Gachibowli Financial District"
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-surface-dark via-surface-dark/40 to-transparent"></div>
+            <div className="relative z-10 space-y-3">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-md bg-emerald-950/80 backdrop-blur-md text-emerald-300 font-label-caps text-[10px] font-bold uppercase tracking-wider border border-emerald-800">
+                <span className="material-symbols-outlined text-[14px]">trending_up</span> Financial District SEZ
+              </span>
+              <h3 className="font-headline-lg text-2xl sm:text-3xl font-bold text-white">
+                Gachibowli & Nanakramguda
+              </h3>
+              <p className="font-body-md text-xs sm:text-sm text-slate-300">
+                Avg Rate: ₹9,800/sq.ft • 3,450 Active Verified Listings • 12% YoY Capital Appreciation
+              </p>
+            </div>
+          </Link>
+
+          {/* Corridor 2 */}
+          <Link
+            href="/search?locality=Kokapet"
+            className="group relative rounded-3xl overflow-hidden shadow-lg h-96 flex flex-col justify-end p-8 text-on-tertiary border border-slate-800"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"
+              alt="Kokapet Neopolis"
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-surface-dark via-surface-dark/40 to-transparent"></div>
+            <div className="relative z-10 space-y-3">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-md bg-amber-950/80 backdrop-blur-md text-amber-300 font-label-caps text-[10px] font-bold uppercase tracking-wider border border-amber-800">
+                <span className="material-symbols-outlined text-[14px]">workspace_premium</span> Golden Mile High-Rise
+              </span>
+              <h3 className="font-headline-lg text-2xl sm:text-3xl font-bold text-white">
+                Kokapet Neopolis
+              </h3>
+              <p className="font-body-md text-xs sm:text-sm text-slate-300">
+                Avg Rate: ₹10,800/sq.ft • 1,820 Active Verified Listings • 14.2% YoY Capital Growth
+              </p>
+            </div>
+          </Link>
         </div>
       </section>
 
-      {/* 8. VIP INVESTOR CIRCLE SUBSCRIPTION */}
-      <section className="py-24 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 w-full">
-        <div className="bg-gradient-to-br from-emerald-50 via-white to-slate-50 p-8 sm:p-14 rounded-3xl border border-emerald-100 text-center space-y-6 relative overflow-hidden shadow-xl">
-          <Badge variant="emerald" className="font-bold text-[11px] px-4 py-1 bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1.5 w-fit mx-auto">
-            <Mail className="w-3.5 h-3.5 text-emerald-600" /> OFF-MARKET VIP CONCIERGE
-          </Badge>
-          <h2 className="text-3xl sm:text-4xl font-black text-slate-900">
+      {/* 8. OFF-MARKET VIP CONCIERGE BANNER */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-16 w-full">
+        <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-14 text-center max-w-4xl mx-auto relative overflow-hidden border border-slate-200">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-subtle text-primary font-label-caps text-xs uppercase font-extrabold tracking-widest mb-4 border border-emerald-200">
+            <span className="material-symbols-outlined text-[16px]">lock</span>
+            <span>Off-Market VIP Concierge</span>
+          </div>
+          <h2 className="font-headline-lg text-2xl sm:text-3xl font-bold text-on-surface mb-3">
             Join the EstateFlow Private Investor Circle
           </h2>
-          <p className="mx-auto max-w-xl text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+          <p className="font-body-md text-xs sm:text-sm text-secondary max-w-xl mx-auto mb-8 leading-relaxed">
             Receive priority pre-launch builder allocations, distressed resale price alerts, and private high-net-worth property drops directly to your inbox.
           </p>
 
+          {/* Email Capture Form */}
           {subscribedMessage ? (
-            <div className="p-4 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs font-black flex items-center justify-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              <span>Welcome to EstateFlow VIP Investor Circle! We have dispatched your private market intelligence report.</span>
+            <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 font-bold text-xs max-w-md mx-auto flex items-center justify-center gap-2">
+              <span className="material-symbols-outlined text-[18px] text-emerald-600">verified</span>
+              <span>Welcome to the EstateFlow Private Investor Circle! Concierge will reach out shortly.</span>
             </div>
           ) : (
             <form
@@ -969,174 +989,113 @@ export default function HomePage() {
                 e.preventDefault();
                 setSubscribedMessage(true);
               }}
-              className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto"
+              className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-lg mx-auto"
             >
-              <Input
-                type="email"
-                placeholder="Enter your VIP work email address..."
-                value={newsletterEmail}
-                onChange={(e: any) => setNewsletterEmail(e.target.value)}
-                className="bg-white text-slate-900 border-slate-200 text-xs flex-1 rounded-xl p-3.5"
-                required
-              />
-              <Button
+              <div className="relative w-full">
+                <span className="material-symbols-outlined absolute left-3.5 top-3.5 text-secondary text-[18px]">mail</span>
+                <input
+                  type="email"
+                  required
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  placeholder="Enter your VIP work email address..."
+                  className="w-full bg-surface-canvas rounded-xl pl-10 pr-4 py-3.5 font-body-md text-xs sm:text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-200 font-semibold"
+                />
+              </div>
+              <button
                 type="submit"
-                variant="primary"
-                className="font-black text-xs py-3.5 px-6 bg-emerald-600 hover:bg-emerald-700 text-white whitespace-nowrap shadow-md rounded-xl flex items-center justify-center gap-2"
+                className="w-full sm:w-auto shrink-0 bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-xs sm:text-sm font-black px-6 py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
               >
                 <span>Join VIP Circle</span>
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </button>
             </form>
           )}
         </div>
       </section>
 
-      {/* MODAL 1: AI VALUATION REPORT MODAL */}
+      {/* AI VALUATION MODAL */}
       {showAiModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
-          <div className="bg-white max-w-lg w-full p-8 rounded-3xl border border-slate-200 space-y-6 text-left relative shadow-2xl">
-            <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-              <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
-                <Bot className="w-5 h-5 text-emerald-600" /> AI Valuation Appraisal
-              </h3>
-              <button onClick={() => setShowAiModal(false)} className="text-slate-400 hover:text-slate-900 text-xl">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            
-            <div className="space-y-4 text-xs font-medium text-slate-700">
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-                <span className="text-[10px] text-slate-500 uppercase block font-bold">Property Profile</span>
-                <span className="text-sm font-black text-slate-900 block">{aiBhk} BHK • {aiSqft} Sq.Ft in {aiLocality}</span>
-                <span className="text-emerald-700 font-bold block">Estimated Value: ₹{(estimatedValue / 10000000).toFixed(2)} Crore</span>
+        <div className="fixed inset-0 z-[120] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-slate-200">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-[22px]">analytics</span>
+                <h3 className="font-headline-sm text-base font-bold text-on-surface">AI Valuation Audit Report</h3>
               </div>
-
-              <p className="text-slate-500 text-[11px] leading-relaxed">
-                This appraisal report incorporates 14,000+ historic registration records from Telangana Registration & Stamps Dept, RERA disclosures, and real-time transaction velocity in {aiLocality}.
-              </p>
+              <button onClick={() => setShowAiModal(false)} className="text-slate-400 hover:text-slate-900 font-bold text-lg">✕</button>
             </div>
 
-            <div className="pt-2 flex justify-end gap-3">
-              <Button onClick={() => setShowAiModal(false)} variant="outline" className="border-slate-300 text-slate-700 font-bold text-xs">
-                Close
-              </Button>
-              <Button onClick={() => { alert('Appraisal PDF downloaded!'); setShowAiModal(false); }} variant="primary" className="bg-emerald-600 text-white font-black text-xs flex items-center gap-2">
-                <FileText className="w-4 h-4" />
-                <span>Download PDF Audit</span>
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL 2: PROPERTY COMPARISON MODAL */}
-      {showCompareModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
-          <div className="bg-white max-w-4xl w-full p-8 rounded-3xl border border-slate-200 space-y-6 text-left relative max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-              <div>
-                <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
-                  <BarChart3 className="w-5 h-5 text-emerald-600" /> Side-by-Side Property Comparison
-                </h3>
-                <p className="text-xs text-slate-500 font-medium">Comparing selected verified assets</p>
-              </div>
-              <button onClick={() => setShowCompareModal(false)} className="text-slate-400 hover:text-slate-900 text-xl">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {comparedProperties.map((id) => {
-                const item = DEMO_PROPERTIES.find((p) => p.id === id);
-                if (!item) return null;
-                return (
-                  <div key={item.id} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
-                    <img src={item.mainImage} alt={item.title} className="w-full h-36 object-cover rounded-xl" />
-                    <h4 className="font-black text-sm text-slate-900 line-clamp-1">{item.title}</h4>
-                    <div className="space-y-2 text-xs text-slate-700 font-bold border-t border-slate-200 pt-3">
-                      <div className="flex justify-between">
-                        <span className="text-slate-500">Price:</span>
-                        <span className="text-emerald-700">₹{(item.price / 10000000).toFixed(2)} Cr</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-500">Location:</span>
-                        <span>{item.location.locality}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-500">Sq.Ft Rate:</span>
-                        <span>₹{Math.round(item.price / item.areaSqFt)}/sqft</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-500">RERA Score:</span>
-                        <span className="text-amber-600">{item.qualityScore}/100</span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="pt-4 flex justify-end">
-              <Button onClick={() => setShowCompareModal(false)} variant="primary" className="bg-emerald-600 text-white font-black text-xs">
-                Close Comparison
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL 3: DEVELOPER CONCIERGE MODAL */}
-      {selectedDeveloper && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
-          <div className="bg-white max-w-md w-full p-8 rounded-3xl border border-slate-200 space-y-6 text-left relative shadow-2xl">
-            <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-              <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
-                <PhoneCall className="w-5 h-5 text-emerald-600" /> Developer Concierge
-              </h3>
-              <button onClick={() => setSelectedDeveloper(null)} className="text-slate-400 hover:text-slate-900 text-xl">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="space-y-4 text-xs font-medium text-slate-700">
-              <div className="flex items-center gap-3">
-                <img src={selectedDeveloper.logo} alt={selectedDeveloper.name} className="w-12 h-12 rounded-xl object-cover border border-slate-200" />
-                <div>
-                  <h4 className="text-sm font-black text-slate-900">{selectedDeveloper.name}</h4>
-                  <span className="text-[10px] text-emerald-700 font-bold">Verified RERA: {selectedDeveloper.reraId}</span>
+            <div className="space-y-4 text-xs">
+              <div className="p-4 rounded-2xl bg-surface-container-low space-y-2 border border-slate-200">
+                <div className="flex justify-between font-bold">
+                  <span className="text-secondary">Micro-Market:</span>
+                  <span className="text-on-surface uppercase">{aiLocality.replace('_', ' ')}</span>
+                </div>
+                <div className="flex justify-between font-bold">
+                  <span className="text-secondary">Selected Configuration:</span>
+                  <span className="text-on-surface">{aiBhk} BHK • {aiSqft.toLocaleString()} Sq.Ft</span>
+                </div>
+                <div className="flex justify-between font-bold text-sm text-primary pt-2 border-t border-slate-200">
+                  <span>ML Estimated Fair Value:</span>
+                  <span>₹{(estimatedValue / 10000000).toFixed(2)} Crore</span>
                 </div>
               </div>
 
-              <p className="text-slate-500 text-[11px] leading-relaxed">
-                Connect directly with the developer's official sales team for pre-launch discounts, floor plan customization, and site visits.
+              <p className="text-secondary font-medium leading-relaxed">
+                This ML v3 valuation report compares 2,400+ recent TS-RERA registration deeds, sub-registrar land rates, and active demand indicators.
               </p>
-
-              <div className="space-y-3 pt-2">
-                <Input placeholder="Your Full Name" className="bg-slate-50 text-slate-900 border-slate-200 text-xs" />
-                <Input placeholder="Your Phone Number" className="bg-slate-50 text-slate-900 border-slate-200 text-xs" />
-              </div>
             </div>
 
-            <div className="pt-2 flex justify-end gap-3">
-              <Button onClick={() => setSelectedDeveloper(null)} variant="outline" className="border-slate-300 text-slate-700 font-bold text-xs">
-                Cancel
-              </Button>
-              <Button
-                onClick={() => {
-                  alert(`Request submitted to ${selectedDeveloper.name} Concierge!`);
-                  setSelectedDeveloper(null);
-                }}
-                variant="primary"
-                className="bg-emerald-600 text-white font-black text-xs"
-              >
-                Request Call Back →
-              </Button>
-            </div>
+            <button
+              onClick={() => setShowAiModal(false)}
+              className="w-full bg-slate-900 text-white font-bold py-3 rounded-xl text-xs"
+            >
+              Close Valuation Audit
+            </button>
           </div>
         </div>
       )}
 
+      {/* DEVELOPER CONCIERGE MODAL */}
+      {selectedDeveloper && (
+        <div className="fixed inset-0 z-[120] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-6 shadow-2xl border border-slate-200">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div>
+                <h3 className="font-headline-sm text-base font-bold text-on-surface">{selectedDeveloper.name}</h3>
+                <span className="text-xs text-secondary font-medium">RERA: {selectedDeveloper.rera}</span>
+              </div>
+              <button onClick={() => setSelectedDeveloper(null)} className="text-slate-400 hover:text-slate-900 font-bold text-lg">✕</button>
+            </div>
+
+            <div className="space-y-3 text-xs font-semibold">
+              <p className="text-secondary">{selectedDeveloper.desc}</p>
+              <div className="p-3 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200">
+                ✓ Priority Builder Direct Desk Allocation Enabled with Zero Brokerage Guarantee.
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <a
+                href="https://wa.me/919000072227"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-black py-3 rounded-xl text-xs text-center shadow-md flex items-center justify-center gap-1.5"
+              >
+                <span className="material-symbols-outlined text-[16px]">chat</span>
+                <span>WhatsApp Desk</span>
+              </a>
+              <button
+                onClick={() => setSelectedDeveloper(null)}
+                className="px-4 py-3 bg-slate-100 text-slate-700 font-bold rounded-xl text-xs"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
