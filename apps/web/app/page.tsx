@@ -368,7 +368,7 @@ export default function HomePage() {
                       <div className="bg-white p-3 rounded-xl flex flex-col border border-slate-200">
                         <span className="font-label-caps text-[10px] uppercase text-secondary font-bold">Est. Monthly Rent</span>
                         <span className="font-body-sm text-xs font-black text-on-surface mt-0.5">
-                          ₹{estimatedMonthlyRent.toLocaleString()}/mo
+                          ₹{formatNumber(estimatedMonthlyRent)}/mo
                         </span>
                       </div>
                     </div>
@@ -595,7 +595,7 @@ export default function HomePage() {
                   </div>
                   <div className="flex flex-col">
                     <span className="font-label-caps text-[10px] uppercase text-secondary font-bold">Area</span>
-                    <span className="font-body-md text-xs sm:text-sm font-black text-on-surface mt-0.5">{prop.areaSqFt.toLocaleString()} sq.ft</span>
+                    <span className="font-body-md text-xs sm:text-sm font-black text-on-surface mt-0.5">{formatNumber(prop.areaSqFt)} sq.ft</span>
                   </div>
                 </div>
 
@@ -728,7 +728,7 @@ export default function HomePage() {
               <div className="flex justify-between items-center">
                 <span className="font-body-md text-sm font-bold text-on-surface">Est. Monthly Rental Income</span>
                 <span className="font-headline-sm text-base font-bold text-champagne-gold">
-                  ₹{calcMonthlyRent.toLocaleString()}
+                  ₹{formatNumber(calcMonthlyRent)}
                 </span>
               </div>
               <input
@@ -756,7 +756,7 @@ export default function HomePage() {
                 <span className="font-label-caps text-[10px] uppercase text-secondary font-extrabold">Estimated Monthly EMI</span>
                 <div className="flex items-baseline justify-between">
                   <span className="font-numeric-metric text-2xl sm:text-3xl text-primary font-black">
-                    ₹{calculatedEmi.toLocaleString()}
+                    ₹{formatNumber(calculatedEmi)}
                   </span>
                   <span className="font-body-sm text-xs text-secondary font-medium">
                     Principal: ₹{(loanPrincipal / 100000).toFixed(1)} L
@@ -1034,7 +1034,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex justify-between font-bold">
                   <span className="text-secondary">Selected Configuration:</span>
-                  <span className="text-on-surface">{aiBhk} BHK • {aiSqft.toLocaleString()} Sq.Ft</span>
+                  <span className="text-on-surface">{aiBhk} BHK • {formatNumber(aiSqft)} Sq.Ft</span>
                 </div>
                 <div className="flex justify-between font-bold text-sm text-primary pt-2 border-t border-slate-200">
                   <span>ML Estimated Fair Value:</span>
