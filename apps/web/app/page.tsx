@@ -187,53 +187,53 @@ export default function HomePage() {
   return (
     <div className="w-full bg-surface-canvas font-body-md text-on-surface antialiased">
       {/* 1. LIVE MARKET TICKER STRIP */}
-      <div className="w-full bg-slate-800 text-slate-200 py-2.5 px-4 sm:px-6 overflow-hidden flex items-center justify-between text-[11px] tracking-wide border-b border-slate-700 relative z-30">
-        <div className="flex items-center gap-2 shrink-0 pr-4 bg-slate-800 z-10 border-r border-slate-700/80">
+      <div className="w-full bg-white text-slate-800 py-2.5 px-4 sm:px-6 overflow-hidden flex items-center justify-between text-[11px] tracking-wide border-b border-slate-200 relative z-30 shadow-sm">
+        <div className="flex items-center gap-2 shrink-0 pr-4 bg-white z-10 border-r border-slate-200">
           <span className="flex h-2 w-2 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
           </span>
-          <span className="uppercase text-emerald-400 font-extrabold tracking-wider">Live Corridor Pulse</span>
+          <span className="uppercase text-emerald-700 font-extrabold tracking-wider">Live Corridor Pulse</span>
         </div>
 
         <div className="whitespace-nowrap overflow-hidden flex-1 mx-4">
           <div className="animate-marquee flex items-center gap-8 font-semibold">
             <div className="flex items-center gap-4">
-              <strong className="text-amber-400 font-bold">DEMAND SPIKE:</strong>
-              <span className="text-slate-200">Kokapet Neopolis 3 BHK prices +14.2% YoY (Avg ₹10,800/sq.ft)</span>
-              <span className="text-slate-500">•</span>
-              <strong className="text-emerald-400 font-bold">JUST TRANSACTED:</strong>
-              <span className="text-slate-200">Triplex Villa in Jubilee Hills closed for ₹6.85 Cr</span>
-              <span className="text-slate-500">•</span>
-              <strong className="text-amber-400 font-bold">NEW RERA APPROVAL:</strong>
-              <span className="text-slate-200">Prestigio Sky Tower Phase 2</span>
-              <span className="text-slate-500">•</span>
-              <span className="text-teal-400 font-bold">1,480+ Active HNW Buyers</span>
-              <span className="text-slate-500">•</span>
+              <strong className="text-amber-700 font-extrabold">DEMAND SPIKE:</strong>
+              <span className="text-slate-800 font-medium">Kokapet Neopolis 3 BHK prices +14.2% YoY (Avg ₹10,800/sq.ft)</span>
+              <span className="text-slate-300">•</span>
+              <strong className="text-emerald-700 font-extrabold">JUST TRANSACTED:</strong>
+              <span className="text-slate-800 font-medium">Triplex Villa in Jubilee Hills closed for ₹6.85 Cr</span>
+              <span className="text-slate-300">•</span>
+              <strong className="text-amber-700 font-extrabold">NEW RERA APPROVAL:</strong>
+              <span className="text-slate-800 font-medium">Prestigio Sky Tower Phase 2</span>
+              <span className="text-slate-300">•</span>
+              <span className="text-teal-700 font-extrabold">1,480+ Active HNW Buyers</span>
+              <span className="text-slate-300">•</span>
             </div>
 
             {/* DUPLICATE FOR CONTINUOUS 100% INFINITE LOOP */}
             <div className="flex items-center gap-4" aria-hidden="true">
-              <strong className="text-amber-400 font-bold">DEMAND SPIKE:</strong>
-              <span className="text-slate-200">Kokapet Neopolis 3 BHK prices +14.2% YoY (Avg ₹10,800/sq.ft)</span>
-              <span className="text-slate-500">•</span>
-              <strong className="text-emerald-400 font-bold">JUST TRANSACTED:</strong>
-              <span className="text-slate-200">Triplex Villa in Jubilee Hills closed for ₹6.85 Cr</span>
-              <span className="text-slate-500">•</span>
-              <strong className="text-amber-400 font-bold">NEW RERA APPROVAL:</strong>
-              <span className="text-slate-200">Prestigio Sky Tower Phase 2</span>
-              <span className="text-slate-500">•</span>
-              <span className="text-teal-400 font-bold">1,480+ Active HNW Buyers</span>
-              <span className="text-slate-500">•</span>
+              <strong className="text-amber-700 font-extrabold">DEMAND SPIKE:</strong>
+              <span className="text-slate-800 font-medium">Kokapet Neopolis 3 BHK prices +14.2% YoY (Avg ₹10,800/sq.ft)</span>
+              <span className="text-slate-300">•</span>
+              <strong className="text-emerald-700 font-extrabold">JUST TRANSACTED:</strong>
+              <span className="text-slate-800 font-medium">Triplex Villa in Jubilee Hills closed for ₹6.85 Cr</span>
+              <span className="text-slate-300">•</span>
+              <strong className="text-amber-700 font-extrabold">NEW RERA APPROVAL:</strong>
+              <span className="text-slate-800 font-medium">Prestigio Sky Tower Phase 2</span>
+              <span className="text-slate-300">•</span>
+              <span className="text-teal-700 font-extrabold">1,480+ Active HNW Buyers</span>
+              <span className="text-slate-300">•</span>
             </div>
           </div>
         </div>
 
-        <div className="hidden md:flex items-center gap-4 text-slate-400 shrink-0 pl-4 bg-slate-800 z-10 border-l border-slate-700/80">
-          <span className="font-semibold text-slate-300">INR (₹)</span>
-          <span className="text-slate-600">|</span>
-          <span className="text-emerald-400 font-bold flex items-center gap-1">
-            <span className="material-symbols-outlined text-[14px]">verified</span> TS-RERA Monitored
+        <div className="hidden md:flex items-center gap-4 text-slate-600 shrink-0 pl-4 bg-white z-10 border-l border-slate-200">
+          <span className="font-bold text-slate-800">INR (₹)</span>
+          <span className="text-slate-300">|</span>
+          <span className="text-emerald-700 font-bold flex items-center gap-1">
+            <span className="material-symbols-outlined text-[14px] text-emerald-600">verified</span> TS-RERA Monitored
           </span>
         </div>
       </div>
