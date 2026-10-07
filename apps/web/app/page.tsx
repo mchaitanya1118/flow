@@ -216,7 +216,7 @@ export default function HomePage() {
       </div>
 
       {/* 2. SOVEREIGN ARCHITECTURAL HERO SECTION WITH BACKGROUND VIDEO */}
-      <section className="relative w-full bg-surface-dark text-on-tertiary overflow-hidden pb-20 pt-8 sm:pt-10 border-b border-slate-800">
+      <section className="relative w-full bg-slate-950 text-white overflow-hidden pb-16 pt-8 sm:pt-10 border-b border-slate-800">
         {/* BACKGROUND LOCAL MP4 VIDEO (/herovideo.mp4) */}
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
           <video
@@ -229,53 +229,56 @@ export default function HomePage() {
             preload="auto"
             suppressHydrationWarning
             style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-            className="h-full w-full object-cover object-center transform scale-105 pointer-events-none opacity-40"
+            className="h-full w-full object-cover object-center transform scale-105 pointer-events-none opacity-25"
           >
             <source src="/herovideo.mp4" type="video/mp4" />
           </video>
         </div>
 
-        {/* Ambient architectural overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-surface-dark/90 via-surface-dark/80 to-surface-dark pointer-events-none z-0"></div>
-        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-primary/20 blur-3xl pointer-events-none z-0"></div>
-        <div className="absolute top-1/2 -right-20 w-[500px] h-[500px] rounded-full bg-champagne-gold/10 blur-3xl pointer-events-none z-0"></div>
+        {/* Ambient architectural dark contrast overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/85 to-slate-950/65 pointer-events-none z-0"></div>
+        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-emerald-600/10 blur-3xl pointer-events-none z-0"></div>
+        <div className="absolute top-1/2 -right-20 w-[500px] h-[500px] rounded-full bg-amber-500/10 blur-3xl pointer-events-none z-0"></div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 z-10">
-          {/* Top Tagline Pill */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 text-emerald-400 shadow-lg mb-4 border border-emerald-500/30 backdrop-blur-xl">
-            <span className="material-symbols-outlined text-[16px] text-emerald-400">verified</span>
-            <span className="font-sans tracking-widest uppercase text-emerald-400 font-extrabold text-[11px]">
-              India's Premier Sovereign Real Estate Marketplace
-            </span>
-          </div>
-
           {/* Grid: Hero Typography & AI Valuation Engine Cockpit */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left: Sovereign Title & Stats */}
-            <div className="lg:col-span-7 flex flex-col space-y-5">
-              <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-white font-extrabold tracking-tight leading-[1.15]">
+            <div className="lg:col-span-7 flex flex-col justify-center space-y-4">
+              {/* Top Tagline Pill */}
+              <div>
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 text-emerald-400 shadow-md border border-emerald-500/30 backdrop-blur-xl">
+                  <span className="material-symbols-outlined text-[15px] text-emerald-400">verified</span>
+                  <span className="font-sans tracking-widest uppercase text-emerald-400 font-extrabold text-[11px]">
+                    India's Premier Sovereign Real Estate Marketplace
+                  </span>
+                </div>
+              </div>
+
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-white font-black tracking-tight leading-[1.15] drop-shadow-md">
                 Architectural Mastery<br />
                 <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300 bg-clip-text text-transparent italic">
                   Meets Capital Growth
                 </span>
               </h1>
-              <p className="font-sans text-base sm:text-lg text-slate-300 max-w-xl leading-relaxed font-medium">
+
+              <p className="font-sans text-sm sm:text-base text-slate-200 max-w-xl leading-relaxed font-medium drop-shadow-sm">
                 Discover Telangana’s finest collection of 100% RERA-cleared luxury villas, high-rise penthouses, and commercial yields across Kokapet, Jubilee Hills, and Gachibowli with instant AI valuation guarantees.
               </p>
 
               {/* High-Impact Trust KPI Metrics */}
-              <div className="pt-2 grid grid-cols-3 gap-3 sm:gap-5">
-                <div className="bg-slate-900/90 rounded-2xl p-4 shadow-xl border border-slate-800/90 flex flex-col backdrop-blur-xl hover:border-emerald-500/40 transition-all">
-                  <span className="font-sans text-xl sm:text-2xl lg:text-3xl text-emerald-400 font-black">₹8,400+ Cr</span>
-                  <span className="font-sans text-xs text-slate-400 font-semibold mt-1">Transacted GMV</span>
+              <div className="pt-2 grid grid-cols-3 gap-3">
+                <div className="bg-slate-900/90 rounded-2xl p-3.5 shadow-xl border border-slate-800/90 flex flex-col backdrop-blur-xl hover:border-emerald-500/40 transition-all">
+                  <span className="font-sans text-xl sm:text-2xl text-emerald-400 font-black">₹8,400+ Cr</span>
+                  <span className="font-sans text-[11px] text-slate-400 font-semibold mt-0.5">Transacted GMV</span>
                 </div>
-                <div className="bg-slate-900/90 rounded-2xl p-4 shadow-xl border border-slate-800/90 flex flex-col backdrop-blur-xl hover:border-amber-400/40 transition-all">
-                  <span className="font-sans text-xl sm:text-2xl lg:text-3xl text-amber-400 font-black">99.4%</span>
-                  <span className="font-sans text-xs text-slate-400 font-semibold mt-1">Verified Titles</span>
+                <div className="bg-slate-900/90 rounded-2xl p-3.5 shadow-xl border border-slate-800/90 flex flex-col backdrop-blur-xl hover:border-amber-400/40 transition-all">
+                  <span className="font-sans text-xl sm:text-2xl text-amber-400 font-black">99.4%</span>
+                  <span className="font-sans text-[11px] text-slate-400 font-semibold mt-0.5">Verified Titles</span>
                 </div>
-                <div className="bg-slate-900/90 rounded-2xl p-4 shadow-xl border border-slate-800/90 flex flex-col backdrop-blur-xl hover:border-slate-700 transition-all">
-                  <span className="font-sans text-xl sm:text-2xl lg:text-3xl text-white font-black">14,200+</span>
-                  <span className="font-sans text-xs text-slate-400 font-semibold mt-1">Luxury Homes</span>
+                <div className="bg-slate-900/90 rounded-2xl p-3.5 shadow-xl border border-slate-800/90 flex flex-col backdrop-blur-xl hover:border-slate-700 transition-all">
+                  <span className="font-sans text-xl sm:text-2xl text-white font-black">14,200+</span>
+                  <span className="font-sans text-[11px] text-slate-400 font-semibold mt-0.5">Luxury Homes</span>
                 </div>
               </div>
             </div>
