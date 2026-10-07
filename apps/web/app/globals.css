@@ -4,13 +4,8 @@
 
 @layer base {
   body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    @apply bg-slate-50 text-slate-900 antialiased selection:bg-emerald-600 selection:text-white;
+    @apply bg-slate-50 text-slate-900 antialiased font-sans selection:bg-emerald-600 selection:text-white;
   }
-}
-
-.font-display {
-  font-family: 'Playfair Display', serif;
 }
 
 /* Custom Light Luxury Glassmorphism & Utilities */

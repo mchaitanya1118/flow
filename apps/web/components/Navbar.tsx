@@ -16,6 +16,9 @@ import {
   LayoutDashboard,
   Heart,
   Calendar,
+  Sparkles,
+  ShieldCheck,
+  Phone,
 } from 'lucide-react';
 
 interface AuthUser {
@@ -174,26 +177,31 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-[100] w-full border-b border-slate-200 bg-white/90 text-slate-900 backdrop-blur-xl shadow-sm" suppressHydrationWarning>
+      <header className="sticky top-0 z-[100] w-full border-b border-slate-800/80 bg-slate-950/90 text-white backdrop-blur-xl shadow-xl" suppressHydrationWarning>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           
           {/* LOGO */}
           <Link href="/" className="flex items-center gap-2.5 shrink-0">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 text-white font-black text-lg shadow-md">
-              E
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white font-black text-lg shadow-md shadow-emerald-950">
+              EF
             </div>
-            <span className="text-lg font-black tracking-tight text-slate-900">
-              Estate<span className="text-emerald-600">Flow</span>
-            </span>
+            <div className="flex flex-col">
+              <span className="text-lg font-black tracking-tight text-white leading-none">
+                Estate<span className="text-emerald-400">Flow</span>
+              </span>
+              <span className="font-label-caps text-[9px] uppercase tracking-widest text-slate-400 font-bold mt-0.5">
+                Private Client Exchange
+              </span>
+            </div>
           </Link>
 
           {/* DESKTOP NAV LINKS */}
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden items-center gap-1.5 md:flex">
             {primaryNavLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="rounded-lg px-3.5 py-2 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900"
+                className="rounded-xl px-4 py-2 text-xs font-bold text-slate-300 transition-all hover:bg-slate-900 hover:text-white border border-transparent hover:border-slate-800"
               >
                 {link.label}
               </Link>
@@ -204,10 +212,10 @@ export const Navbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsMoreDropdownOpen(!isMoreDropdownOpen)}
-                className={`inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-black transition-all border ${
+                className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-black transition-all border ${
                   isMoreDropdownOpen
-                    ? 'bg-slate-900 text-white border-slate-900 shadow-md'
-                    : 'bg-slate-100 text-slate-800 border-slate-200 hover:bg-slate-200'
+                    ? 'bg-emerald-600 text-white border-emerald-500 shadow-lg'
+                    : 'bg-slate-900 text-slate-200 border-slate-800 hover:bg-slate-800 hover:text-white'
                 }`}
               >
                 <span>Tools & Desks</span>
@@ -216,7 +224,7 @@ export const Navbar: React.FC = () => {
 
               {isMoreDropdownOpen && (
                 <div
-                  className="absolute right-0 lg:right-auto lg:left-1/2 lg:-translate-x-1/2 mt-3 w-[760px] lg:w-[860px] rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl z-[100] text-slate-900 backdrop-blur-2xl ring-1 ring-slate-200"
+                  className="absolute right-0 lg:right-auto lg:left-1/2 lg:-translate-x-1/2 mt-3 w-[760px] lg:w-[880px] rounded-3xl border border-slate-800 bg-slate-950 p-6 shadow-2xl z-[100] text-slate-100 backdrop-blur-2xl ring-1 ring-slate-800"
                   onMouseLeave={() => setIsMoreDropdownOpen(false)}
                 >
                   <div className="grid grid-cols-3 gap-6">
@@ -224,8 +232,8 @@ export const Navbar: React.FC = () => {
                       const IconComp = col.icon;
                       return (
                         <div key={idx} className="space-y-3">
-                          <div className="text-[11px] font-black uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-2 flex items-center gap-1.5">
-                            <IconComp className="w-4 h-4 text-emerald-600" />
+                          <div className="text-[11px] font-black uppercase tracking-wider text-emerald-400 border-b border-slate-800 pb-2.5 flex items-center gap-2">
+                            <IconComp className="w-4 h-4 text-emerald-400" />
                             <span>{col.title}</span>
                           </div>
                           <div className="space-y-1">
@@ -234,7 +242,7 @@ export const Navbar: React.FC = () => {
                                 key={link.href}
                                 href={link.href}
                                 onClick={() => setIsMoreDropdownOpen(false)}
-                                className="block rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-700 transition-all hover:bg-slate-100 hover:text-slate-900 hover:translate-x-1 border border-transparent hover:border-slate-200"
+                                className="block rounded-xl px-3 py-1.5 text-xs font-bold text-slate-300 transition-all hover:bg-slate-900 hover:text-white hover:translate-x-1 border border-transparent hover:border-slate-800"
                               >
                                 {link.label}
                               </Link>
@@ -252,9 +260,10 @@ export const Navbar: React.FC = () => {
           {/* RIGHT ACTION BUTTONS */}
           <div className="hidden items-center gap-3 md:flex">
             <Link href="/post-property">
-              <Button variant="outline" size="sm" className="border-slate-300 bg-white text-slate-900 hover:bg-slate-100 font-black text-xs rounded-xl shadow-xs flex items-center gap-1.5">
-                <PlusCircle className="w-3.5 h-3.5 text-emerald-600" />
+              <Button variant="outline" size="sm" className="border-slate-800 bg-slate-900 text-white hover:bg-slate-800 hover:border-slate-700 font-black text-xs rounded-xl shadow-md flex items-center gap-1.5">
+                <PlusCircle className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Post Property</span>
+                <span className="text-[9px] bg-emerald-950 text-emerald-400 font-bold px-1.5 py-0.2 rounded-full uppercase border border-emerald-800">Free</span>
               </Button>
             </Link>
 
@@ -264,56 +273,56 @@ export const Navbar: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-                  className="flex items-center gap-2 rounded-xl bg-slate-900 px-3.5 py-2 text-xs font-bold text-white shadow-md hover:bg-slate-800 transition"
+                  className="flex items-center gap-2 rounded-xl bg-slate-900 px-3.5 py-2 text-xs font-bold text-white shadow-md hover:bg-slate-800 border border-slate-800 transition"
                 >
                   <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-[10px] font-black text-slate-950">
                     {currentUser.fullName ? currentUser.fullName.charAt(0).toUpperCase() : 'U'}
                   </div>
                   <span className="max-w-[100px] truncate">{currentUser.fullName || currentUser.email}</span>
-                  <Badge variant="emerald" className="text-[9px] px-1.5 py-0 font-extrabold uppercase">
+                  <Badge variant="emerald" className="text-[9px] px-1.5 py-0 font-extrabold uppercase bg-emerald-950 text-emerald-400 border border-emerald-800">
                     {currentUser.role}
                   </Badge>
                 </button>
 
                 {isUserDropdownOpen && (
                   <div
-                    className="absolute right-0 mt-2 w-56 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl z-[100] text-slate-800"
+                    className="absolute right-0 mt-2 w-56 rounded-2xl border border-slate-800 bg-slate-950 p-2 shadow-2xl z-[100] text-slate-200"
                     onMouseLeave={() => setIsUserDropdownOpen(false)}
                   >
-                    <div className="p-2 border-b border-slate-100 text-xs">
-                      <p className="font-black text-slate-900 truncate">{currentUser.fullName}</p>
-                      <p className="text-[10px] text-slate-500 truncate">{currentUser.email}</p>
+                    <div className="p-2 border-b border-slate-800 text-xs">
+                      <p className="font-black text-white truncate">{currentUser.fullName}</p>
+                      <p className="text-[10px] text-slate-400 truncate">{currentUser.email}</p>
                     </div>
 
                     <div className="py-1 space-y-0.5 text-xs font-semibold">
                       <Link
                         href="/dashboard"
                         onClick={() => setIsUserDropdownOpen(false)}
-                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-900 hover:text-white"
                       >
-                        <LayoutDashboard className="w-3.5 h-3.5 text-slate-500" />
+                        <LayoutDashboard className="w-3.5 h-3.5 text-emerald-400" />
                         <span>My Dashboard</span>
                       </Link>
                       <Link
                         href="/bookings"
                         onClick={() => setIsUserDropdownOpen(false)}
-                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-900 hover:text-white"
                       >
-                        <Calendar className="w-3.5 h-3.5 text-slate-500" />
+                        <Calendar className="w-3.5 h-3.5 text-teal-400" />
                         <span>My Viewings</span>
                       </Link>
                       <Link
                         href="/saved"
                         onClick={() => setIsUserDropdownOpen(false)}
-                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-900 hover:text-white"
                       >
-                        <Heart className="w-3.5 h-3.5 text-slate-500" />
+                        <Heart className="w-3.5 h-3.5 text-rose-400" />
                         <span>Saved Properties</span>
                       </Link>
                       <button
                         type="button"
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-2 rounded-lg px-3 py-2 text-rose-600 hover:bg-rose-50 text-left"
+                        className="w-full flex items-center gap-2 rounded-lg px-3 py-2 text-rose-400 hover:bg-rose-950/40 text-left"
                       >
                         <LogOut className="w-3.5 h-3.5" />
                         <span>Sign Out</span>
@@ -327,7 +336,7 @@ export const Navbar: React.FC = () => {
               <Button
                 variant="primary"
                 size="sm"
-                className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs shadow-md rounded-xl px-4 flex items-center gap-1.5"
+                className="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-lg rounded-xl px-4 flex items-center gap-1.5"
                 onClick={() => {
                   setAuthMode('login');
                   setAuthError(null);
@@ -344,33 +353,33 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="rounded-lg p-2 text-slate-700 hover:bg-slate-100 md:hidden"
+            className="rounded-xl p-2 text-slate-300 hover:bg-slate-900 border border-slate-800 md:hidden"
           >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMobileMenuOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
           </button>
         </div>
 
         {/* MOBILE DRAWER */}
         {isMobileMenuOpen && (
-          <div className="border-t border-slate-200 bg-white p-4 md:hidden space-y-3 max-h-[80vh] overflow-y-auto z-[100]">
+          <div className="border-t border-slate-800 bg-slate-950 p-4 md:hidden space-y-4 max-h-[80vh] overflow-y-auto z-[100] text-slate-100">
             <div className="space-y-1">
-              <div className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Navigation Menu</div>
+              <div className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider px-2 mb-1">Navigation Menu</div>
               {allNavLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block rounded-lg px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                  className="block rounded-xl px-3 py-2 text-xs font-bold text-slate-300 hover:bg-slate-900 hover:text-white"
                 >
                   {link.label}
                 </Link>
               ))}
             </div>
 
-            <div className="pt-3 border-t border-slate-200 space-y-2">
+            <div className="pt-3 border-t border-slate-800 space-y-2">
               <Link href="/post-property" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button variant="outline" size="sm" className="w-full text-xs font-bold border-slate-300">
-                  + Post Property
+                <Button variant="outline" size="sm" className="w-full text-xs font-bold border-slate-800 bg-slate-900 text-white">
+                  + Post Property (Free)
                 </Button>
               </Link>
               {currentUser ? (
@@ -389,7 +398,7 @@ export const Navbar: React.FC = () => {
                 <Button
                   variant="primary"
                   size="sm"
-                  className="w-full bg-slate-900 text-white font-black text-xs"
+                  className="w-full bg-emerald-600 text-white font-black text-xs shadow-md"
                   onClick={() => {
                     setIsMobileMenuOpen(false);
                     setAuthMode('login');
@@ -413,7 +422,7 @@ export const Navbar: React.FC = () => {
       >
         <form onSubmit={handleAuthSubmit} className="space-y-4 text-xs">
           {authError && (
-            <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold">
+            <div className="p-3 rounded-xl bg-rose-950 border border-rose-800 text-rose-300 text-xs font-bold">
               ⚠️ {authError}
             </div>
           )}
@@ -463,7 +472,7 @@ export const Navbar: React.FC = () => {
           <Button
             type="submit"
             variant="primary"
-            className="w-full font-bold py-3 bg-slate-900 text-white hover:bg-slate-800"
+            className="w-full font-black py-3 bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg"
             disabled={isLoading}
           >
             {isLoading
@@ -480,7 +489,7 @@ export const Navbar: React.FC = () => {
                 setAuthMode(authMode === 'login' ? 'register' : 'login');
                 setAuthError(null);
               }}
-              className="text-xs text-slate-900 font-bold hover:underline"
+              className="text-xs text-emerald-600 font-bold hover:underline"
             >
               {authMode === 'login'
                 ? "Don't have an account? Register Now"
