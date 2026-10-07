@@ -303,16 +303,19 @@ export default function HomePage() {
                   <span className="font-sans text-xl sm:text-2xl text-white font-black">14,200+</span>
                   <span className="font-sans text-[11px] text-slate-400 font-semibold mt-0.5">Luxury Homes</span>
                 </div>
-                       {/* Right: AI Valuation Engine Cockpit */}
-            <div className="lg:col-span-5 relative">
-              <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden text-slate-900 border border-slate-200">
+              </div>
+            </div>
+
+            {/* Right: AI Valuation Engine Cockpit (Compact Small Variant) */}
+            <div className="lg:col-span-5 relative flex justify-end">
+              <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden text-slate-900 border border-slate-200 w-full max-w-md">
                 {/* Header bar of Cockpit */}
                 <div className="bg-slate-50 px-4 py-2.5 flex items-center justify-between border-b border-slate-200">
                   <div className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-emerald-600 text-[18px]">analytics</span>
                     <div>
-                      <h2 className="font-sans text-xs sm:text-sm font-extrabold leading-none text-slate-900">AI Valuation Engine</h2>
-                      <span className="font-sans text-[10px] text-slate-500 mt-0.5 block">Instant Real-Time Market Valuation & Yield Forecast</span>
+                      <h2 className="font-sans text-sm font-extrabold leading-none text-slate-900">AI Valuation Engine</h2>
+                      <span className="font-sans text-[11px] text-slate-500 mt-0.5 block">Real-Time Market Valuation & Yield</span>
                     </div>
                   </div>
                   <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-sans text-[9px] font-black tracking-wider uppercase border border-emerald-200">
@@ -321,17 +324,17 @@ export default function HomePage() {
                 </div>
 
                 {/* Cockpit Form Interactive Fields */}
-                <div className="p-4 space-y-3">
+                <div className="p-4 space-y-2.5">
                   {/* Select Micro Market */}
                   <div className="space-y-1">
-                    <label className="font-sans text-[10px] uppercase text-slate-600 font-extrabold flex items-center gap-1">
+                    <label className="font-sans text-[10px] uppercase text-slate-500 font-bold flex items-center gap-1">
                       <span className="material-symbols-outlined text-[13px] text-emerald-600">pin_drop</span> Target Micro-Market
                     </label>
                     <div className="relative">
                       <select
                         value={aiLocality}
                         onChange={(e) => setAiLocality(e.target.value)}
-                        className="w-full bg-slate-50 rounded-lg px-3 py-1.5 font-sans text-xs text-slate-900 appearance-none focus:outline-none focus:ring-1 focus:ring-emerald-500 border border-slate-200 font-bold"
+                        className="w-full bg-slate-50 rounded-lg px-3 py-1.5 font-sans text-xs text-slate-900 appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-200 font-bold"
                       >
                         <option value="kokapet">Kokapet Neopolis (Golden Mile)</option>
                         <option value="financial_district">Financial District (Gachibowli)</option>
@@ -345,7 +348,7 @@ export default function HomePage() {
                   {/* Configuration Rows: BHK & Area */}
                   <div className="grid grid-cols-2 gap-2.5">
                     <div className="space-y-1">
-                      <label className="font-sans text-[10px] uppercase text-slate-600 font-extrabold flex items-center gap-1">
+                      <label className="font-sans text-[10px] uppercase text-slate-500 font-bold flex items-center gap-1">
                         <span className="material-symbols-outlined text-[13px] text-amber-500">bed</span> BHK Layout
                       </label>
                       <select
@@ -360,14 +363,14 @@ export default function HomePage() {
                     </div>
 
                     <div className="space-y-1">
-                      <label className="font-sans text-[10px] uppercase text-slate-600 font-extrabold flex items-center gap-1">
+                      <label className="font-sans text-[10px] uppercase text-slate-500 font-bold flex items-center gap-1">
                         <span className="material-symbols-outlined text-[13px] text-teal-600">straighten</span> Area (Sq.Ft)
                       </label>
                       <input
                         type="number"
                         value={aiSqft}
                         onChange={(e) => setAiSqft(Number(e.target.value))}
-                        className="w-full bg-slate-50 rounded-lg px-2.5 py-1.5 font-sans text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-emerald-500 border border-slate-200 font-bold"
+                        className="w-full bg-slate-50 rounded-lg px-2.5 py-1.5 font-sans text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-200 font-bold"
                       />
                     </div>
                   </div>
@@ -381,16 +384,16 @@ export default function HomePage() {
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 pt-0.5 text-slate-700">
-                      <div className="bg-white p-2.5 rounded-lg flex flex-col border border-slate-200">
-                        <span className="font-sans text-[9px] uppercase text-slate-500 font-extrabold">1-Yr Appreciation</span>
-                        <span className="font-sans text-xs font-black text-emerald-600 mt-0.5">
+                    <div className="grid grid-cols-2 gap-2 text-slate-700">
+                      <div className="bg-white p-2 rounded-lg flex flex-col border border-slate-200">
+                        <span className="font-sans text-[9px] uppercase text-slate-500 font-bold">1-Yr Appreciation</span>
+                        <span className="font-sans text-[11px] font-black text-emerald-600 mt-0.5">
                           +₹{(projected1YrAppreciation / 100000).toFixed(1)} L (+12.5%)
                         </span>
                       </div>
-                      <div className="bg-white p-2.5 rounded-lg flex flex-col border border-slate-200">
-                        <span className="font-sans text-[9px] uppercase text-slate-500 font-extrabold">Est. Monthly Rent</span>
-                        <span className="font-sans text-xs font-black text-slate-900 mt-0.5">
+                      <div className="bg-white p-2 rounded-lg flex flex-col border border-slate-200">
+                        <span className="font-sans text-[9px] uppercase text-slate-500 font-bold">Est. Monthly Rent</span>
+                        <span className="font-sans text-[11px] font-black text-slate-900 mt-0.5">
                           ₹{formatNumber(estimatedMonthlyRent)}/mo
                         </span>
                       </div>
@@ -404,11 +407,10 @@ export default function HomePage() {
                     className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-sans text-xs font-black py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/20 border border-emerald-500/30 transition-all active:scale-[0.98]"
                   >
                     <span className="material-symbols-outlined text-[16px]">verified</span>
-                    <span>Generate Detailed Valuation Audit Report</span>
+                    <span>Generate Valuation Audit Report</span>
                   </button>
                 </div>
               </div>
-            </div>           </div>
             </div>
           </div>
         </div>
