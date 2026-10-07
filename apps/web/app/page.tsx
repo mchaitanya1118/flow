@@ -290,18 +290,32 @@ export default function HomePage() {
               </p>
 
               {/* High-Impact Trust KPI Metrics */}
-              <div className="pt-2 grid grid-cols-3 gap-3">
-                <div className="bg-slate-900/90 rounded-2xl p-3.5 shadow-xl border border-slate-800/90 flex flex-col backdrop-blur-xl hover:border-emerald-500/40 transition-all">
-                  <span className="font-sans text-xl sm:text-2xl text-emerald-400 font-black">₹8,400+ Cr</span>
-                  <span className="font-sans text-[11px] text-slate-400 font-semibold mt-0.5">Transacted GMV</span>
+              <div className="pt-2 grid grid-cols-3 gap-3 sm:gap-4">
+                <div className="bg-slate-900/70 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-slate-700/60 hover:border-emerald-500/50 hover:bg-slate-900/90 transition-all flex flex-col group">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="material-symbols-outlined text-emerald-400 text-lg">trending_up</span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  </div>
+                  <span className="font-sans text-xl sm:text-2xl text-emerald-400 font-black tracking-tight drop-shadow-sm">₹8,400+ Cr</span>
+                  <span className="font-sans text-[11px] text-slate-300 font-bold tracking-wider uppercase mt-1">Transacted GMV</span>
                 </div>
-                <div className="bg-slate-900/90 rounded-2xl p-3.5 shadow-xl border border-slate-800/90 flex flex-col backdrop-blur-xl hover:border-amber-400/40 transition-all">
-                  <span className="font-sans text-xl sm:text-2xl text-amber-400 font-black">99.4%</span>
-                  <span className="font-sans text-[11px] text-slate-400 font-semibold mt-0.5">Verified Titles</span>
+
+                <div className="bg-slate-900/70 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-slate-700/60 hover:border-amber-400/50 hover:bg-slate-900/90 transition-all flex flex-col group">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="material-symbols-outlined text-amber-400 text-lg">verified_user</span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400"></span>
+                  </div>
+                  <span className="font-sans text-xl sm:text-2xl text-amber-400 font-black tracking-tight drop-shadow-sm">99.4%</span>
+                  <span className="font-sans text-[11px] text-slate-300 font-bold tracking-wider uppercase mt-1">Verified Titles</span>
                 </div>
-                <div className="bg-slate-900/90 rounded-2xl p-3.5 shadow-xl border border-slate-800/90 flex flex-col backdrop-blur-xl hover:border-slate-700 transition-all">
-                  <span className="font-sans text-xl sm:text-2xl text-white font-black">14,200+</span>
-                  <span className="font-sans text-[11px] text-slate-400 font-semibold mt-0.5">Luxury Homes</span>
+
+                <div className="bg-slate-900/70 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-slate-700/60 hover:border-cyan-400/50 hover:bg-slate-900/90 transition-all flex flex-col group">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="material-symbols-outlined text-cyan-400 text-lg">villa</span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-cyan-400"></span>
+                  </div>
+                  <span className="font-sans text-xl sm:text-2xl text-cyan-300 font-black tracking-tight drop-shadow-sm">14,200+</span>
+                  <span className="font-sans text-[11px] text-slate-300 font-bold tracking-wider uppercase mt-1">Luxury Homes</span>
                 </div>
               </div>
             </div>
