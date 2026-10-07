@@ -216,7 +216,7 @@ export default function HomePage() {
       </div>
 
       {/* 2. SOVEREIGN ARCHITECTURAL HERO SECTION WITH BACKGROUND VIDEO */}
-      <section className="relative w-full bg-surface-dark text-on-tertiary overflow-hidden pb-24 pt-12 border-b border-slate-800">
+      <section className="relative w-full bg-surface-dark text-on-tertiary overflow-hidden pb-20 pt-8 sm:pt-10 border-b border-slate-800">
         {/* BACKGROUND LOCAL MP4 VIDEO (/herovideo.mp4) */}
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
           <video
@@ -242,7 +242,7 @@ export default function HomePage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 z-10">
           {/* Top Tagline Pill */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 text-emerald-400 shadow-lg mb-6 border border-emerald-500/30 backdrop-blur-xl">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 text-emerald-400 shadow-lg mb-4 border border-emerald-500/30 backdrop-blur-xl">
             <span className="material-symbols-outlined text-[16px] text-emerald-400">verified</span>
             <span className="font-sans tracking-widest uppercase text-emerald-400 font-extrabold text-[11px]">
               India's Premier Sovereign Real Estate Marketplace
@@ -250,9 +250,9 @@ export default function HomePage() {
           </div>
 
           {/* Grid: Hero Typography & AI Valuation Engine Cockpit */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
             {/* Left: Sovereign Title & Stats */}
-            <div className="lg:col-span-7 flex flex-col space-y-6">
+            <div className="lg:col-span-7 flex flex-col space-y-5">
               <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-white font-extrabold tracking-tight leading-[1.15]">
                 Architectural Mastery<br />
                 <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300 bg-clip-text text-transparent italic">
@@ -264,7 +264,7 @@ export default function HomePage() {
               </p>
 
               {/* High-Impact Trust KPI Metrics */}
-              <div className="pt-4 grid grid-cols-3 gap-3 sm:gap-6">
+              <div className="pt-2 grid grid-cols-3 gap-3 sm:gap-5">
                 <div className="bg-slate-900/90 rounded-2xl p-4 shadow-xl border border-slate-800/90 flex flex-col backdrop-blur-xl hover:border-emerald-500/40 transition-all">
                   <span className="font-sans text-xl sm:text-2xl lg:text-3xl text-emerald-400 font-black">₹8,400+ Cr</span>
                   <span className="font-sans text-xs text-slate-400 font-semibold mt-1">Transacted GMV</span>
@@ -391,7 +391,7 @@ export default function HomePage() {
       </section>
 
       {/* 3. OMNICHANNEL PROPERTY DISCOVERY & FILTER BAR */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 -mt-10 z-20 w-full">
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 -mt-12 sm:-mt-14 z-20 w-full">
         <div className="bg-white rounded-3xl shadow-2xl p-4 lg:p-6 border border-slate-200">
           {/* Transaction Tabs */}
           <div className="flex items-center gap-2 overflow-x-auto pb-4 scrollbar-none">
