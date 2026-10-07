@@ -187,29 +187,52 @@ export default function HomePage() {
   return (
     <div className="w-full bg-surface-canvas font-body-md text-on-surface antialiased">
       {/* 1. LIVE MARKET TICKER STRIP */}
-      <div className="w-full bg-surface-dark text-surface-canvas py-2 px-4 sm:px-6 overflow-hidden flex items-center justify-between text-[11px] tracking-wide border-b border-slate-800">
-        <div className="flex items-center gap-2 shrink-0">
+      <div className="w-full bg-slate-950 text-slate-200 py-2.5 px-4 sm:px-6 overflow-hidden flex items-center justify-between text-[11px] tracking-wide border-b border-slate-800 relative z-30">
+        <div className="flex items-center gap-2 shrink-0 pr-4 bg-slate-950 z-10 border-r border-slate-800/80">
           <span className="flex h-2 w-2 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-glow opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-glow"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
           </span>
-          <span className="font-label-caps uppercase text-emerald-glow font-bold">Live Corridor Pulse</span>
+          <span className="uppercase text-emerald-400 font-extrabold tracking-wider">Live Corridor Pulse</span>
         </div>
-        <div className="whitespace-nowrap overflow-hidden flex-1 mx-4 sm:mx-6">
-          <p className="font-body-sm text-surface-container-high/90 tracking-normal truncate">
-            <strong className="text-champagne-gold font-semibold">DEMAND SPIKE:</strong> Kokapet Neopolis 3 BHK prices +14.2% YoY (Avg ₹10,800/sq.ft){' '}
-            <span className="text-border-glass mx-2">•</span>{' '}
-            <strong className="text-emerald-glow font-semibold">JUST TRANSACTED:</strong> Triplex Villa in Jubilee Hills closed for ₹6.85 Cr{' '}
-            <span className="text-border-glass mx-2">•</span>{' '}
-            <strong className="text-champagne-gold font-semibold">NEW RERA APPROVAL:</strong> Prestigio Sky Tower Phase 2{' '}
-            <span className="text-border-glass mx-2">•</span>{' '}
-            <span className="text-primary-fixed-dim font-medium">1,480+ Active HNW Buyers</span>
-          </p>
+
+        <div className="whitespace-nowrap overflow-hidden flex-1 mx-4">
+          <div className="animate-marquee flex items-center gap-8 font-semibold">
+            <div className="flex items-center gap-4">
+              <strong className="text-amber-400 font-bold">DEMAND SPIKE:</strong>
+              <span className="text-slate-200">Kokapet Neopolis 3 BHK prices +14.2% YoY (Avg ₹10,800/sq.ft)</span>
+              <span className="text-slate-600">•</span>
+              <strong className="text-emerald-400 font-bold">JUST TRANSACTED:</strong>
+              <span className="text-slate-200">Triplex Villa in Jubilee Hills closed for ₹6.85 Cr</span>
+              <span className="text-slate-600">•</span>
+              <strong className="text-amber-400 font-bold">NEW RERA APPROVAL:</strong>
+              <span className="text-slate-200">Prestigio Sky Tower Phase 2</span>
+              <span className="text-slate-600">•</span>
+              <span className="text-teal-400 font-bold">1,480+ Active HNW Buyers</span>
+              <span className="text-slate-600">•</span>
+            </div>
+
+            {/* DUPLICATE FOR CONTINUOUS 100% INFINITE LOOP */}
+            <div className="flex items-center gap-4" aria-hidden="true">
+              <strong className="text-amber-400 font-bold">DEMAND SPIKE:</strong>
+              <span className="text-slate-200">Kokapet Neopolis 3 BHK prices +14.2% YoY (Avg ₹10,800/sq.ft)</span>
+              <span className="text-slate-600">•</span>
+              <strong className="text-emerald-400 font-bold">JUST TRANSACTED:</strong>
+              <span className="text-slate-200">Triplex Villa in Jubilee Hills closed for ₹6.85 Cr</span>
+              <span className="text-slate-600">•</span>
+              <strong className="text-amber-400 font-bold">NEW RERA APPROVAL:</strong>
+              <span className="text-slate-200">Prestigio Sky Tower Phase 2</span>
+              <span className="text-slate-600">•</span>
+              <span className="text-teal-400 font-bold">1,480+ Active HNW Buyers</span>
+              <span className="text-slate-600">•</span>
+            </div>
+          </div>
         </div>
-        <div className="hidden md:flex items-center gap-4 text-secondary-fixed shrink-0">
-          <span className="font-body-sm">INR (₹)</span>
+
+        <div className="hidden md:flex items-center gap-4 text-slate-400 shrink-0 pl-4 bg-slate-950 z-10 border-l border-slate-800/80">
+          <span className="font-semibold text-slate-300">INR (₹)</span>
           <span className="text-slate-700">|</span>
-          <span className="font-body-sm text-primary-fixed-dim flex items-center gap-1">
+          <span className="text-emerald-400 font-bold flex items-center gap-1">
             <span className="material-symbols-outlined text-[14px]">verified</span> TS-RERA Monitored
           </span>
         </div>
