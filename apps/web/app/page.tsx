@@ -239,7 +239,7 @@ export default function HomePage() {
       </div>
 
       {/* 2. SOVEREIGN ARCHITECTURAL HERO SECTION WITH BACKGROUND VIDEO */}
-      <section className="relative w-full bg-slate-950 text-white overflow-hidden pb-20 sm:pb-24 pt-10 sm:pt-14 border-b border-slate-800">
+      <section className="relative w-full bg-slate-950 text-white overflow-hidden pb-44 sm:pb-48 pt-10 sm:pt-14 border-b border-slate-800">
         {/* BACKGROUND LOCAL MP4 VIDEO (/herovideo.mp4) */}
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
           <video
@@ -417,7 +417,7 @@ export default function HomePage() {
       </section>
 
       {/* 3. OMNICHANNEL PROPERTY DISCOVERY & FILTER BAR */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 -mt-8 sm:-mt-10 z-20 w-full">
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 -mt-24 sm:-mt-28 z-20 w-full">
         <div className="bg-white rounded-3xl shadow-2xl p-4 lg:p-6 border border-slate-200">
           {/* Transaction Tabs */}
           <div className="flex items-center gap-2 overflow-x-auto pb-4 scrollbar-none">
