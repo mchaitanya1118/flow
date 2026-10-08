@@ -121,6 +121,33 @@ export default function HomePage() {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [subscribedMessage, setSubscribedMessage] = useState(false);
 
+  // Dynamic CMS State from Admin Control Panel
+  const [cmsBadgeText, setCmsBadgeText] = useState("India's Premier Sovereign Real Estate Marketplace");
+  const [cmsHeading1, setCmsHeading1] = useState('Architectural Mastery');
+  const [cmsHeading2, setCmsHeading2] = useState('Meets Capital Growth');
+  const [cmsSubheading, setCmsSubheading] = useState(
+    'Discover Telangana’s finest collection of 100% RERA-cleared luxury villas, high-rise penthouses, and commercial yields across Kokapet, Jubilee Hills, and Gachibowli with instant AI valuation guarantees.'
+  );
+  const [cmsHeroVideo, setCmsHeroVideo] = useState('/herovideo.mp4');
+  const [cmsVignetteOpacity, setCmsVignetteOpacity] = useState('65');
+
+  useEffect(() => {
+    fetch('/api/v1/cms')
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success && res.data) {
+          const d = res.data;
+          if (d.heroBadgeText) setCmsBadgeText(d.heroBadgeText);
+          if (d.heroHeadingLine1) setCmsHeading1(d.heroHeadingLine1);
+          if (d.heroHeadingLine2) setCmsHeading2(d.heroHeadingLine2);
+          if (d.heroSubheading) setCmsSubheading(d.heroSubheading);
+          if (d.heroVideoUrl) setCmsHeroVideo(d.heroVideoUrl);
+          if (d.vignetteOpacity) setCmsVignetteOpacity(String(d.vignetteOpacity));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // AI Valuation Calculations
   const baseRatePerSqft =
     aiLocality === 'jubilee_hills' ? 14500 :
@@ -244,17 +271,17 @@ export default function HomePage() {
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
           <video
             ref={videoRef}
-            src="/herovideo.mp4"
+            src={cmsHeroVideo}
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
             suppressHydrationWarning
-            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-            className="h-full w-full object-cover object-center transform scale-105 pointer-events-none opacity-65"
+            style={{ objectFit: 'cover', width: '100%', height: '100%', opacity: Number(cmsVignetteOpacity) / 100 }}
+            className="h-full w-full object-cover object-center transform scale-105 pointer-events-none"
           >
-            <source src="/herovideo.mp4" type="video/mp4" />
+            <source src={cmsHeroVideo} type="video/mp4" />
           </video>
         </div>
 
@@ -273,20 +300,20 @@ export default function HomePage() {
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 text-emerald-400 shadow-md border border-emerald-500/30 backdrop-blur-xl">
                   <span className="material-symbols-outlined text-[15px] text-emerald-400">verified</span>
                   <span className="font-sans tracking-widest uppercase text-emerald-400 font-extrabold text-[11px]">
-                    India's Premier Sovereign Real Estate Marketplace
+                    {cmsBadgeText}
                   </span>
                 </div>
               </div>
 
               <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-white font-black tracking-tight leading-[1.15] drop-shadow-md">
-                Architectural Mastery<br />
+                {cmsHeading1}<br />
                 <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300 bg-clip-text text-transparent italic">
-                  Meets Capital Growth
+                  {cmsHeading2}
                 </span>
               </h1>
 
               <p className="font-sans text-sm sm:text-base text-slate-200 max-w-xl leading-relaxed font-medium drop-shadow-sm">
-                Discover Telangana’s finest collection of 100% RERA-cleared luxury villas, high-rise penthouses, and commercial yields across Kokapet, Jubilee Hills, and Gachibowli with instant AI valuation guarantees.
+                {cmsSubheading}
               </p>
 
               {/* High-Impact Trust KPI Metrics */}
