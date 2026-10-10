@@ -57,8 +57,8 @@ export function WhatsAppWidget() {
 
   return (
     <React.Fragment>
-      <div className="fixed bottom-6 right-6 z-50 font-sans flex flex-col items-end gap-3">
-        {/* 1. FLOATING PHONE BUTTON (TRIGGER VOICE ADVISOR POPUP) */}
+      <div className="fixed bottom-6 right-6 z-50 font-sans flex flex-col items-end gap-3.5">
+        {/* 1. FLOATING PHONE AI BUTTON (PERFECT ROUND CIRCLE WITH CENTERED PHONE ICON) */}
         <div
           className="relative group flex items-center justify-end"
           onMouseEnter={() => setIsPhoneHovered(true)}
@@ -67,31 +67,20 @@ export function WhatsAppWidget() {
           <button
             type="button"
             onClick={() => setIsVoiceAdvisorOpen(true)}
-            className="flex items-center gap-2.5 bg-slate-950 hover:bg-slate-900 text-white p-3 sm:p-3.5 rounded-full shadow-2xl hover:shadow-emerald-900/30 border border-slate-700/80 transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer"
+            className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-slate-950 hover:bg-slate-900 text-white shadow-2xl hover:shadow-emerald-900/40 border border-slate-700/80 transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer flex items-center justify-center shrink-0 relative"
             aria-label="Open Voice Advisor AI Popup"
           >
-            <div className="relative flex items-center justify-center">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <Phone className="w-5 h-5 text-emerald-400 fill-emerald-400/20 relative z-10" />
-            </div>
-
-            {/* Smoothly expanding phone text on mouse over */}
-            <div
-              className={`overflow-hidden whitespace-nowrap transition-all duration-300 ease-in-out font-bold text-xs flex items-center gap-1.5 ${
-                isPhoneHovered ? 'max-w-xs opacity-100 pr-2' : 'max-w-0 opacity-0'
-              }`}
-            >
-              <span className="text-amber-300 font-extrabold flex items-center gap-1">
-                <Bot className="w-3.5 h-3.5 text-amber-300" /> Ava Voice AI:
-              </span>
-              <span className="text-white font-extrabold tracking-wide">Call Now</span>
-            </div>
+            <span className="animate-ping absolute inline-flex h-10 w-10 rounded-full bg-emerald-400/40 opacity-75"></span>
+            <Phone className="w-6 h-6 text-emerald-400 fill-emerald-400/20 relative z-10" />
           </button>
 
-          {/* Hover Badge Indicator */}
+          {/* Hover Tooltip Card to the Left */}
           {isPhoneHovered && (
-            <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 hidden sm:block bg-slate-900 text-white text-xs font-extrabold px-3 py-1.5 rounded-xl whitespace-nowrap shadow-xl border border-slate-700 animate-in fade-in slide-in-from-right-2">
-              🎙️ <span className="text-amber-300">Ava AI Voice Advisor</span> • <span className="text-emerald-400">Available</span>
+            <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-2 bg-slate-900 text-white text-xs font-extrabold px-3.5 py-2 rounded-2xl whitespace-nowrap shadow-2xl border border-slate-700 animate-in fade-in slide-in-from-right-2">
+              <Bot className="w-4 h-4 text-amber-300" />
+              <span>
+                <span className="text-amber-300 font-extrabold">Ava Voice AI</span> • <span className="text-emerald-400">Call Now</span>
+              </span>
             </div>
           )}
         </div>
@@ -183,43 +172,30 @@ export function WhatsAppWidget() {
           </div>
         )}
 
-        {/* 2. FLOATING WHATSAPP BUTTON (HOVER EXPANDS TEXT, CLICK OPENS CHAT WIDGET) */}
+        {/* 2. FLOATING WHATSAPP BUTTON (PERFECT ROUND CIRCLE WITH CENTERED CHAT ICON) */}
         <div
           className="relative group flex items-center justify-end"
           onMouseEnter={() => setIsWaHovered(true)}
           onMouseLeave={() => setIsWaHovered(false)}
         >
           <button
+            type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="relative flex items-center gap-2.5 bg-emerald-600 hover:bg-emerald-500 text-white p-3 sm:p-3.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+            className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-2xl hover:shadow-emerald-600/40 transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer flex items-center justify-center shrink-0 relative"
             aria-label="Open WhatsApp Chat Support"
           >
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-200"></span>
-            </span>
-
-            <MessageCircle className="w-5 h-5 fill-white stroke-emerald-600 shrink-0" />
-
-            {/* Smoothly expanding text on hover */}
-            <div
-              className={`overflow-hidden whitespace-nowrap transition-all duration-300 ease-in-out font-black text-xs ${
-                isWaHovered ? 'max-w-xs opacity-100 pr-2' : 'max-w-0 opacity-0'
-              }`}
-            >
-              <span>WhatsApp Support</span>
-            </div>
+            <MessageCircle className="w-6 h-6 fill-white stroke-emerald-600 shrink-0" />
 
             {/* Unread badge */}
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-md">
               1
             </span>
           </button>
 
-          {/* Hover Badge Indicator for WhatsApp */}
+          {/* Hover Tooltip Card to the Left */}
           {isWaHovered && !isOpen && (
-            <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 hidden sm:block bg-emerald-700 text-white text-xs font-extrabold px-3 py-1.5 rounded-xl whitespace-nowrap shadow-xl border border-emerald-500 animate-in fade-in slide-in-from-right-2">
-              💬 Click to open WhatsApp Chat
+            <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 hidden sm:block bg-emerald-700 text-white text-xs font-extrabold px-3.5 py-2 rounded-2xl whitespace-nowrap shadow-2xl border border-emerald-500 animate-in fade-in slide-in-from-right-2">
+              💬 <span className="font-extrabold">WhatsApp Chat</span> • Online
             </div>
           )}
         </div>
