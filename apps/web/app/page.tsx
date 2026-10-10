@@ -267,7 +267,7 @@ export default function HomePage() {
 
       {/* 2. SOVEREIGN ARCHITECTURAL HERO SECTION WITH BACKGROUND VIDEO */}
       <section className="relative w-full bg-slate-950 text-white overflow-hidden pb-48 sm:pb-52 pt-10 sm:pt-14 border-b border-slate-800">
-        {/* BACKGROUND LOCAL MP4 VIDEO (/herovideo.mp4) */}
+        {/* BACKGROUND LOCAL MP4 VIDEO (/herovideo.mp4) - 100% FULL CLARITY */}
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
           <video
             ref={videoRef}
@@ -279,16 +279,11 @@ export default function HomePage() {
             preload="auto"
             suppressHydrationWarning
             style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-            className="h-full w-full object-cover object-center transform scale-105 pointer-events-none opacity-85"
+            className="h-full w-full object-cover object-center transform scale-105 pointer-events-none opacity-100"
           >
             <source src={cmsHeroVideo} type="video/mp4" />
           </video>
         </div>
-
-        {/* Soft elegant architectural overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-slate-950/25 to-slate-950/10 pointer-events-none z-0"></div>
-        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-emerald-600/10 blur-3xl pointer-events-none z-0"></div>
-        <div className="absolute top-1/2 -right-20 w-[500px] h-[500px] rounded-full bg-amber-500/10 blur-3xl pointer-events-none z-0"></div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 z-10">
           {/* Grid: Hero Typography & AI Valuation Engine Cockpit */}
@@ -297,7 +292,7 @@ export default function HomePage() {
             <div className="lg:col-span-7 flex flex-col justify-center space-y-4">
               {/* Top Tagline Pill */}
               <div>
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 text-emerald-400 shadow-md border border-emerald-500/30 backdrop-blur-xl">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 text-emerald-400 shadow-xl border border-emerald-500/40 backdrop-blur-xl">
                   <span className="material-symbols-outlined text-[15px] text-emerald-400">verified</span>
                   <span className="font-sans tracking-widest uppercase text-emerald-400 font-extrabold text-[11px]">
                     {cmsBadgeText}
@@ -305,14 +300,14 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-white font-black tracking-tight leading-[1.15] drop-shadow-md">
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-white font-black tracking-tight leading-[1.15] drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
                 {cmsHeading1}<br />
                 <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300 bg-clip-text text-transparent italic">
                   {cmsHeading2}
                 </span>
               </h1>
 
-              <p className="font-sans text-sm sm:text-base text-slate-200 max-w-xl leading-relaxed font-medium drop-shadow-sm">
+              <p className="font-sans text-sm sm:text-base text-slate-100 max-w-xl leading-relaxed font-medium drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] bg-slate-950/30 p-2 rounded-xl backdrop-blur-sm border border-slate-800/40">
                 {cmsSubheading}
               </p>
 
