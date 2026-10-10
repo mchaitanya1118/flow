@@ -19,6 +19,8 @@ import {
   Sparkles,
   ShieldCheck,
   Phone,
+  MapPin,
+  Check,
 } from 'lucide-react';
 
 interface AuthUser {
@@ -44,6 +46,7 @@ export const Navbar: React.FC = () => {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMoreDropdownOpen, setIsMoreDropdownOpen] = useState(false);
+  const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
 
   const [selectedCity, setSelectedCity] = useState('Hyderabad');
@@ -203,106 +206,146 @@ export const Navbar: React.FC = () => {
       <header className="sticky top-0 z-[100] w-full border-b border-slate-200 bg-white/95 text-slate-900 backdrop-blur-xl shadow-sm" suppressHydrationWarning>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           
-          {/* LOGO & MULTI CITY SELECTOR */}
-          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-            <Link href="/" className="flex items-center gap-2.5 shrink-0">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white font-black text-lg shadow-md">
-                EF
-              </div>
-              <div className="flex flex-col">
-                <span className="text-lg font-black tracking-tight text-slate-900 leading-none">
-                  Estate<span className="text-emerald-600">Flow</span>
-                </span>
-                <span className="font-label-caps text-[9px] uppercase tracking-widest text-slate-500 font-bold mt-0.5">
-                  Private Client Exchange
-                </span>
-              </div>
-            </Link>
-
-            {/* MULTI CITY SELECTOR PILL */}
-            <div className="relative">
-              <select
-                value={selectedCity}
-                onChange={(e) => handleCityChange(e.target.value)}
-                className="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300/80 rounded-xl px-3 py-1.5 text-xs font-black appearance-none pr-8 cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm transition-all"
-              >
-                <option value="Hyderabad">📍 Hyderabad</option>
-                <option value="Bengaluru">📍 Bengaluru (Bangalore)</option>
-              </select>
-              <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-2.5 text-emerald-700 pointer-events-none" />
-            </div>
-          </div>
-
-          {/* DESKTOP NAV LINKS */}
-          <nav className="hidden items-center gap-1.5 md:flex">
-            {primaryNavLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="rounded-xl px-4 py-2 text-xs font-bold text-slate-700 transition-all hover:bg-slate-100 hover:text-slate-900 border border-transparent hover:border-slate-200"
-              >
-                {link.label}
-              </Link>
-            ))}
-
-            {/* MEGA DROPDOWN MENU */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setIsMoreDropdownOpen(!isMoreDropdownOpen)}
-                className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-black transition-all border ${
-                  isMoreDropdownOpen
-                    ? 'bg-emerald-600 text-white border-emerald-500 shadow-md'
-                    : 'bg-slate-100 text-slate-800 border-slate-200 hover:bg-slate-200 hover:text-slate-900'
-                }`}
-              >
-                <span>Tools & Desks</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isMoreDropdownOpen ? 'rotate-180' : ''}`} />
-              </button>
-
-              {isMoreDropdownOpen && (
-                <div
-                  className="absolute right-0 lg:right-auto lg:left-1/2 lg:-translate-x-1/2 mt-3 w-[760px] lg:w-[880px] rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl z-[100] text-slate-900 backdrop-blur-2xl ring-1 ring-slate-100"
-                  onMouseLeave={() => setIsMoreDropdownOpen(false)}
-                >
-                  <div className="grid grid-cols-3 gap-6">
-                    {megaMenuColumns.map((col, idx) => {
-                      const IconComp = col.icon;
-                      return (
-                        <div key={idx} className="space-y-3">
-                          <div className="text-[11px] font-black uppercase tracking-wider text-emerald-600 border-b border-slate-200 pb-2.5 flex items-center gap-2">
-                            <IconComp className="w-4 h-4 text-emerald-600" />
-                            <span>{col.title}</span>
-                          </div>
-                          <div className="space-y-1">
-                            {col.links.map((link) => (
-                              <Link
-                                key={link.href}
-                                href={link.href}
-                                onClick={() => setIsMoreDropdownOpen(false)}
-                                className="block rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700 transition-all hover:bg-slate-100 hover:text-slate-900 hover:translate-x-1 border border-transparent hover:border-slate-200"
-                              >
-                                {link.label}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
+            {/* LOGO & MULTI CITY SELECTOR */}
+            <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+              <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white font-black text-lg shadow-md shadow-emerald-600/20 group-hover:scale-105 transition-transform">
+                  EF
                 </div>
-              )}
+                <div className="flex flex-col">
+                  <span className="text-lg font-black tracking-tight text-slate-900 leading-none">
+                    Estate<span className="text-emerald-600">Flow</span>
+                  </span>
+                  <span className="font-label-caps text-[9px] uppercase tracking-widest text-slate-400 font-extrabold mt-0.5">
+                    Private Client Exchange
+                  </span>
+                </div>
+              </Link>
+
+              {/* MULTI CITY SELECTOR POPOVER */}
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setIsCityDropdownOpen(!isCityDropdownOpen)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-800 text-xs font-bold transition-all shadow-xs hover:border-slate-300"
+                >
+                  <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>{selectedCity}</span>
+                  <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isCityDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {isCityDropdownOpen && (
+                  <div
+                    className="absolute left-0 mt-2 w-48 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl z-[110] text-slate-900 animate-in fade-in zoom-in-95 duration-100"
+                    onMouseLeave={() => setIsCityDropdownOpen(false)}
+                  >
+                    <div className="px-2.5 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100 mb-1">
+                      Select City Market
+                    </div>
+                    {[
+                      { name: 'Hyderabad', state: 'Telangana' },
+                      { name: 'Bengaluru', state: 'Karnataka' },
+                    ].map((city) => (
+                      <button
+                        key={city.name}
+                        type="button"
+                        onClick={() => {
+                          handleCityChange(city.name);
+                          setIsCityDropdownOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-all text-left ${
+                          selectedCity === city.name
+                            ? 'bg-emerald-50 text-emerald-900 font-extrabold'
+                            : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                        }`}
+                      >
+                        <div className="flex flex-col">
+                          <span>📍 {city.name}</span>
+                          <span className="text-[9px] font-medium text-slate-400">{city.state}</span>
+                        </div>
+                        {selectedCity === city.name && (
+                          <Check className="w-4 h-4 text-emerald-600" />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-          </nav>
+
+            {/* DESKTOP NAV LINKS */}
+            <nav className="hidden items-center gap-1 md:flex">
+              {primaryNavLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-full px-3.5 py-1.5 text-xs font-bold text-slate-600 transition-all hover:bg-slate-100 hover:text-slate-900"
+                >
+                  {link.label}
+                </Link>
+              ))}
+
+              {/* MEGA DROPDOWN MENU */}
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setIsMoreDropdownOpen(!isMoreDropdownOpen)}
+                  className={`inline-flex items-center gap-1 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
+                    isMoreDropdownOpen
+                      ? 'bg-slate-900 text-white font-extrabold shadow-sm'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                  }`}
+                >
+                  <span>Tools & Desks</span>
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isMoreDropdownOpen ? 'rotate-180 text-emerald-400' : 'text-slate-400'}`} />
+                </button>
+
+                {isMoreDropdownOpen && (
+                  <div
+                    className="absolute right-0 lg:right-auto lg:left-1/2 lg:-translate-x-1/2 mt-3 w-[760px] lg:w-[880px] rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl z-[100] text-slate-900 backdrop-blur-2xl ring-1 ring-slate-100"
+                    onMouseLeave={() => setIsMoreDropdownOpen(false)}
+                  >
+                    <div className="grid grid-cols-3 gap-6">
+                      {megaMenuColumns.map((col, idx) => {
+                        const IconComp = col.icon;
+                        return (
+                          <div key={idx} className="space-y-3">
+                            <div className="text-[11px] font-black uppercase tracking-wider text-emerald-600 border-b border-slate-200 pb-2.5 flex items-center gap-2">
+                              <IconComp className="w-4 h-4 text-emerald-600" />
+                              <span>{col.title}</span>
+                            </div>
+                            <div className="space-y-1">
+                              {col.links.map((link) => (
+                                <Link
+                                  key={link.href}
+                                  href={link.href}
+                                  onClick={() => setIsMoreDropdownOpen(false)}
+                                  className="block rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700 transition-all hover:bg-slate-100 hover:text-slate-900 hover:translate-x-1 border border-transparent hover:border-slate-200"
+                                >
+                                  {link.label}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </nav>
 
           {/* RIGHT ACTION BUTTONS */}
-          <div className="hidden items-center gap-3 md:flex">
+          <div className="hidden items-center gap-2.5 md:flex">
             <Link href="/post-property">
-              <Button variant="amber" size="sm" className="font-black text-xs rounded-xl shadow-md flex items-center gap-1.5">
-                <PlusCircle className="w-3.5 h-3.5 text-slate-950" />
+              <button
+                type="button"
+                className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-full shadow-xs hover:shadow-md transition-all flex items-center gap-1.5 active:scale-95 border border-amber-400/60"
+              >
+                <PlusCircle className="w-3.5 h-3.5 text-slate-950 stroke-[2.5]" />
                 <span>Post Property</span>
-                <span className="text-[9px] bg-slate-950 text-amber-300 font-bold px-1.5 py-0.5 rounded-full uppercase border border-amber-400/40">Free</span>
-              </Button>
+                <span className="text-[9px] bg-slate-950 text-amber-300 font-extrabold px-1.5 py-0.5 rounded-full uppercase tracking-wider">Free</span>
+              </button>
             </Link>
 
             {currentUser ? (
@@ -311,12 +354,12 @@ export const Navbar: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-                  className="flex items-center gap-2 rounded-xl bg-slate-100 px-3.5 py-2 text-xs font-bold text-slate-900 shadow-sm hover:bg-slate-200 border border-slate-200 transition"
+                  className="flex items-center gap-2 rounded-full bg-slate-100 px-3.5 py-1.5 text-xs font-bold text-slate-900 hover:bg-slate-200 border border-slate-200 transition-all shadow-xs"
                 >
                   <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] font-black text-white">
                     {currentUser.fullName ? currentUser.fullName.charAt(0).toUpperCase() : 'U'}
                   </div>
-                  <span className="max-w-[100px] truncate">{currentUser.fullName || currentUser.email}</span>
+                  <span className="max-w-[100px] truncate font-extrabold">{currentUser.fullName || currentUser.email}</span>
                   <Badge variant="emerald" className="text-[9px] px-1.5 py-0 font-extrabold uppercase bg-emerald-100 text-emerald-800 border border-emerald-300">
                     {currentUser.role}
                   </Badge>
@@ -371,19 +414,18 @@ export const Navbar: React.FC = () => {
               </div>
             ) : (
               /* SIGN IN BUTTON */
-              <Button
-                variant="primary"
-                size="sm"
-                className="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-md rounded-xl px-4 flex items-center gap-1.5"
+              <button
+                type="button"
+                className="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-xs hover:shadow-md rounded-full px-4 py-1.5 flex items-center gap-1.5 transition-all active:scale-95"
                 onClick={() => {
                   setAuthMode('login');
                   setAuthError(null);
                   setIsAuthOpen(true);
                 }}
               >
-                <User className="w-3.5 h-3.5" />
+                <User className="w-3.5 h-3.5 text-white" />
                 <span>Sign In</span>
-              </Button>
+              </button>
             )}
           </div>
 
