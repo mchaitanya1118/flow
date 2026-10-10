@@ -58,19 +58,20 @@ export function WhatsAppWidget() {
   return (
     <React.Fragment>
       <div className="fixed bottom-6 right-6 z-50 font-sans flex flex-col items-end gap-3.5">
-        {/* 1. FLOATING PHONE AI BUTTON (PERFECT ROUND CIRCLE WITH CENTERED PHONE ICON) */}
+        {/* 1. FLOATING PHONE AI BUTTON (100% PERFECT CIRCLE 56px x 56px WITH CENTERED ICON) */}
         <div
-          className="relative group flex items-center justify-end"
+          className="relative group flex items-center justify-end shrink-0"
           onMouseEnter={() => setIsPhoneHovered(true)}
           onMouseLeave={() => setIsPhoneHovered(false)}
         >
           <button
             type="button"
             onClick={() => setIsVoiceAdvisorOpen(true)}
-            className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-slate-950 hover:bg-slate-900 text-white shadow-2xl hover:shadow-emerald-900/40 border border-slate-700/80 transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer flex items-center justify-center shrink-0 relative"
+            style={{ width: '56px', height: '56px', minWidth: '56px', minHeight: '56px', borderRadius: '9999px' }}
+            className="w-14 h-14 rounded-full bg-slate-950 hover:bg-slate-900 text-white shadow-2xl hover:shadow-emerald-900/40 border border-slate-700/80 transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer flex items-center justify-center shrink-0 relative aspect-square"
             aria-label="Open Voice Advisor AI Popup"
           >
-            <span className="animate-ping absolute inline-flex h-10 w-10 rounded-full bg-emerald-400/40 opacity-75"></span>
+            <span className="animate-ping absolute inline-flex h-9 w-9 rounded-full bg-emerald-400/40 opacity-75"></span>
             <Phone className="w-6 h-6 text-emerald-400 fill-emerald-400/20 relative z-10" />
           </button>
 
@@ -172,16 +173,17 @@ export function WhatsAppWidget() {
           </div>
         )}
 
-        {/* 2. FLOATING WHATSAPP BUTTON (PERFECT ROUND CIRCLE WITH CENTERED CHAT ICON) */}
+        {/* 2. FLOATING WHATSAPP BUTTON (100% PERFECT CIRCLE 56px x 56px WITH CENTERED ICON) */}
         <div
-          className="relative group flex items-center justify-end"
+          className="relative group flex items-center justify-end shrink-0"
           onMouseEnter={() => setIsWaHovered(true)}
           onMouseLeave={() => setIsWaHovered(false)}
         >
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-2xl hover:shadow-emerald-600/40 transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer flex items-center justify-center shrink-0 relative"
+            style={{ width: '56px', height: '56px', minWidth: '56px', minHeight: '56px', borderRadius: '9999px' }}
+            className="w-14 h-14 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-2xl hover:shadow-emerald-600/40 transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer flex items-center justify-center shrink-0 relative aspect-square"
             aria-label="Open WhatsApp Chat Support"
           >
             <MessageCircle className="w-6 h-6 fill-white stroke-emerald-600 shrink-0" />
