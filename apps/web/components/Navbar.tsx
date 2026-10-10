@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button, Modal, Input, Badge } from '@estateflow/ui';
+import { VoiceAdvisorModal } from './VoiceAdvisorModal';
 import {
   ChevronDown,
   PlusCircle,
@@ -48,6 +49,7 @@ export const Navbar: React.FC = () => {
   const [isMoreDropdownOpen, setIsMoreDropdownOpen] = useState(false);
   const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [isVoiceAdvisorOpen, setIsVoiceAdvisorOpen] = useState(false);
 
   const [selectedCity, setSelectedCity] = useState('Hyderabad');
 
@@ -337,6 +339,21 @@ export const Navbar: React.FC = () => {
 
           {/* RIGHT ACTION BUTTONS */}
           <div className="hidden items-center gap-2.5 md:flex">
+            {/* VOICE ADVISOR CALL BUTTON */}
+            <button
+              type="button"
+              onClick={() => setIsVoiceAdvisorOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#111111] hover:bg-black text-amber-300 font-extrabold text-xs shadow-md border border-amber-400/40 transition-all hover:border-amber-400 active:scale-95 group"
+              title="Call Ava — AI Home Advisor"
+            >
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-400"></span>
+              </span>
+              <Phone className="w-3.5 h-3.5 text-amber-300 group-hover:rotate-12 transition-transform" />
+              <span className="text-[11px] uppercase tracking-wider font-extrabold">Voice Advisor</span>
+            </button>
+
             <Link href="/post-property">
               <button
                 type="button"
@@ -578,6 +595,13 @@ export const Navbar: React.FC = () => {
           </div>
         </form>
       </Modal>
+
+      {/* VOICE ADVISOR CALL MODAL */}
+      <VoiceAdvisorModal
+        isOpen={isVoiceAdvisorOpen}
+        onClose={() => setIsVoiceAdvisorOpen(false)}
+        selectedCity={selectedCity}
+      />
     </>
   );
 };
