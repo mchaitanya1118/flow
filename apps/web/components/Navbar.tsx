@@ -355,15 +355,13 @@ export const Navbar: React.FC = () => {
             </button>
 
             {/* POST PROPERTY CTA */}
-            <Link href="/post-property">
-              <button
-                type="button"
-                className="bg-slate-900 hover:bg-black text-white font-extrabold text-xs px-3.5 py-1.5 rounded-full shadow-xs hover:shadow-md transition-all flex items-center gap-1.5 active:scale-95 border border-slate-800"
-              >
-                <PlusCircle className="w-3.5 h-3.5 text-amber-400 stroke-[2.5]" />
-                <span>Post Property</span>
-                <span className="text-[9px] bg-amber-400 text-slate-950 font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Free</span>
-              </button>
+            <Link
+              href="/post-property"
+              className="bg-slate-900 hover:bg-black text-white font-extrabold text-xs px-3.5 py-1.5 rounded-full shadow-xs hover:shadow-md transition-all flex items-center gap-1.5 active:scale-95 border border-slate-800"
+            >
+              <PlusCircle className="w-3.5 h-3.5 text-amber-400 stroke-[2.5]" />
+              <span>Post Property</span>
+              <span className="text-[9px] bg-amber-400 text-slate-950 font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Free</span>
             </Link>
 
             {currentUser ? (
@@ -475,10 +473,12 @@ export const Navbar: React.FC = () => {
             </div>
 
             <div className="pt-3 border-t border-slate-200 space-y-2">
-              <Link href="/post-property" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button variant="outline" size="sm" className="w-full text-xs font-bold border-slate-200 bg-slate-100 text-slate-900">
-                  + Post Property (Free)
-                </Button>
+              <Link
+                href="/post-property"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block text-center rounded-xl px-4 py-2.5 text-xs font-extrabold border border-slate-200 bg-slate-100 text-slate-900 hover:bg-slate-200"
+              >
+                + Post Property (Free)
               </Link>
               {currentUser ? (
                 <Button

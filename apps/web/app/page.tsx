@@ -984,14 +984,12 @@ export default function HomePage() {
               </div>
             </div>
 
-            <Link href="/home-loans" className="w-full">
-              <button
-                type="button"
-                className="w-full bg-gradient-to-r from-primary to-primary-container hover:opacity-95 text-on-primary font-headline-sm text-xs sm:text-sm font-black py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all"
-              >
-                <span>Apply for Instant Pre-Approval</span>
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-              </button>
+            <Link
+              href="/home-loans"
+              className="w-full bg-gradient-to-r from-primary to-primary-container hover:opacity-95 text-on-primary font-headline-sm text-xs sm:text-sm font-black py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all"
+            >
+              <span>Apply for Instant Pre-Approval</span>
+              <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
             </Link>
           </div>
         </div>
