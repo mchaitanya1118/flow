@@ -1,10 +1,26 @@
 import React from 'react';
 import type { Metadata, Viewport } from 'next';
+import { Plus_Jakarta_Sans, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { WhatsAppWidget } from '../components/WhatsAppWidget';
 import { OrganizationJsonLd, WebsiteJsonLd } from '../components/JsonLd';
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-plus-jakarta',
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-playfair',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://estateflow.io'),
@@ -81,20 +97,16 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="light" suppressHydrationWarning>
+    <html lang="en" className={`light ${plusJakartaSans.variable} ${playfairDisplay.variable}`} suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="bg-surface font-body-md text-on-surface antialiased flex min-h-screen flex-col selection:bg-primary-fixed selection:text-on-primary-fixed" suppressHydrationWarning>
+      <body className={`${plusJakartaSans.className} bg-surface font-body-md text-on-surface antialiased flex min-h-screen flex-col selection:bg-primary-fixed selection:text-on-primary-fixed`} suppressHydrationWarning>
         <OrganizationJsonLd />
         <WebsiteJsonLd />
         <Navbar />
