@@ -13,6 +13,8 @@ import {
   ArrowRight,
   X,
   RotateCcw,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 
 interface VoiceAdvisorModalProps {
@@ -20,6 +22,29 @@ interface VoiceAdvisorModalProps {
   onClose: () => void;
   selectedCity?: string;
 }
+
+const LEFT_SLIDES = [
+  {
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+    tagline: 'A DIFFERENT WAY TO FIND A HOME',
+    headline: 'No forms. No endless scrolling. Just a conversation about how you want to live.',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
+    tagline: 'CURATED RERA-VERIFIED MARKETPLACE',
+    headline: 'AI-matched sky penthouses & gated villas with 100% verified legal title clearance.',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80',
+    tagline: 'REAL-TIME ML VALUATION ENGINE',
+    headline: 'Instant sub-registrar land rates, 10-yr price CAGR heatmaps & yield analysis.',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80',
+    tagline: 'EXECUTIVE CONCIERGE DESK',
+    headline: 'Zero brokerage, builder-direct unit allocation & priority viewing slot reservation.',
+  },
+];
 
 export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
   isOpen,
@@ -31,6 +56,10 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
   const [callDuration, setCallDuration] = useState(0);
   const [transcript, setTranscript] = useState<Array<{ sender: 'ai' | 'user'; text: string }>>([]);
   const [waveHeights, setWaveHeights] = useState<number[]>([30, 60, 45, 80, 55, 90, 40, 70, 35, 65, 50, 75]);
+  
+  // Left Panel Slider State
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isSliderHovered, setIsSliderHovered] = useState(false);
 
   // Handle ESC key to close
   useEffect(() => {
@@ -42,6 +71,15 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
     }
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
+
+  // Auto-play Left Panel Slider every 4.5 seconds
+  useEffect(() => {
+    if (!isOpen || isSliderHovered) return;
+    const sliderTimer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % LEFT_SLIDES.length);
+    }, 4500);
+    return () => clearInterval(sliderTimer);
+  }, [isOpen, isSliderHovered]);
 
   // Call duration counter & audio wave animation
   useEffect(() => {
@@ -139,6 +177,14 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
     setTranscript([]);
   };
 
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % LEFT_SLIDES.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + LEFT_SLIDES.length) % LEFT_SLIDES.length);
+  };
+
   return (
     <div className="fixed inset-0 z-[200] bg-[#0c0b0a]/95 backdrop-blur-2xl flex items-center justify-center p-2 sm:p-4 lg:p-6 text-white font-sans animate-in fade-in zoom-in-95 duration-200">
       {/* Main Luxury Modal Container (Exact Match to Design Reference) */}
@@ -153,15 +199,23 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
           <X className="w-5 h-5" />
         </button>
 
-        {/* LEFT PANEL: ARCHITECTURAL SUNSET WINDOW VIEW & CALL STAGE TABS */}
-        <div className="lg:w-[48%] relative bg-[#0c0b0a] flex flex-col justify-between p-6 sm:p-8 lg:p-10 overflow-hidden border-b lg:border-b-0 lg:border-r border-[#2e2b26]">
-          {/* Sunset Glass Architecture Background Image */}
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-60 transform scale-105 transition-transform duration-1000 filter contrast-110 brightness-90"
-            style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80')`,
-            }}
-          />
+        {/* LEFT PANEL: ARCHITECTURAL SLIDER CAROUSEL & CALL STAGE TABS */}
+        <div
+          className="lg:w-[48%] relative bg-[#0c0b0a] flex flex-col justify-between p-6 sm:p-8 lg:p-10 overflow-hidden border-b lg:border-b-0 lg:border-r border-[#2e2b26] group"
+          onMouseEnter={() => setIsSliderHovered(true)}
+          onMouseLeave={() => setIsSliderHovered(false)}
+        >
+          {/* SLIDER BACKGROUND IMAGES WITH SMOOTH CROSSFADE */}
+          {LEFT_SLIDES.map((slide, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out filter contrast-110 brightness-90 ${
+                index === currentSlide ? 'opacity-70 scale-105 transition-transform duration-[4500ms]' : 'opacity-0 scale-100'
+              }`}
+              style={{ backgroundImage: `url('${slide.image}')` }}
+            />
+          ))}
+
           {/* High-Contrast Gradient Backdrop Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#0c0b0a]/95 via-[#0c0b0a]/60 to-[#0c0b0a]/40 z-0" />
 
@@ -170,9 +224,9 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
             {/* Round Back Button */}
             <button
               onClick={onClose}
-              className="flex items-center gap-2 text-slate-200 hover:text-white text-[11px] font-mono tracking-widest uppercase transition-all group"
+              className="flex items-center gap-2 text-slate-200 hover:text-white text-[11px] font-mono tracking-widest uppercase transition-all group/btn"
             >
-              <div className="w-9 h-9 rounded-full border border-white/40 bg-black/40 group-hover:bg-white/20 flex items-center justify-center transition-colors shadow-sm">
+              <div className="w-9 h-9 rounded-full border border-white/40 bg-black/40 group-hover/btn:bg-white/20 flex items-center justify-center transition-colors shadow-sm">
                 <ArrowLeft className="w-4 h-4 text-white" />
               </div>
               <span className="hidden sm:inline font-bold">BACK</span>
@@ -234,23 +288,50 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
             </span>
           </div>
 
-          {/* BOTTOM LEFT SERIF TYPOGRAPHY & STEPPER */}
+          {/* MANUAL SLIDE NAVIGATION ARROWS (VISIBLE ON HOVER) */}
+          <div className="absolute inset-y-0 left-3 right-3 z-10 flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button
+              onClick={prevSlide}
+              className="w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 border border-white/20 text-white flex items-center justify-center backdrop-blur-md pointer-events-auto transition-transform hover:scale-110 shadow-lg"
+              aria-label="Previous Slide"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={nextSlide}
+              className="w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 border border-white/20 text-white flex items-center justify-center backdrop-blur-md pointer-events-auto transition-transform hover:scale-110 shadow-lg"
+              aria-label="Next Slide"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* BOTTOM LEFT SLIDING SERIF TYPOGRAPHY & STEPPER */}
           <div className="relative z-10 space-y-4 pt-16 lg:pt-0">
-            <span className="text-[10px] tracking-[0.3em] font-mono text-[#d9b884] uppercase font-bold block">
-              A DIFFERENT WAY TO FIND A HOME
-            </span>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-white font-normal leading-[1.25] tracking-tight drop-shadow-md">
-              No forms. No endless scrolling. Just a conversation about how you want to live.
-            </h2>
+            {/* Tagline & Headline transition */}
+            <div key={currentSlide} className="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-2">
+              <span className="text-[10px] tracking-[0.3em] font-mono text-[#d9b884] uppercase font-bold block">
+                {LEFT_SLIDES[currentSlide].tagline}
+              </span>
+              <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-white font-normal leading-[1.25] tracking-tight drop-shadow-md min-h-[90px]">
+                {LEFT_SLIDES[currentSlide].headline}
+              </h2>
+            </div>
             
-            {/* Stepper Dash Indicator (6 Dashes) */}
+            {/* Interactive Stepper Dash Indicators (Clickable) */}
             <div className="flex items-center gap-2 pt-2">
-              <div className="h-0.5 w-6 bg-white/40" />
-              <div className="h-0.5 w-6 bg-white/40" />
-              <div className="h-0.5 w-8 bg-[#d9b884]" />
-              <div className="h-0.5 w-6 bg-white/40" />
-              <div className="h-0.5 w-6 bg-white/40" />
-              <div className="h-0.5 w-6 bg-white/40" />
+              {LEFT_SLIDES.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentSlide(idx)}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  className={`h-1 rounded-full transition-all duration-300 cursor-pointer ${
+                    idx === currentSlide
+                      ? 'w-10 bg-[#d9b884] shadow-md shadow-[#d9b884]/40'
+                      : 'w-6 bg-white/40 hover:bg-white/70'
+                  }`}
+                />
+              ))}
             </div>
           </div>
         </div>
