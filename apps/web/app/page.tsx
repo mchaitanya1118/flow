@@ -549,10 +549,11 @@ export default function HomePage() {
 
       {/* 3. OMNICHANNEL PROPERTY DISCOVERY & FILTER BAR */}
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 -mt-28 sm:-mt-32 z-20 w-full">
-        <div className="bg-white rounded-3xl shadow-2xl p-4 lg:p-6 border border-slate-200">
-          {/* Transaction Tabs & Multi-City Switcher */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-100">
-            <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
+        <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-4 lg:p-6 border border-slate-200/90 ring-1 ring-slate-900/5">
+          {/* Transaction Tabs & Multi-City Switcher (Single Line Clean Rhythm) */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+            {/* Transaction Mode Tabs */}
+            <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5">
               {[
                 { id: 'BUY', label: 'Buy Property', icon: 'apartment' },
                 { id: 'RENT', label: 'Luxury Rent', icon: 'key' },
@@ -563,69 +564,76 @@ export default function HomePage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-4 py-2.5 rounded-full font-headline-sm text-xs sm:text-sm font-bold flex items-center gap-2 transition-all shrink-0 ${
+                  className={`px-3.5 py-2 rounded-full text-xs font-extrabold flex items-center gap-1.5 transition-all shrink-0 ${
                     activeTab === tab.id
-                      ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-black shadow-lg shadow-emerald-600/25 border border-emerald-500/30'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 font-bold'
+                      ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20'
+                      : 'bg-slate-100/80 text-slate-600 hover:bg-slate-200/80 hover:text-slate-900'
                   }`}
                 >
-                  <span className="material-symbols-outlined text-[16px]">{tab.icon}</span>
+                  <span className="material-symbols-outlined text-[15px]">{tab.icon}</span>
                   <span>{tab.label}</span>
                 </button>
               ))}
             </div>
 
-            {/* MULTI CITY SELECTOR SWITCHER BUTTONS */}
-            <div className="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200 shrink-0">
-              <span className="text-[10px] font-black text-slate-500 uppercase px-2 hidden sm:inline">Active City:</span>
-              <button
-                type="button"
-                onClick={() => changeCity('Hyderabad')}
-                className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
-                  selectedCity === 'Hyderabad'
-                    ? 'bg-emerald-600 text-white shadow-md'
-                    : 'text-slate-700 hover:bg-slate-200'
-                }`}
-              >
-                📍 Hyderabad
-              </button>
-              <button
-                type="button"
-                onClick={() => changeCity('Bengaluru')}
-                className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
-                  selectedCity === 'Bengaluru'
-                    ? 'bg-emerald-600 text-white shadow-md'
-                    : 'text-slate-700 hover:bg-slate-200'
-                }`}
-              >
-                📍 Bengaluru
-              </button>
+            {/* SLEEK CITY SEGMENTED CONTROL */}
+            <div className="flex items-center justify-between sm:justify-start gap-2 shrink-0">
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider hidden lg:inline">City:</span>
+              <div className="flex items-center p-1 rounded-full bg-slate-100/90 border border-slate-200/80 shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => changeCity('Hyderabad')}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold transition-all flex items-center gap-1.5 ${
+                    selectedCity === 'Hyderabad'
+                      ? 'bg-white text-emerald-800 shadow-sm border border-slate-200/60'
+                      : 'text-slate-500 hover:text-slate-900 font-bold'
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${selectedCity === 'Hyderabad' ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'}`}></span>
+                  <span>Hyderabad</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => changeCity('Bengaluru')}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold transition-all flex items-center gap-1.5 ${
+                    selectedCity === 'Bengaluru'
+                      ? 'bg-white text-emerald-800 shadow-sm border border-slate-200/60'
+                      : 'text-slate-500 hover:text-slate-900 font-bold'
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${selectedCity === 'Bengaluru' ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'}`}></span>
+                  <span>Bengaluru</span>
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Discovery Search Fields Grid */}
-          <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-2 items-end">
+          <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-3.5 pt-4 items-end">
             <div className="space-y-1.5">
-              <label className="font-label-caps text-[11px] uppercase text-secondary font-extrabold">Locality or Corridor</label>
+              <label className="font-sans text-[10px] uppercase tracking-wider text-slate-500 font-extrabold flex items-center gap-1">
+                <span className="material-symbols-outlined text-[13px] text-emerald-600">location_on</span> Locality / Corridor
+              </label>
               <div className="relative">
-                <span className="material-symbols-outlined absolute left-3.5 top-3.5 text-secondary text-[18px]">location_on</span>
                 <input
                   type="text"
                   value={searchLocation}
                   onChange={(e) => setSearchLocation(e.target.value)}
-                  className="w-full bg-surface-canvas rounded-xl pl-10 pr-3.5 py-3 font-body-md text-xs sm:text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-200 font-semibold"
-                  placeholder="Enter locality e.g. Kondapur"
+                  className="w-full bg-slate-50 hover:bg-slate-100/70 focus:bg-white rounded-2xl pl-3.5 pr-3.5 py-2.5 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-200 font-bold transition-all"
+                  placeholder={`Search ${selectedCity} localities...`}
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-label-caps text-[11px] uppercase text-secondary font-extrabold">Asset Category</label>
+              <label className="font-sans text-[10px] uppercase tracking-wider text-slate-500 font-extrabold flex items-center gap-1">
+                <span className="material-symbols-outlined text-[13px] text-emerald-600">domain</span> Asset Category
+              </label>
               <div className="relative">
                 <select
                   value={propertyType}
                   onChange={(e) => setPropertyType(e.target.value)}
-                  className="w-full bg-surface-canvas rounded-xl px-3.5 py-3 font-body-md text-xs sm:text-sm text-on-surface appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-200 font-semibold"
+                  className="w-full bg-slate-50 hover:bg-slate-100/70 focus:bg-white rounded-2xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-200 font-bold transition-all pr-8"
                 >
                   <option value="ALL">All Asset Types</option>
                   <option value="APARTMENT">High-Rise Apartments</option>
@@ -633,34 +641,36 @@ export default function HomePage() {
                   <option value="PENTHOUSE">Sky Penthouses</option>
                   <option value="COMMERCIAL">Commercial Office</option>
                 </select>
-                <span className="material-symbols-outlined absolute right-3.5 top-3.5 text-secondary text-[18px] pointer-events-none">expand_more</span>
+                <span className="material-symbols-outlined absolute right-3.5 top-3 text-slate-400 text-[18px] pointer-events-none">unfold_more</span>
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-label-caps text-[11px] uppercase text-secondary font-extrabold">BHK Layout</label>
+              <label className="font-sans text-[10px] uppercase tracking-wider text-slate-500 font-extrabold flex items-center gap-1">
+                <span className="material-symbols-outlined text-[13px] text-emerald-600">bed</span> BHK Layout
+              </label>
               <div className="relative">
                 <select
                   value={bedrooms}
                   onChange={(e) => setBedrooms(e.target.value)}
-                  className="w-full bg-surface-canvas rounded-xl px-3.5 py-3 font-body-md text-xs sm:text-sm text-on-surface appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-200 font-semibold"
+                  className="w-full bg-slate-50 hover:bg-slate-100/70 focus:bg-white rounded-2xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-200 font-bold transition-all pr-8"
                 >
                   <option value="ANY">Any BHK</option>
                   <option value="2">2 BHK</option>
                   <option value="3">3 BHK</option>
                   <option value="4">4+ BHK</option>
                 </select>
-                <span className="material-symbols-outlined absolute right-3.5 top-3.5 text-secondary text-[18px] pointer-events-none">expand_more</span>
+                <span className="material-symbols-outlined absolute right-3.5 top-3 text-slate-400 text-[18px] pointer-events-none">unfold_more</span>
               </div>
             </div>
 
             <div>
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-sans text-xs sm:text-sm font-black py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20 border border-emerald-500/30 transition-all active:scale-[0.98] whitespace-nowrap"
+                className="w-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-sans text-xs sm:text-sm font-black py-2.5 px-4 rounded-2xl flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20 border border-emerald-500/30 transition-all active:scale-[0.98] whitespace-nowrap h-[42px]"
               >
                 <span className="material-symbols-outlined text-[18px]">search</span>
-                <span>Search 4,500+ Homes</span>
+                <span>Search {selectedCity === 'Hyderabad' ? '4,500+' : '6,200+'} Homes</span>
               </button>
             </div>
           </form>
