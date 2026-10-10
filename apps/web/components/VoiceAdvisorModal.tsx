@@ -1,20 +1,20 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  X,
+  ArrowLeft,
+  Phone,
+  PhoneOff,
   Mic,
   MicOff,
-  PhoneOff,
-  ArrowLeft,
-  ArrowRight,
   Volume2,
   Sparkles,
-  Building,
-  Check,
   CheckCircle2,
-  MapPin,
-  ExternalLink,
+  Building2,
+  ArrowRight,
+  X,
+  Play,
+  RotateCcw,
 } from 'lucide-react';
 
 interface VoiceAdvisorModalProps {
@@ -23,527 +23,458 @@ interface VoiceAdvisorModalProps {
   selectedCity?: string;
 }
 
-type CallStep = 'welcome' | 'calling' | 'on_call' | 'after_call';
-
 export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
   isOpen,
   onClose,
   selectedCity = 'Hyderabad',
 }) => {
-  const [step, setStep] = useState<CallStep>('welcome');
+  const [callStage, setCallStage] = useState<'welcome' | 'calling' | 'on_call' | 'after_call'>('welcome');
   const [isMuted, setIsMuted] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
-  const [transcript, setTranscript] = useState<
-    Array<{ sender: 'ai' | 'user'; text: string }>
-  >([
-    {
-      sender: 'ai',
-      text: `Hello! I'm Ava, your AI Home Advisor. I see you're looking at ${selectedCity}. Tell me about your dream home—location, budget, or preferred amenities?`,
-    },
-  ]);
-  const [isListening, setIsListening] = useState(false);
-  const [userQuery, setUserQuery] = useState('');
+  const [transcript, setTranscript] = useState<Array<{ sender: 'ai' | 'user'; text: string }>>([]);
+  const [waveHeights, setWaveHeights] = useState<number[]>([30, 60, 45, 80, 55, 90, 40, 70, 35, 65, 50, 75]);
 
-  // Timer for call duration
+  // Handle ESC key to close
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  // Call duration counter & audio wave animation
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (step === 'on_call') {
+    let waveTimer: NodeJS.Timeout;
+
+    if (callStage === 'on_call') {
       timer = setInterval(() => {
         setCallDuration((prev) => prev + 1);
       }, 1000);
-    } else {
-      setCallDuration(0);
-    }
-    return () => clearInterval(timer);
-  }, [step]);
 
-  // Simulate transition from Calling -> On call
-  useEffect(() => {
-    if (step === 'calling') {
-      const timeout = setTimeout(() => {
-        setStep('on_call');
-      }, 2500);
-      return () => clearTimeout(timeout);
+      waveTimer = setInterval(() => {
+        setWaveHeights([
+          Math.floor(20 + Math.random() * 70),
+          Math.floor(30 + Math.random() * 60),
+          Math.floor(15 + Math.random() * 80),
+          Math.floor(40 + Math.random() * 55),
+          Math.floor(25 + Math.random() * 75),
+          Math.floor(35 + Math.random() * 65),
+          Math.floor(20 + Math.random() * 80),
+          Math.floor(45 + Math.random() * 50),
+          Math.floor(15 + Math.random() * 70),
+          Math.floor(30 + Math.random() * 65),
+          Math.floor(40 + Math.random() * 55),
+          Math.floor(25 + Math.random() * 70),
+        ]);
+      }, 200);
     }
-  }, [step]);
+
+    return () => {
+      clearInterval(timer);
+      clearInterval(waveTimer);
+    };
+  }, [callStage]);
+
+  // Auto transition from calling to on_call
+  useEffect(() => {
+    if (callStage === 'calling') {
+      const timer = setTimeout(() => {
+        setCallStage('on_call');
+        setCallDuration(0);
+        setTranscript([
+          {
+            sender: 'ai',
+            text: `Hello! I'm Ava, your personal home advisor at EstateFlow ${selectedCity}. How can I assist your property search today?`,
+          },
+        ]);
+
+        // Simulate user speaking after 4 seconds
+        setTimeout(() => {
+          setTranscript((prev) => [
+            ...prev,
+            {
+              sender: 'user',
+              text: `Hi Ava! I am looking for a 3 BHK luxury penthouse in ${selectedCity === 'Hyderabad' ? 'Kokapet Neopolis' : 'Indiranagar'} with sunset views under ₹3.5 Crore.`,
+            },
+          ]);
+
+          // Simulate AI response after 7 seconds
+          setTimeout(() => {
+            setTranscript((prev) => [
+              ...prev,
+              {
+                sender: 'ai',
+                text: `Excellent choice. In ${selectedCity === 'Hyderabad' ? 'Kokapet' : 'Indiranagar'}, we have 2 high-floor sky villas with 270° views matching your budget. Let me curate them for you right now.`,
+              },
+            ]);
+          }, 3000);
+        }, 3000);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [callStage, selectedCity]);
 
   if (!isOpen) return null;
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  const formatTime = (secs: number) => {
+    const m = Math.floor(secs / 60);
+    const s = secs % 60;
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
-  const handleSendMessage = (textToSend?: string) => {
-    const text = textToSend || userQuery;
-    if (!text.trim()) return;
+  const startCall = () => {
+    setCallStage('calling');
+  };
 
-    const newTranscript = [...transcript, { sender: 'user' as const, text }];
-    setTranscript(newTranscript);
-    setUserQuery('');
+  const endCall = () => {
+    setCallStage('after_call');
+  };
 
-    // AI Response Simulation
-    setTimeout(() => {
-      let aiReply = `Understood! Searching prime corridors in ${selectedCity} for "${text}". I have shortlisted 3 verified TS-RERA luxury listings matching your criteria.`;
-      if (text.toLowerCase().includes('villa') || text.toLowerCase().includes('jubilee')) {
-        aiReply = `Excellent choice! Jubilee Hills & Kokapet Neopolis have 4 BHK gated villas starting from ₹6.8 Cr with private plunge pools and high CAGR appreciation.`;
-      } else if (text.toLowerCase().includes('bengaluru') || text.toLowerCase().includes('indiranagar')) {
-        aiReply = `Indiranagar & Sadashivnagar offer top-tier tech penthouses with 14.5% 3-yr rental yield. Let me prepare your personalized dossier.`;
-      }
-      setTranscript((prev) => [...prev, { sender: 'ai' as const, text: aiReply }]);
-    }, 1200);
+  const resetCall = () => {
+    setCallStage('welcome');
+    setCallDuration(0);
+    setTranscript([]);
   };
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/95 backdrop-blur-2xl text-white overflow-hidden animate-in fade-in duration-200">
-      <div className="relative flex flex-col w-full h-full max-w-7xl mx-auto my-0 sm:my-6 sm:h-[90vh] sm:rounded-3xl border border-slate-800 bg-[#0d0d0d] shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-[200] bg-slate-950/95 backdrop-blur-2xl flex items-center justify-center p-2 sm:p-4 lg:p-6 text-white font-sans animate-in fade-in zoom-in-95 duration-200">
+      {/* Main Luxury Modal Card */}
+      <div className="max-w-6xl w-full h-[92vh] max-h-[800px] bg-[#141311] rounded-[28px] sm:rounded-[36px] overflow-hidden border border-[#2a2622] shadow-2xl flex flex-col lg:flex-row relative">
         
-        {/* TOP CONTROL NAVIGATION BAR */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800/80 bg-[#121212]/90 backdrop-blur-md shrink-0">
-          {/* Back Button */}
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex items-center gap-2 text-xs font-semibold tracking-widest text-slate-300 hover:text-white uppercase transition-colors group"
-          >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-700 bg-slate-900 group-hover:border-slate-500">
-              <ArrowLeft className="w-3.5 h-3.5 text-slate-300 group-hover:text-white" />
+        {/* CLOSE BUTTON (TOP RIGHT) */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-50 text-slate-400 hover:text-white bg-slate-900/60 hover:bg-slate-800 p-2.5 rounded-full border border-white/10 transition-colors"
+          aria-label="Close Voice Advisor"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        {/* LEFT PANEL: ARCHITECTURAL SUNSET VIEW & STAGE NAVIGATION */}
+        <div className="lg:w-1/2 relative bg-slate-900 flex flex-col justify-between p-6 sm:p-8 lg:p-10 overflow-hidden border-b lg:border-b-0 lg:border-r border-[#2a2622]">
+          {/* Sunset Glass Architecture Background Image */}
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-45 transform scale-105 transition-transform duration-1000"
+            style={{
+              backgroundImage: `url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80')`,
+            }}
+          />
+          {/* Subtle Warm Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#141311] via-[#141311]/40 to-[#141311]/80 z-0" />
+
+          {/* TOP BAR: BACK BUTTON, STAGE PILL & CITY */}
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
+            {/* Back Button */}
+            <button
+              onClick={onClose}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/20 bg-black/20 hover:bg-black/40 text-slate-200 hover:text-white text-xs font-medium tracking-wider uppercase transition-all"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>BACK</span>
+            </button>
+
+            {/* STAGE SELECTOR PILL TABS */}
+            <div className="bg-black/60 backdrop-blur-md p-1 rounded-full border border-white/15 flex items-center gap-1 text-[11px] font-mono">
+              <button
+                onClick={() => setCallStage('welcome')}
+                className={`px-3 py-1 rounded-full font-bold transition-all ${
+                  callStage === 'welcome'
+                    ? 'bg-white text-slate-950 shadow-md'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                Welcome
+              </button>
+              <button
+                onClick={() => setCallStage('calling')}
+                className={`px-3 py-1 rounded-full font-bold transition-all ${
+                  callStage === 'calling'
+                    ? 'bg-white text-slate-950 shadow-md'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                Calling
+              </button>
+              <button
+                onClick={() => setCallStage('on_call')}
+                className={`px-3 py-1 rounded-full font-bold transition-all ${
+                  callStage === 'on_call'
+                    ? 'bg-white text-slate-950 shadow-md'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                On call
+              </button>
+              <button
+                onClick={() => setCallStage('after_call')}
+                className={`px-3 py-1 rounded-full font-bold transition-all ${
+                  callStage === 'after_call'
+                    ? 'bg-white text-slate-950 shadow-md'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                After call
+              </button>
             </div>
-            <span>Back</span>
-          </button>
 
-          {/* STEP TABS SWITCHER (Welcome | Calling | On call | After call) */}
-          <div className="flex items-center gap-1.5 p-1 rounded-full bg-black/60 border border-slate-800 text-[11px] font-medium">
-            <button
-              onClick={() => setStep('welcome')}
-              className={`px-3 py-1 rounded-full transition-all ${
-                step === 'welcome'
-                  ? 'bg-white text-black font-bold shadow-sm'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              Welcome
-            </button>
-            <button
-              onClick={() => setStep('calling')}
-              className={`px-3 py-1 rounded-full transition-all ${
-                step === 'calling'
-                  ? 'bg-white text-black font-bold shadow-sm'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              Calling
-            </button>
-            <button
-              onClick={() => setStep('on_call')}
-              className={`px-3 py-1 rounded-full transition-all ${
-                step === 'on_call'
-                  ? 'bg-white text-black font-bold shadow-sm'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              On call
-            </button>
-            <button
-              onClick={() => setStep('after_call')}
-              className={`px-3 py-1 rounded-full transition-all ${
-                step === 'after_call'
-                  ? 'bg-white text-black font-bold shadow-sm'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              After call
-            </button>
-          </div>
-
-          {/* CITY & STATUS INDICATOR */}
-          <div className="flex items-center gap-4 text-xs font-medium">
-            <span className="hidden sm:inline font-mono text-[10px] uppercase tracking-widest text-amber-400/90 font-bold border border-amber-500/30 px-2.5 py-1 rounded-full bg-amber-500/10">
+            {/* CITY BADGE */}
+            <span className="text-[11px] font-mono tracking-[0.25em] text-[#d9b884] uppercase font-bold hidden sm:inline">
               {selectedCity}
             </span>
-            <div className="flex items-center gap-2">
-              <span className="text-[11px] font-bold text-slate-400 tracking-wider uppercase">Voice Advisor</span>
-              <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest hidden md:inline">
-                Available Now
-              </span>
+          </div>
+
+          {/* BOTTOM LEFT SERIF TYPOGRAPHY & STEPPER */}
+          <div className="relative z-10 space-y-4 pt-16 lg:pt-0">
+            <span className="text-[10px] tracking-[0.3em] font-mono text-[#d9b884] uppercase font-bold block">
+              A DIFFERENT WAY TO FIND A HOME
+            </span>
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-slate-100 font-light leading-snug tracking-tight">
+              No forms. No endless scrolling. Just a conversation about how you want to live.
+            </h2>
+            
+            {/* Stepper Dots/Lines */}
+            <div className="flex items-center gap-2 pt-2">
+              <div className="h-0.5 w-8 bg-[#d9b884]" />
+              <div className="h-0.5 w-4 bg-white/30" />
+              <div className="h-0.5 w-4 bg-white/30" />
+              <div className="h-0.5 w-4 bg-white/30" />
+              <div className="h-0.5 w-4 bg-white/30" />
             </div>
-            <button
-              type="button"
-              onClick={onClose}
-              className="p-1.5 rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
           </div>
         </div>
 
-        {/* SPLIT SCREEN BODY CONTAINER */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 flex-1 overflow-hidden">
-          
-          {/* LEFT COLUMN: AMBIENT LUXURY WINDOW VIEW */}
-          <div className="lg:col-span-5 relative hidden lg:flex flex-col justify-between p-8 sm:p-12 overflow-hidden border-r border-slate-800/80">
-            {/* Background Image Layer */}
-            <div
-              className="absolute inset-0 bg-cover bg-center filter brightness-90 transition-all duration-700 hover:scale-105"
-              style={{
-                backgroundImage:
-                  'url("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=85")',
-              }}
-            />
-            {/* Dark Vignette Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/30" />
-
-            {/* Top Tag */}
-            <div className="relative z-10">
-              <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-amber-300/90 bg-black/60 px-3 py-1.5 rounded-full border border-amber-400/30 backdrop-blur-md">
-                EstateFlow Private Concierge
-              </span>
-            </div>
-
-            {/* Bottom Statement */}
-            <div className="relative z-10 space-y-4 max-w-md">
-              <span className="text-[11px] font-extrabold tracking-[0.25em] text-amber-400 uppercase">
-                A Different Way to Find a Home
-              </span>
-              <h2 className="font-serif text-3xl sm:text-4xl font-light text-white leading-tight">
-                No forms. No endless scrolling. Just a conversation about how you want to live.
-              </h2>
-
-              {/* Progress dashes */}
-              <div className="flex items-center gap-1.5 pt-4">
-                <div className="h-0.5 w-8 bg-amber-400 rounded-full" />
-                <div className="h-0.5 w-3 bg-slate-600 rounded-full" />
-                <div className="h-0.5 w-3 bg-slate-600 rounded-full" />
-                <div className="h-0.5 w-3 bg-slate-600 rounded-full" />
-                <div className="h-0.5 w-3 bg-slate-600 rounded-full" />
-              </div>
+        {/* RIGHT PANEL: VOICE ADVISOR COCKPIT */}
+        <div className="lg:w-1/2 bg-[#161513] p-6 sm:p-8 lg:p-12 flex flex-col justify-between overflow-y-auto">
+          {/* TOP BAR: VOICE ADVISOR & STATUS BADGE */}
+          <div className="flex items-center justify-between pb-6">
+            <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-slate-400 font-bold">
+              VOICE ADVISOR
+            </span>
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/50 border border-emerald-800/40 text-emerald-400 text-[10px] font-mono tracking-widest uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>AVAILABLE NOW</span>
             </div>
           </div>
 
-          {/* RIGHT COLUMN: VOICE ADVISOR COCKPIT & FLOW STATES */}
-          <div className="lg:col-span-7 bg-[#111111] p-6 sm:p-10 flex flex-col justify-between overflow-y-auto relative">
-            
-            {/* 1. WELCOME STEP */}
-            {step === 'welcome' && (
-              <div className="flex flex-col justify-between h-full space-y-8 animate-in fade-in zoom-in-95 duration-200">
-                {/* Advisor Avatar Profile Box */}
-                <div className="flex items-start gap-6 pt-2">
-                  <div className="relative shrink-0">
-                    <div className="w-28 h-40 sm:w-36 sm:h-48 rounded-t-full border border-amber-400/40 overflow-hidden relative shadow-2xl">
-                      <img
-                        src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80"
-                        alt="Ava - AI Voice Advisor"
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                    </div>
-                    {/* AI Advisor Gold Badge */}
-                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-400 text-slate-950 font-black text-[9px] uppercase tracking-widest px-3 py-1 rounded-sm shadow-lg">
-                      AI ADVISOR
-                    </div>
-                  </div>
-
-                  <div className="space-y-1.5 pt-2">
-                    <h3 className="font-serif text-4xl sm:text-5xl font-light text-slate-100 italic">
-                      Ava
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-400 font-medium">
-                      Your personal luxury home advisor
-                    </p>
-                    <p className="text-xs text-emerald-400 font-semibold flex items-center gap-1.5 pt-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                      Ready when you are
-                    </p>
-                  </div>
+          {/* DYNAMIC CONTENT BASED ON CALL STAGE */}
+          <div className="my-auto space-y-6 sm:space-y-8 py-4">
+            {/* PROFILE AVATAR CARD */}
+            <div className="flex items-center gap-5">
+              {/* Arch Window Frame with Photo */}
+              <div className="relative shrink-0">
+                <div className="w-24 h-32 sm:w-28 sm:h-36 rounded-t-full overflow-hidden border-2 border-[#c4a572]/50 bg-slate-900 shadow-xl relative">
+                  <img
+                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80"
+                    alt="Ava AI Advisor"
+                    className="w-full h-full object-cover object-top filter contrast-105"
+                  />
+                  {/* Overlay arch glow */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 </div>
-
-                {/* Main Headline Prompt */}
-                <div className="space-y-4 my-auto py-6">
-                  <h1 className="font-serif text-3xl sm:text-5xl text-slate-100 font-light leading-tight">
-                    Tell me about the home you <br />
-                    <span className="italic text-amber-400 font-normal">have in mind.</span>
-                  </h1>
-                  <p className="text-sm sm:text-base text-slate-400 font-normal leading-relaxed max-w-lg">
-                    Speak naturally, the way you would with a friend. I&apos;ll listen, ask the right questions, and find homes that suit you in {selectedCity}.
-                  </p>
+                {/* Gold AI ADVISOR Tag */}
+                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#d9b884] text-slate-950 text-[9px] font-extrabold tracking-widest uppercase px-2.5 py-0.5 rounded-sm shadow-md whitespace-nowrap">
+                  AI ADVISOR
                 </div>
+              </div>
 
-                {/* Start Conversation CTA Button */}
-                <div className="space-y-3 pt-4 border-t border-slate-800/80">
-                  <button
-                    type="button"
-                    onClick={() => setStep('calling')}
-                    className="w-full bg-[#d4af37] hover:bg-[#c29f2e] text-slate-950 font-black text-xs uppercase tracking-widest py-4 px-6 rounded-xl flex items-center justify-between transition-all shadow-xl hover:shadow-amber-500/10 active:scale-[0.99] group"
-                  >
-                    <span>Start the conversation</span>
-                    <ArrowRight className="w-4 h-4 text-slate-950 group-hover:translate-x-1 transition-transform" />
-                  </button>
+              {/* Profile Details */}
+              <div className="space-y-1">
+                <h3 className="font-serif text-3xl sm:text-4xl text-slate-100 italic font-normal">
+                  Ava
+                </h3>
+                <p className="text-xs text-slate-400 font-sans">Your personal home advisor</p>
+                <p className="text-xs text-[#d9b884] font-mono mt-1 flex items-center gap-1.5">
+                  {callStage === 'welcome' && <span>Ready when you are</span>}
+                  {callStage === 'calling' && <span className="animate-pulse">Connecting...</span>}
+                  {callStage === 'on_call' && <span className="text-emerald-400 font-bold">● Active Call ({formatTime(callDuration)})</span>}
+                  {callStage === 'after_call' && <span>Call Summary Ready</span>}
+                </p>
+              </div>
+            </div>
 
-                  <div className="flex items-center justify-between text-[11px] text-slate-500 font-medium px-1">
-                    <span>Free • No sign-up</span>
-                    <span>About three minutes</span>
-                  </div>
-                </div>
+            {/* STAGE 1: WELCOME INTRO */}
+            {callStage === 'welcome' && (
+              <div className="space-y-6 animate-in fade-in duration-300">
+                <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-slate-100 font-normal leading-[1.15]">
+                  Tell me about the home you{' '}
+                  <span className="italic text-[#d9b884] font-serif">have in mind.</span>
+                </h1>
+                <p className="text-slate-400 text-xs sm:text-sm font-sans leading-relaxed max-w-md">
+                  Speak naturally, the way you would with a friend. I&apos;ll listen, ask the right questions, and find homes that suit you.
+                </p>
+
+                <button
+                  type="button"
+                  onClick={startCall}
+                  className="w-full bg-[#d9b884] hover:bg-[#e6c994] text-[#1c1917] font-sans font-extrabold text-xs sm:text-sm tracking-widest uppercase py-4 px-8 rounded-none transition-all flex items-center justify-between shadow-xl shadow-[#d9b884]/10 hover:scale-[1.01] active:scale-[0.99]"
+                >
+                  <span>START THE CONVERSATION</span>
+                  <ArrowRight className="w-4 h-4 stroke-[3]" />
+                </button>
               </div>
             )}
 
-            {/* 2. CALLING / CONNECTING STEP */}
-            {step === 'calling' && (
-              <div className="flex flex-col items-center justify-center h-full my-auto text-center space-y-8 animate-in fade-in duration-300">
-                <div className="relative">
-                  {/* Pulsing Ripple Rings */}
-                  <div className="absolute inset-0 rounded-full bg-amber-400/20 animate-ping" />
-                  <div className="absolute -inset-4 rounded-full bg-amber-400/10 animate-pulse" />
-                  
-                  <div className="w-32 h-32 rounded-full border-2 border-amber-400/60 overflow-hidden relative z-10 shadow-2xl">
-                    <img
-                      src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80"
-                      alt="Ava"
-                      className="w-full h-full object-cover"
-                    />
+            {/* STAGE 2: CALLING / RINGING */}
+            {callStage === 'calling' && (
+              <div className="space-y-6 text-center py-6 animate-in fade-in duration-300">
+                <div className="relative w-24 h-24 mx-auto flex items-center justify-center">
+                  <div className="absolute inset-0 rounded-full bg-[#d9b884]/20 animate-ping" />
+                  <div className="absolute inset-2 rounded-full bg-[#d9b884]/40 animate-pulse" />
+                  <div className="relative w-16 h-16 rounded-full bg-[#d9b884] flex items-center justify-center text-slate-950 shadow-2xl">
+                    <Phone className="w-8 h-8 animate-bounce" />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="font-serif text-3xl font-light text-white italic">
-                    Connecting to Ava...
-                  </h3>
-                  <p className="text-xs text-slate-400 uppercase tracking-widest font-semibold">
-                    Establishing Private Audio Stream ({selectedCity})
-                  </p>
+                  <h2 className="font-serif text-2xl text-slate-100 italic">Calling Ava...</h2>
+                  <p className="text-xs text-slate-400 font-mono">Securing encrypted audio stream to EstateFlow AI Desk</p>
                 </div>
 
-                {/* Audio Wave Visualizer Simulation */}
-                <div className="flex items-center gap-1.5 h-10">
-                  <span className="w-1 bg-amber-400 rounded-full h-4 animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="w-1 bg-amber-400 rounded-full h-8 animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <span className="w-1 bg-amber-400 rounded-full h-6 animate-bounce" style={{ animationDelay: '300ms' }} />
-                  <span className="w-1 bg-amber-400 rounded-full h-10 animate-bounce" style={{ animationDelay: '450ms' }} />
-                  <span className="w-1 bg-amber-400 rounded-full h-5 animate-bounce" style={{ animationDelay: '600ms' }} />
-                </div>
+                <button
+                  type="button"
+                  onClick={resetCall}
+                  className="px-6 py-2.5 rounded-full bg-rose-950/80 border border-rose-800 text-rose-300 text-xs font-bold hover:bg-rose-900 transition-colors"
+                >
+                  Cancel Call
+                </button>
               </div>
             )}
 
-            {/* 3. ON CALL VOICE CONVERSATION STEP */}
-            {step === 'on_call' && (
-              <div className="flex flex-col justify-between h-full space-y-6 animate-in fade-in duration-300">
-                {/* Top Call Info Bar */}
-                <div className="flex items-center justify-between p-4 rounded-2xl bg-black/60 border border-slate-800">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full border border-amber-400/50 overflow-hidden shrink-0">
-                      <img
-                        src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80"
-                        alt="Ava"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-bold text-white font-serif italic">Ava (AI Advisor)</h4>
-                      <p className="text-[10px] text-emerald-400 font-mono font-semibold">● LIVE ENCRYPTED VOICE LINE</p>
-                    </div>
+            {/* STAGE 3: ON CALL INTERACTIVE VOICE STREAM */}
+            {callStage === 'on_call' && (
+              <div className="space-y-6 animate-in fade-in duration-300">
+                {/* Audio Frequency Waveform Visualizer */}
+                <div className="p-4 rounded-2xl bg-black/40 border border-[#2a2622] space-y-3">
+                  <div className="flex items-center justify-between text-xs text-slate-400">
+                    <span className="flex items-center gap-1.5 text-emerald-400 font-mono text-[11px]">
+                      <Volume2 className="w-4 h-4 animate-pulse" /> Audio Stream Live
+                    </span>
+                    <span className="font-mono text-slate-300 font-bold">{formatTime(callDuration)}</span>
                   </div>
 
-                  <div className="font-mono text-sm text-amber-400 font-bold bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
-                    {formatTime(callDuration)}
-                  </div>
-                </div>
-
-                {/* Live Speech Transcript Messages Box */}
-                <div className="flex-1 overflow-y-auto space-y-4 p-4 rounded-2xl bg-black/40 border border-slate-800/80 max-h-[360px]">
-                  {transcript.map((msg, idx) => (
-                    <div
-                      key={idx}
-                      className={`flex flex-col ${
-                        msg.sender === 'user' ? 'items-end' : 'items-start'
-                      }`}
-                    >
-                      <span className="text-[9px] font-bold uppercase tracking-wider text-slate-500 mb-1 px-1">
-                        {msg.sender === 'user' ? 'You' : 'Ava'}
-                      </span>
+                  {/* Animated Wave Bars */}
+                  <div className="flex items-center justify-center gap-1.5 h-16 pt-2">
+                    {waveHeights.map((h, i) => (
                       <div
-                        className={`max-w-[85%] rounded-2xl p-4 text-xs leading-relaxed ${
-                          msg.sender === 'user'
-                            ? 'bg-amber-500/20 text-amber-100 border border-amber-500/30 font-medium'
-                            : 'bg-slate-900 text-slate-200 border border-slate-800 font-normal'
-                        }`}
-                      >
-                        {msg.text}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Quick Voice Prompt Suggestions */}
-                <div className="space-y-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-1">
-                    Or Tap a Sample Voice Query:
-                  </span>
-                  <div className="flex flex-wrap gap-2">
-                    {[
-                      'Show 4 BHK luxury villas in Jubilee Hills',
-                      'Looking for 3 BHK penthouses with high CAGR rental yield',
-                      'What are top builder launches in Kokapet Neopolis?',
-                    ].map((sample, i) => (
-                      <button
                         key={i}
-                        type="button"
-                        onClick={() => handleSendMessage(sample)}
-                        className="text-[11px] bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-full border border-slate-800 transition-all font-medium text-left"
-                      >
-                        💬 &quot;{sample}&quot;
-                      </button>
+                        className="w-1.5 bg-gradient-to-t from-[#c4a572] to-[#f0d8a8] rounded-full transition-all duration-150 ease-in-out"
+                        style={{ height: `${isMuted ? 6 : h}%` }}
+                      />
                     ))}
                   </div>
                 </div>
 
-                {/* Voice Input & Call Controls */}
-                <div className="pt-4 border-t border-slate-800/80 space-y-3">
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      value={userQuery}
-                      onChange={(e) => setUserQuery(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                      placeholder="Speak or type your requirement..."
-                      className="flex-1 bg-black/80 rounded-xl px-4 py-3 text-xs text-white border border-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-400 placeholder:text-slate-600 font-medium"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleSendMessage()}
-                      className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs px-4 py-3 rounded-xl transition-all"
-                    >
-                      Speak
-                    </button>
-                  </div>
-
-                  {/* Audio Controls (Mute / End Call) */}
-                  <div className="flex items-center justify-between pt-2">
-                    <button
-                      type="button"
-                      onClick={() => setIsMuted(!isMuted)}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-bold transition-all ${
-                        isMuted
-                          ? 'bg-rose-500/20 border-rose-500/50 text-rose-300'
-                          : 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white'
-                      }`}
-                    >
-                      {isMuted ? <MicOff className="w-4 h-4 text-rose-400" /> : <Mic className="w-4 h-4 text-emerald-400" />}
-                      <span>{isMuted ? 'Muted' : 'Mute Mic'}</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setStep('after_call')}
-                      className="flex items-center gap-2 px-5 py-2 rounded-full bg-rose-600 hover:bg-rose-500 text-white text-xs font-black shadow-lg transition-all"
-                    >
-                      <PhoneOff className="w-4 h-4" />
-                      <span>End Call & Review Match</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* 4. AFTER CALL SUMMARY & PROPERTY RECOMMENDATIONS STEP */}
-            {step === 'after_call' && (
-              <div className="flex flex-col justify-between h-full space-y-6 animate-in fade-in duration-300">
-                <div className="space-y-2">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>AI Dossier Prepared ({selectedCity})</span>
-                  </div>
-                  <h3 className="font-serif text-2xl sm:text-3xl font-light text-slate-100">
-                    Ava&apos;s Curated Property Matches
-                  </h3>
-                  <p className="text-xs text-slate-400">
-                    Based on your voice requirements, here are 2 high-priority verified listings matched with direct developer pricing:
-                  </p>
-                </div>
-
-                {/* Property Match Cards */}
-                <div className="space-y-3 overflow-y-auto max-h-[360px] pr-1">
-                  {[
-                    {
-                      title: selectedCity === 'Hyderabad' ? 'The Crown Jewel Sky Penthouse' : 'Indiranagar Imperial Ridge 4 BHK',
-                      location: selectedCity === 'Hyderabad' ? 'Jubilee Hills, Hyderabad' : 'Indiranagar, Bengaluru',
-                      price: '₹7.50 Cr',
-                      bhk: '4 BHK • 4,800 Sq.Ft',
-                      tag: '99.4% TS-RERA Verified',
-                      img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80',
-                    },
-                    {
-                      title: selectedCity === 'Hyderabad' ? 'Neopolis Signature Villa' : 'Sadashivnagar Golf Estate',
-                      location: selectedCity === 'Hyderabad' ? 'Kokapet Neopolis, Hyderabad' : 'Sadashivnagar, Bengaluru',
-                      price: '₹5.80 Cr',
-                      bhk: '3 BHK • 3,400 Sq.Ft',
-                      tag: 'Direct Builder Pricing',
-                      img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
-                    },
-                  ].map((item, idx) => (
+                {/* Real-time Voice Transcript Feed */}
+                <div className="p-4 rounded-2xl bg-[#1c1a17] border border-[#2a2622] max-h-48 overflow-y-auto space-y-3 text-xs font-sans">
+                  {transcript.map((msg, i) => (
                     <div
-                      key={idx}
-                      className="p-3.5 rounded-2xl bg-black/60 border border-slate-800 hover:border-amber-400/40 transition-all flex items-center justify-between gap-4 group"
+                      key={i}
+                      className={`flex gap-2.5 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                     >
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={item.img}
-                          alt={item.title}
-                          className="w-16 h-16 rounded-xl object-cover shrink-0 border border-slate-800"
-                        />
-                        <div className="space-y-0.5">
-                          <span className="text-[9px] font-black uppercase text-amber-400 tracking-wider">
-                            {item.tag}
-                          </span>
-                          <h4 className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors">
-                            {item.title}
-                          </h4>
-                          <p className="text-[11px] text-slate-400 flex items-center gap-1">
-                            <MapPin className="w-3 h-3 text-slate-500" />
-                            <span>{item.location}</span>
-                          </p>
-                          <p className="text-[11px] font-extrabold text-emerald-400">
-                            {item.price} • <span className="text-slate-400 font-normal">{item.bhk}</span>
-                          </p>
-                        </div>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={onClose}
-                        className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-bold text-white border border-slate-700 shrink-0 flex items-center gap-1"
+                      <div
+                        className={`p-3 rounded-2xl max-w-[85%] ${
+                          msg.sender === 'user'
+                            ? 'bg-[#d9b884] text-slate-950 font-semibold rounded-tr-none'
+                            : 'bg-slate-900 text-slate-200 border border-slate-800 rounded-tl-none'
+                        }`}
                       >
-                        <span>View</span>
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </button>
+                        <p className="leading-relaxed">{msg.text}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Footer Controls */}
-                <div className="pt-4 border-t border-slate-800 flex items-center justify-between gap-4">
+                {/* Call Control Action Buttons */}
+                <div className="flex items-center gap-3 pt-2">
                   <button
                     type="button"
-                    onClick={() => setStep('welcome')}
-                    className="text-xs font-bold text-slate-400 hover:text-white"
+                    onClick={() => setIsMuted(!isMuted)}
+                    className={`flex-1 py-3.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 border transition-all ${
+                      isMuted
+                        ? 'bg-amber-950/80 border-amber-700 text-amber-300'
+                        : 'bg-slate-900 border-slate-700 text-slate-200 hover:bg-slate-800'
+                    }`}
                   >
-                    ← Start New Voice Call
+                    {isMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4 text-emerald-400" />}
+                    <span>{isMuted ? 'Muted' : 'Mute Mic'}</span>
                   </button>
 
                   <button
                     type="button"
-                    onClick={onClose}
-                    className="bg-[#d4af37] hover:bg-[#c29f2e] text-slate-950 font-black text-xs uppercase tracking-wider py-3 px-6 rounded-xl transition-all"
+                    onClick={endCall}
+                    className="flex-1 py-3.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-black tracking-wider uppercase flex items-center justify-center gap-2 shadow-lg shadow-rose-950/50 transition-all"
                   >
-                    Done & Explore Properties
+                    <PhoneOff className="w-4 h-4" />
+                    <span>End Call</span>
                   </button>
                 </div>
               </div>
             )}
+
+            {/* STAGE 4: AFTER CALL SUMMARY & PROPERTY RECOMMENDATIONS */}
+            {callStage === 'after_call' && (
+              <div className="space-y-6 animate-in fade-in duration-300">
+                <div className="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-800/40 text-emerald-300 text-xs space-y-2">
+                  <div className="flex items-center gap-2 font-bold text-sm text-emerald-400">
+                    <CheckCircle2 className="w-5 h-5" />
+                    <span>Call Complete — AI Curation Ready</span>
+                  </div>
+                  <p className="text-slate-300 leading-relaxed">
+                    Based on your 3 BHK luxury penthouses preference in {selectedCity}, Ava matched 3 verified properties matching your budget and sunset view requirements.
+                  </p>
+                </div>
+
+                {/* Matched Properties Chips */}
+                <div className="space-y-2">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-bold block">
+                    Curated Property Matches ({selectedCity}):
+                  </span>
+                  <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-slate-200 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Building2 className="w-4 h-4 text-[#d9b884]" />
+                      <span>Sky Residence Penthouse 401</span>
+                    </div>
+                    <span className="text-[#d9b884] font-black">₹3.45 Cr</span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-slate-200 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Building2 className="w-4 h-4 text-[#d9b884]" />
+                      <span>The Horizon Neopolis Suite</span>
+                    </div>
+                    <span className="text-[#d9b884] font-black">₹2.95 Cr</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={resetCall}
+                    className="flex-1 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-bold flex items-center justify-center gap-2"
+                  >
+                    <RotateCcw className="w-4 h-4 text-[#d9b884]" />
+                    <span>Restart Call</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="flex-1 py-3.5 rounded-xl bg-[#d9b884] hover:bg-[#e6c994] text-[#1c1917] font-bold text-xs flex items-center justify-center gap-2"
+                  >
+                    <span>View Matches</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* FOOTER NOTE */}
+          <div className="pt-4 border-t border-[#2a2622] text-center lg:text-left text-slate-500 text-[11px] font-sans">
+            Free · No sign-up · About three minutes
           </div>
         </div>
       </div>
