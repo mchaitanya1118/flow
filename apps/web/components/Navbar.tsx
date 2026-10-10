@@ -46,6 +46,29 @@ export const Navbar: React.FC = () => {
   const [isMoreDropdownOpen, setIsMoreDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
 
+  const [selectedCity, setSelectedCity] = useState('Hyderabad');
+
+  useEffect(() => {
+    const savedCity = localStorage.getItem('estateflow_city');
+    if (savedCity && (savedCity === 'Hyderabad' || savedCity === 'Bengaluru')) {
+      setSelectedCity(savedCity);
+    }
+
+    const handleStorageChange = () => {
+      const current = localStorage.getItem('estateflow_city');
+      if (current) setSelectedCity(current);
+    };
+
+    window.addEventListener('estateflow_city_change', handleStorageChange);
+    return () => window.removeEventListener('estateflow_city_change', handleStorageChange);
+  }, []);
+
+  const handleCityChange = (newCity: string) => {
+    setSelectedCity(newCity);
+    localStorage.setItem('estateflow_city', newCity);
+    window.dispatchEvent(new Event('estateflow_city_change'));
+  };
+
   // Check active user session on load
   useEffect(() => {
     const savedUser = localStorage.getItem('estateflow_user');
@@ -180,20 +203,35 @@ export const Navbar: React.FC = () => {
       <header className="sticky top-0 z-[100] w-full border-b border-slate-200 bg-white/95 text-slate-900 backdrop-blur-xl shadow-sm" suppressHydrationWarning>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           
-          {/* LOGO */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white font-black text-lg shadow-md">
-              EF
+          {/* LOGO & MULTI CITY SELECTOR */}
+          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+            <Link href="/" className="flex items-center gap-2.5 shrink-0">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white font-black text-lg shadow-md">
+                EF
+              </div>
+              <div className="flex flex-col">
+                <span className="text-lg font-black tracking-tight text-slate-900 leading-none">
+                  Estate<span className="text-emerald-600">Flow</span>
+                </span>
+                <span className="font-label-caps text-[9px] uppercase tracking-widest text-slate-500 font-bold mt-0.5">
+                  Private Client Exchange
+                </span>
+              </div>
+            </Link>
+
+            {/* MULTI CITY SELECTOR PILL */}
+            <div className="relative">
+              <select
+                value={selectedCity}
+                onChange={(e) => handleCityChange(e.target.value)}
+                className="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300/80 rounded-xl px-3 py-1.5 text-xs font-black appearance-none pr-8 cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm transition-all"
+              >
+                <option value="Hyderabad">📍 Hyderabad</option>
+                <option value="Bengaluru">📍 Bengaluru (Bangalore)</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-2.5 text-emerald-700 pointer-events-none" />
             </div>
-            <div className="flex flex-col">
-              <span className="text-lg font-black tracking-tight text-slate-900 leading-none">
-                Estate<span className="text-emerald-600">Flow</span>
-              </span>
-              <span className="font-label-caps text-[9px] uppercase tracking-widest text-slate-500 font-bold mt-0.5">
-                Private Client Exchange
-              </span>
-            </div>
-          </Link>
+          </div>
 
           {/* DESKTOP NAV LINKS */}
           <nav className="hidden items-center gap-1.5 md:flex">

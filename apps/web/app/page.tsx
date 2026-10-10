@@ -87,6 +87,9 @@ export default function HomePage() {
     };
   }, []);
 
+  // Multi-City State Management (Hyderabad vs Bengaluru)
+  const [selectedCity, setSelectedCity] = useState<'Hyderabad' | 'Bengaluru'>('Hyderabad');
+
   // Search Bar State
   const [activeTab, setActiveTab] = useState<'BUY' | 'RENT' | 'NEW_PROJECT' | 'COMMERCIAL' | 'FRACTIONAL'>('BUY');
   const [searchLocation, setSearchLocation] = useState('Kondapur, Hyderabad');
@@ -126,10 +129,40 @@ export default function HomePage() {
   const [cmsHeading1, setCmsHeading1] = useState('Architectural Mastery');
   const [cmsHeading2, setCmsHeading2] = useState('Meets Capital Growth');
   const [cmsSubheading, setCmsSubheading] = useState(
-    'Discover Telangana’s finest collection of 100% RERA-cleared luxury villas, high-rise penthouses, and commercial yields across Kokapet, Jubilee Hills, and Gachibowli with instant AI valuation guarantees.'
+    'Discover Telangana & Karnataka’s finest collection of 100% RERA-cleared luxury villas, high-rise penthouses, and commercial yields.'
   );
   const [cmsHeroVideo, setCmsHeroVideo] = useState('/herovideo.mp4');
   const [cmsVignetteOpacity, setCmsVignetteOpacity] = useState('65');
+
+  // City Switcher Sync with Navbar and LocalStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('estateflow_city');
+    if (saved === 'Bengaluru' || saved === 'Hyderabad') {
+      setSelectedCity(saved);
+      setSearchLocation(saved === 'Bengaluru' ? 'Indiranagar, Bengaluru' : 'Kondapur, Hyderabad');
+      setAiLocality(saved === 'Bengaluru' ? 'indiranagar' : 'kokapet');
+    }
+
+    const handleCityChange = () => {
+      const current = localStorage.getItem('estateflow_city');
+      if (current === 'Bengaluru' || current === 'Hyderabad') {
+        setSelectedCity(current);
+        setSearchLocation(current === 'Bengaluru' ? 'Indiranagar, Bengaluru' : 'Kondapur, Hyderabad');
+        setAiLocality(current === 'Bengaluru' ? 'indiranagar' : 'kokapet');
+      }
+    };
+
+    window.addEventListener('estateflow_city_change', handleCityChange);
+    return () => window.removeEventListener('estateflow_city_change', handleCityChange);
+  }, []);
+
+  const changeCity = (newCity: 'Hyderabad' | 'Bengaluru') => {
+    setSelectedCity(newCity);
+    localStorage.setItem('estateflow_city', newCity);
+    setSearchLocation(newCity === 'Bengaluru' ? 'Indiranagar, Bengaluru' : 'Kondapur, Hyderabad');
+    setAiLocality(newCity === 'Bengaluru' ? 'indiranagar' : 'kokapet');
+    window.dispatchEvent(new Event('estateflow_city_change'));
+  };
 
   useEffect(() => {
     fetch('/api/v1/cms')
@@ -150,9 +183,15 @@ export default function HomePage() {
 
   // AI Valuation Calculations
   const baseRatePerSqft =
-    aiLocality === 'jubilee_hills' ? 14500 :
-    aiLocality === 'kokapet' ? 10800 :
-    aiLocality === 'financial_district' ? 9800 : 7900;
+    selectedCity === 'Bengaluru'
+      ? aiLocality === 'sadashivnagar' ? 16500
+        : aiLocality === 'indiranagar' ? 14500
+        : aiLocality === 'koramangala' ? 12800
+        : 8900
+      : aiLocality === 'jubilee_hills' ? 14500
+        : aiLocality === 'kokapet' ? 10800
+        : aiLocality === 'financial_district' ? 9800
+        : 7900;
 
   const estimatedValue = aiSqft * baseRatePerSqft;
   const projected1YrAppreciation = Math.round(estimatedValue * 0.125);
@@ -180,6 +219,7 @@ export default function HomePage() {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams();
+    params.set('city', selectedCity);
     params.set('transactionType', activeTab);
     if (searchLocation) params.set('locality', searchLocation);
     if (propertyType !== 'ALL') params.set('propertyType', propertyType);
@@ -204,12 +244,15 @@ export default function HomePage() {
   };
 
   const filteredProperties = DEMO_PROPERTIES.filter((p) => {
+    if (p.location.city !== selectedCity) return false;
     if (inventoryTab === 'VILLA' && p.propertyType !== 'VILLA') return false;
     if (inventoryTab === 'PENTHOUSE' && p.propertyType !== 'PENTHOUSE') return false;
     if (inventoryTab === 'COMMERCIAL' && p.transactionType !== 'COMMERCIAL') return false;
     if (inventoryTab === 'RENT' && p.transactionType !== 'RENT') return false;
     return true;
   });
+
+  const filteredProjects = DEMO_PROJECTS.filter((proj) => proj.city === selectedCity);
 
   return (
     <div className="w-full bg-surface-canvas font-body-md text-on-surface antialiased">
@@ -220,39 +263,73 @@ export default function HomePage() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
           </span>
-          <span className="uppercase text-emerald-700 font-extrabold tracking-wider">Live Corridor Pulse</span>
+          <span className="uppercase text-emerald-700 font-extrabold tracking-wider">
+            {selectedCity} Corridor Pulse
+          </span>
         </div>
 
         <div className="whitespace-nowrap overflow-hidden flex-1 mx-4">
           <div className="animate-marquee flex items-center gap-8 font-semibold">
-            <div className="flex items-center gap-4">
-              <strong className="text-amber-600 font-bold">DEMAND SPIKE:</strong>
-              <span className="text-slate-800">Kokapet Neopolis 3 BHK prices +14.2% YoY (Avg ₹10,800/sq.ft)</span>
-              <span className="text-slate-300">•</span>
-              <strong className="text-emerald-700 font-bold">JUST TRANSACTED:</strong>
-              <span className="text-slate-800">Triplex Villa in Jubilee Hills closed for ₹6.85 Cr</span>
-              <span className="text-slate-300">•</span>
-              <strong className="text-amber-600 font-bold">NEW RERA APPROVAL:</strong>
-              <span className="text-slate-800">Prestigio Sky Tower Phase 2</span>
-              <span className="text-slate-300">•</span>
-              <span className="text-teal-700 font-bold">1,480+ Active HNW Buyers</span>
-              <span className="text-slate-300">•</span>
-            </div>
+            {selectedCity === 'Hyderabad' ? (
+              <div className="flex items-center gap-4">
+                <strong className="text-amber-600 font-bold">DEMAND SPIKE:</strong>
+                <span className="text-slate-800">Kokapet Neopolis 3 BHK prices +14.2% YoY (Avg ₹10,800/sq.ft)</span>
+                <span className="text-slate-300">•</span>
+                <strong className="text-emerald-700 font-bold">JUST TRANSACTED:</strong>
+                <span className="text-slate-800">Triplex Villa in Jubilee Hills closed for ₹6.85 Cr</span>
+                <span className="text-slate-300">•</span>
+                <strong className="text-amber-600 font-bold">NEW RERA APPROVAL:</strong>
+                <span className="text-slate-800">Prestigio Sky Tower Phase 2 (#TS-RERA)</span>
+                <span className="text-slate-300">•</span>
+                <span className="text-teal-700 font-bold">1,480+ Active HNW Buyers in Hyderabad</span>
+                <span className="text-slate-300">•</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-4">
+                <strong className="text-amber-600 font-bold">DEMAND SPIKE:</strong>
+                <span className="text-slate-800">Indiranagar Sky Penthouses +15.8% YoY (Avg ₹14,500/sq.ft)</span>
+                <span className="text-slate-300">•</span>
+                <strong className="text-emerald-700 font-bold">JUST TRANSACTED:</strong>
+                <span className="text-slate-800">5 BHK Mansion in Sadashivnagar closed for ₹8.50 Cr</span>
+                <span className="text-slate-300">•</span>
+                <strong className="text-amber-600 font-bold">NEW RERA APPROVAL:</strong>
+                <span className="text-slate-800">Prestige Tech Ridge Towers (#KA-RERA)</span>
+                <span className="text-slate-300">•</span>
+                <span className="text-teal-700 font-bold">2,150+ Active HNW Buyers in Bengaluru</span>
+                <span className="text-slate-300">•</span>
+              </div>
+            )}
 
             {/* DUPLICATE FOR CONTINUOUS 100% INFINITE LOOP */}
-            <div className="flex items-center gap-4" aria-hidden="true">
-              <strong className="text-amber-600 font-bold">DEMAND SPIKE:</strong>
-              <span className="text-slate-800">Kokapet Neopolis 3 BHK prices +14.2% YoY (Avg ₹10,800/sq.ft)</span>
-              <span className="text-slate-300">•</span>
-              <strong className="text-emerald-700 font-bold">JUST TRANSACTED:</strong>
-              <span className="text-slate-800">Triplex Villa in Jubilee Hills closed for ₹6.85 Cr</span>
-              <span className="text-slate-300">•</span>
-              <strong className="text-amber-600 font-bold">NEW RERA APPROVAL:</strong>
-              <span className="text-slate-800">Prestigio Sky Tower Phase 2</span>
-              <span className="text-slate-300">•</span>
-              <span className="text-teal-700 font-bold">1,480+ Active HNW Buyers</span>
-              <span className="text-slate-300">•</span>
-            </div>
+            {selectedCity === 'Hyderabad' ? (
+              <div className="flex items-center gap-4" aria-hidden="true">
+                <strong className="text-amber-600 font-bold">DEMAND SPIKE:</strong>
+                <span className="text-slate-800">Kokapet Neopolis 3 BHK prices +14.2% YoY (Avg ₹10,800/sq.ft)</span>
+                <span className="text-slate-300">•</span>
+                <strong className="text-emerald-700 font-bold">JUST TRANSACTED:</strong>
+                <span className="text-slate-800">Triplex Villa in Jubilee Hills closed for ₹6.85 Cr</span>
+                <span className="text-slate-300">•</span>
+                <strong className="text-amber-600 font-bold">NEW RERA APPROVAL:</strong>
+                <span className="text-slate-800">Prestigio Sky Tower Phase 2 (#TS-RERA)</span>
+                <span className="text-slate-300">•</span>
+                <span className="text-teal-700 font-bold">1,480+ Active HNW Buyers in Hyderabad</span>
+                <span className="text-slate-300">•</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-4" aria-hidden="true">
+                <strong className="text-amber-600 font-bold">DEMAND SPIKE:</strong>
+                <span className="text-slate-800">Indiranagar Sky Penthouses +15.8% YoY (Avg ₹14,500/sq.ft)</span>
+                <span className="text-slate-300">•</span>
+                <strong className="text-emerald-700 font-bold">JUST TRANSACTED:</strong>
+                <span className="text-slate-800">5 BHK Mansion in Sadashivnagar closed for ₹8.50 Cr</span>
+                <span className="text-slate-300">•</span>
+                <strong className="text-amber-600 font-bold">NEW RERA APPROVAL:</strong>
+                <span className="text-slate-800">Prestige Tech Ridge Towers (#KA-RERA)</span>
+                <span className="text-slate-300">•</span>
+                <span className="text-teal-700 font-bold">2,150+ Active HNW Buyers in Bengaluru</span>
+                <span className="text-slate-300">•</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -260,7 +337,8 @@ export default function HomePage() {
           <span className="font-semibold text-slate-800">INR (₹)</span>
           <span className="text-slate-300">|</span>
           <span className="text-emerald-700 font-bold flex items-center gap-1">
-            <span className="material-symbols-outlined text-[14px]">verified</span> TS-RERA Monitored
+            <span className="material-symbols-outlined text-[14px]">verified</span>
+            {selectedCity === 'Bengaluru' ? 'KA-RERA Monitored' : 'TS-RERA Monitored'}
           </span>
         </div>
       </div>
@@ -318,7 +396,9 @@ export default function HomePage() {
                     <span className="material-symbols-outlined text-emerald-400 text-lg">trending_up</span>
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                   </div>
-                  <span className="font-sans text-xl sm:text-2xl text-emerald-400 font-black tracking-tight drop-shadow-sm">₹8,400+ Cr</span>
+                  <span className="font-sans text-xl sm:text-2xl text-emerald-400 font-black tracking-tight drop-shadow-sm">
+                    {selectedCity === 'Bengaluru' ? '₹11,200+ Cr' : '₹8,400+ Cr'}
+                  </span>
                   <span className="font-sans text-[11px] text-slate-300 font-bold tracking-wider uppercase mt-1">Transacted GMV</span>
                 </div>
 
@@ -327,7 +407,9 @@ export default function HomePage() {
                     <span className="material-symbols-outlined text-amber-400 text-lg">verified_user</span>
                     <span className="h-1.5 w-1.5 rounded-full bg-amber-400"></span>
                   </div>
-                  <span className="font-sans text-xl sm:text-2xl text-amber-400 font-black tracking-tight drop-shadow-sm">99.4%</span>
+                  <span className="font-sans text-xl sm:text-2xl text-amber-400 font-black tracking-tight drop-shadow-sm">
+                    {selectedCity === 'Bengaluru' ? '99.7%' : '99.4%'}
+                  </span>
                   <span className="font-sans text-[11px] text-slate-300 font-bold tracking-wider uppercase mt-1">Verified Titles</span>
                 </div>
 
@@ -336,7 +418,9 @@ export default function HomePage() {
                     <span className="material-symbols-outlined text-cyan-400 text-lg">villa</span>
                     <span className="h-1.5 w-1.5 rounded-full bg-cyan-400"></span>
                   </div>
-                  <span className="font-sans text-xl sm:text-2xl text-cyan-300 font-black tracking-tight drop-shadow-sm">14,200+</span>
+                  <span className="font-sans text-xl sm:text-2xl text-cyan-300 font-black tracking-tight drop-shadow-sm">
+                    {selectedCity === 'Bengaluru' ? '18,600+' : '14,200+'}
+                  </span>
                   <span className="font-sans text-[11px] text-slate-300 font-bold tracking-wider uppercase mt-1">Luxury Homes</span>
                 </div>
               </div>
@@ -351,7 +435,7 @@ export default function HomePage() {
                     <span className="material-symbols-outlined text-emerald-600 text-[18px]">analytics</span>
                     <div>
                       <h2 className="font-sans text-sm font-extrabold leading-none text-slate-900">AI Valuation Engine</h2>
-                      <span className="font-sans text-[11px] text-slate-500 mt-0.5 block">Real-Time Market Valuation & Yield</span>
+                      <span className="font-sans text-[11px] text-slate-500 mt-0.5 block">Real-Time Market Valuation & Yield ({selectedCity})</span>
                     </div>
                   </div>
                   <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-sans text-[9px] font-black tracking-wider uppercase border border-emerald-200">
@@ -364,7 +448,7 @@ export default function HomePage() {
                   {/* Select Micro Market */}
                   <div className="space-y-1">
                     <label className="font-sans text-[10px] uppercase text-slate-500 font-bold flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[13px] text-emerald-600">pin_drop</span> Target Micro-Market
+                      <span className="material-symbols-outlined text-[13px] text-emerald-600">pin_drop</span> Target Micro-Market ({selectedCity})
                     </label>
                     <div className="relative">
                       <select
@@ -372,10 +456,21 @@ export default function HomePage() {
                         onChange={(e) => setAiLocality(e.target.value)}
                         className="w-full bg-slate-50 rounded-lg px-3 py-1.5 font-sans text-xs text-slate-900 appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-slate-200 font-bold"
                       >
-                        <option value="kokapet">Kokapet Neopolis (Golden Mile)</option>
-                        <option value="financial_district">Financial District (Gachibowli)</option>
-                        <option value="jubilee_hills">Jubilee Hills (Luxury Ridge)</option>
-                        <option value="kondapur">Kondapur (IT Hub)</option>
+                        {selectedCity === 'Bengaluru' ? (
+                          <>
+                            <option value="indiranagar">Indiranagar (Luxury Ridge)</option>
+                            <option value="whitefield">Whitefield (Tech Corridor)</option>
+                            <option value="koramangala">Koramangala (Startup Hub)</option>
+                            <option value="sadashivnagar">Sadashivnagar (Diplomatic Enclave)</option>
+                          </>
+                        ) : (
+                          <>
+                            <option value="kokapet">Kokapet Neopolis (Golden Mile)</option>
+                            <option value="financial_district">Financial District (Gachibowli)</option>
+                            <option value="jubilee_hills">Jubilee Hills (Luxury Ridge)</option>
+                            <option value="kondapur">Kondapur (IT Hub)</option>
+                          </>
+                        )}
                       </select>
                       <span className="material-symbols-outlined absolute right-2.5 top-2 text-slate-400 text-[16px] pointer-events-none">unfold_more</span>
                     </div>
@@ -455,28 +550,57 @@ export default function HomePage() {
       {/* 3. OMNICHANNEL PROPERTY DISCOVERY & FILTER BAR */}
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 -mt-28 sm:-mt-32 z-20 w-full">
         <div className="bg-white rounded-3xl shadow-2xl p-4 lg:p-6 border border-slate-200">
-          {/* Transaction Tabs */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-4 scrollbar-none">
-            {[
-              { id: 'BUY', label: 'Buy Property', icon: 'apartment' },
-              { id: 'RENT', label: 'Luxury Rent', icon: 'key' },
-              { id: 'NEW_PROJECT', label: 'New Launches', icon: 'domain_add' },
-              { id: 'COMMERCIAL', label: 'Commercial Yield', icon: 'trending_up' },
-              { id: 'FRACTIONAL', label: 'Fractional Tokens', icon: 'token' },
-            ].map((tab) => (
+          {/* Transaction Tabs & Multi-City Switcher */}
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
+              {[
+                { id: 'BUY', label: 'Buy Property', icon: 'apartment' },
+                { id: 'RENT', label: 'Luxury Rent', icon: 'key' },
+                { id: 'NEW_PROJECT', label: 'New Launches', icon: 'domain_add' },
+                { id: 'COMMERCIAL', label: 'Commercial Yield', icon: 'trending_up' },
+                { id: 'FRACTIONAL', label: 'Fractional Tokens', icon: 'token' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`px-4 py-2.5 rounded-full font-headline-sm text-xs sm:text-sm font-bold flex items-center gap-2 transition-all shrink-0 ${
+                    activeTab === tab.id
+                      ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-black shadow-lg shadow-emerald-600/25 border border-emerald-500/30'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 font-bold'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-[16px]">{tab.icon}</span>
+                  <span>{tab.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* MULTI CITY SELECTOR SWITCHER BUTTONS */}
+            <div className="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200 shrink-0">
+              <span className="text-[10px] font-black text-slate-500 uppercase px-2 hidden sm:inline">Active City:</span>
               <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`px-4 py-2.5 rounded-full font-headline-sm text-xs sm:text-sm font-bold flex items-center gap-2 transition-all shrink-0 ${
-                  activeTab === tab.id
-                    ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-black shadow-lg shadow-emerald-600/25 border border-emerald-500/30'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 font-bold'
+                type="button"
+                onClick={() => changeCity('Hyderabad')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
+                  selectedCity === 'Hyderabad'
+                    ? 'bg-emerald-600 text-white shadow-md'
+                    : 'text-slate-700 hover:bg-slate-200'
                 }`}
               >
-                <span className="material-symbols-outlined text-[16px]">{tab.icon}</span>
-                <span>{tab.label}</span>
+                📍 Hyderabad
               </button>
-            ))}
+              <button
+                type="button"
+                onClick={() => changeCity('Bengaluru')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
+                  selectedCity === 'Bengaluru'
+                    ? 'bg-emerald-600 text-white shadow-md'
+                    : 'text-slate-700 hover:bg-slate-200'
+                }`}
+              >
+                📍 Bengaluru
+              </button>
+            </div>
           </div>
 
           {/* Discovery Search Fields Grid */}
@@ -602,7 +726,7 @@ export default function HomePage() {
                 {/* Badges */}
                 <div className="absolute top-3 left-3 flex flex-wrap items-center gap-2">
                   <span className="bg-champagne-subtle text-tertiary font-label-caps text-[10px] font-extrabold px-2.5 py-1 rounded-md flex items-center gap-1 shadow-sm border border-amber-200">
-                    <span className="material-symbols-outlined text-[13px] text-champagne-gold">verified</span> TS-RERA VERIFIED
+                    <span className="material-symbols-outlined text-[13px] text-champagne-gold">verified</span> {selectedCity === 'Bengaluru' ? 'KA-RERA VERIFIED' : 'TS-RERA VERIFIED'}
                   </span>
                   <span className="bg-emerald-subtle text-primary font-label-caps text-[10px] font-extrabold px-2.5 py-1 rounded-md flex items-center gap-1 shadow-sm border border-emerald-200">
                     <span className="material-symbols-outlined text-[13px]">star</span> {prop.qualityScore || 94}/100
