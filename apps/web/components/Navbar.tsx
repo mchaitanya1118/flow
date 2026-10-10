@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button, Modal, Input, Badge } from '@estateflow/ui';
-import { VoiceAdvisorModal } from './VoiceAdvisorModal';
 import {
   ChevronDown,
   PlusCircle,
@@ -49,7 +48,6 @@ export const Navbar: React.FC = () => {
   const [isMoreDropdownOpen, setIsMoreDropdownOpen] = useState(false);
   const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const [isVoiceAdvisorOpen, setIsVoiceAdvisorOpen] = useState(false);
 
   const [selectedCity, setSelectedCity] = useState('Hyderabad');
 
@@ -338,30 +336,16 @@ export const Navbar: React.FC = () => {
             </nav>
 
           {/* RIGHT ACTION BUTTONS */}
-          <div className="hidden items-center gap-2 md:flex">
-            {/* VOICE ADVISOR CALL BUTTON */}
-            <button
-              type="button"
-              onClick={() => setIsVoiceAdvisorOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100/80 text-amber-900 font-extrabold text-xs border border-amber-300/80 transition-all shadow-xs active:scale-95 group"
-              title="Call Ava — AI Home Advisor"
-            >
-              <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-600"></span>
-              </span>
-              <Phone className="w-3.5 h-3.5 text-amber-700 group-hover:rotate-12 transition-transform shrink-0" />
-              <span className="text-[11px] uppercase tracking-wider font-extrabold text-amber-950">Voice Advisor</span>
-            </button>
-
-            {/* POST PROPERTY CTA */}
-            <Link
-              href="/post-property"
-              className="bg-slate-900 hover:bg-black text-white font-extrabold text-xs px-3.5 py-1.5 rounded-full shadow-xs hover:shadow-md transition-all flex items-center gap-1.5 active:scale-95 border border-slate-800"
-            >
-              <PlusCircle className="w-3.5 h-3.5 text-amber-400 stroke-[2.5]" />
-              <span>Post Property</span>
-              <span className="text-[9px] bg-amber-400 text-slate-950 font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Free</span>
+          <div className="hidden items-center gap-2.5 md:flex">
+            <Link href="/post-property">
+              <button
+                type="button"
+                className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-full shadow-xs hover:shadow-md transition-all flex items-center gap-1.5 active:scale-95 border border-amber-400/60"
+              >
+                <PlusCircle className="w-3.5 h-3.5 text-slate-950 stroke-[2.5]" />
+                <span>Post Property</span>
+                <span className="text-[9px] bg-slate-950 text-amber-300 font-extrabold px-1.5 py-0.5 rounded-full uppercase tracking-wider">Free</span>
+              </button>
             </Link>
 
             {currentUser ? (
@@ -370,12 +354,12 @@ export const Navbar: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-                  className="flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-900 hover:bg-slate-200 border border-slate-200 transition-all shadow-xs"
+                  className="flex items-center gap-2 rounded-full bg-slate-100 px-3.5 py-1.5 text-xs font-bold text-slate-900 hover:bg-slate-200 border border-slate-200 transition-all shadow-xs"
                 >
                   <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] font-black text-white">
                     {currentUser.fullName ? currentUser.fullName.charAt(0).toUpperCase() : 'U'}
                   </div>
-                  <span className="max-w-[90px] truncate font-extrabold">{currentUser.fullName || currentUser.email}</span>
+                  <span className="max-w-[100px] truncate font-extrabold">{currentUser.fullName || currentUser.email}</span>
                   <Badge variant="emerald" className="text-[9px] px-1.5 py-0 font-extrabold uppercase bg-emerald-100 text-emerald-800 border border-emerald-300">
                     {currentUser.role}
                   </Badge>
@@ -473,12 +457,10 @@ export const Navbar: React.FC = () => {
             </div>
 
             <div className="pt-3 border-t border-slate-200 space-y-2">
-              <Link
-                href="/post-property"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block text-center rounded-xl px-4 py-2.5 text-xs font-extrabold border border-slate-200 bg-slate-100 text-slate-900 hover:bg-slate-200"
-              >
-                + Post Property (Free)
+              <Link href="/post-property" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button variant="outline" size="sm" className="w-full text-xs font-bold border-slate-200 bg-slate-100 text-slate-900">
+                  + Post Property (Free)
+                </Button>
               </Link>
               {currentUser ? (
                 <Button
@@ -596,13 +578,6 @@ export const Navbar: React.FC = () => {
           </div>
         </form>
       </Modal>
-
-      {/* VOICE ADVISOR CALL MODAL */}
-      <VoiceAdvisorModal
-        isOpen={isVoiceAdvisorOpen}
-        onClose={() => setIsVoiceAdvisorOpen(false)}
-        selectedCity={selectedCity}
-      />
     </>
   );
 };

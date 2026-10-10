@@ -186,14 +186,14 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[200] bg-[#0c0b0a]/95 backdrop-blur-2xl flex items-center justify-center p-2 sm:p-4 lg:p-6 text-white font-sans animate-in fade-in zoom-in-95 duration-200">
-      {/* Main Luxury Modal Container (Exact Match to Design Reference) */}
-      <div className="max-w-6xl w-full h-[92vh] max-h-[820px] bg-[#161513] rounded-none sm:rounded-[24px] overflow-hidden border border-[#2e2b26] shadow-2xl flex flex-col lg:flex-row relative">
+    <div className="fixed inset-0 z-[200] bg-[#070d0b]/95 backdrop-blur-2xl flex items-center justify-center p-2 sm:p-4 lg:p-6 text-white font-sans animate-in fade-in zoom-in-95 duration-200">
+      {/* Main Luxury Modal Container (Matches EstateFlow Site Palette) */}
+      <div className="max-w-6xl w-full h-[92vh] max-h-[820px] bg-[#0f1a16] rounded-none sm:rounded-[28px] overflow-hidden border border-[#1b2f27] shadow-2xl flex flex-col lg:flex-row relative">
         
         {/* CLOSE BUTTON (TOP RIGHT) */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-50 text-slate-400 hover:text-white bg-[#1c1b18] hover:bg-[#2e2b26] p-2.5 rounded-full border border-white/10 transition-colors shadow-lg"
+          className="absolute top-4 right-4 z-50 text-slate-300 hover:text-white bg-[#0a120f]/90 hover:bg-[#1b2f27] p-2.5 rounded-full border border-[#1b2f27] transition-colors shadow-lg"
           aria-label="Close Voice Advisor"
         >
           <X className="w-5 h-5" />
@@ -201,7 +201,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
 
         {/* LEFT PANEL: ARCHITECTURAL SLIDER CAROUSEL & CALL STAGE TABS */}
         <div
-          className="lg:w-[48%] relative bg-[#0c0b0a] flex flex-col justify-between p-6 sm:p-8 lg:p-10 overflow-hidden border-b lg:border-b-0 lg:border-r border-[#2e2b26] group"
+          className="lg:w-[48%] relative bg-[#09110e] flex flex-col justify-between p-6 sm:p-8 lg:p-10 overflow-hidden border-b lg:border-b-0 lg:border-r border-[#1b2f27] group"
           onMouseEnter={() => setIsSliderHovered(true)}
           onMouseLeave={() => setIsSliderHovered(false)}
         >
@@ -217,7 +217,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
           ))}
 
           {/* High-Contrast Gradient Backdrop Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0c0b0a]/95 via-[#0c0b0a]/60 to-[#0c0b0a]/40 z-0" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#09110e]/95 via-[#09110e]/60 to-[#09110e]/40 z-0" />
 
           {/* TOP HEADER: BACK BUTTON, STAGE PILL & LOCATION BADGE */}
           <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
@@ -226,19 +226,19 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
               onClick={onClose}
               className="flex items-center gap-2 text-slate-200 hover:text-white text-[11px] font-mono tracking-widest uppercase transition-all group/btn"
             >
-              <div className="w-9 h-9 rounded-full border border-white/40 bg-black/40 group-hover/btn:bg-white/20 flex items-center justify-center transition-colors shadow-sm">
+              <div className="w-9 h-9 rounded-full border border-white/30 bg-black/40 group-hover/btn:bg-white/20 flex items-center justify-center transition-colors shadow-sm">
                 <ArrowLeft className="w-4 h-4 text-white" />
               </div>
               <span className="hidden sm:inline font-bold">BACK</span>
             </button>
 
             {/* STAGE SELECTOR TABS PILL CONTAINER */}
-            <div className="bg-[#1c1b18]/95 backdrop-blur-md px-2 py-1 rounded-full border border-white/20 flex items-center gap-1.5 text-[11px] font-sans shadow-xl">
+            <div className="bg-[#0a120f]/95 backdrop-blur-md px-2 py-1 rounded-full border border-[#1b2f27] flex items-center gap-1.5 text-[11px] font-sans shadow-xl">
               <button
                 onClick={() => setCallStage('welcome')}
                 className={`px-3.5 py-1 rounded-full font-bold transition-all ${
                   callStage === 'welcome'
-                    ? 'bg-white text-[#161513] shadow-md'
+                    ? 'bg-[#d9b884] text-[#09110e] shadow-md'
                     : 'text-slate-300 hover:text-white'
                 }`}
               >
@@ -248,7 +248,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
                 onClick={() => setCallStage('calling')}
                 className={`px-3 py-1 rounded-full font-semibold transition-all ${
                   callStage === 'calling'
-                    ? 'bg-white text-[#161513] font-bold shadow-md'
+                    ? 'bg-[#d9b884] text-[#09110e] font-bold shadow-md'
                     : 'text-slate-300 hover:text-white'
                 }`}
               >
@@ -258,7 +258,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
                 onClick={() => setCallStage('on_call')}
                 className={`px-3 py-1 rounded-full font-semibold transition-all ${
                   callStage === 'on_call'
-                    ? 'bg-white text-[#161513] font-bold shadow-md'
+                    ? 'bg-[#d9b884] text-[#09110e] font-bold shadow-md'
                     : 'text-slate-300 hover:text-white'
                 }`}
               >
@@ -268,7 +268,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
                 onClick={() => setCallStage('after_call')}
                 className={`px-3 py-1 rounded-full font-semibold transition-all ${
                   callStage === 'after_call'
-                    ? 'bg-white text-[#161513] font-bold shadow-md'
+                    ? 'bg-[#d9b884] text-[#09110e] font-bold shadow-md'
                     : 'text-slate-300 hover:text-white'
                 }`}
               >
@@ -276,7 +276,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
               </button>
 
               {/* Theme color indicators */}
-              <div className="flex items-center gap-1 pl-1.5 border-l border-white/20 pr-1">
+              <div className="flex items-center gap-1 pl-1.5 border-l border-[#1b2f27] pr-1">
                 <div className="w-3.5 h-3.5 rounded-sm border-2 border-[#d9b884] bg-transparent" />
                 <div className="w-3.5 h-3.5 rounded-sm bg-[#d9b884]" />
               </div>
@@ -292,17 +292,17 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
           <div className="absolute inset-y-0 left-3 right-3 z-10 flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button
               onClick={prevSlide}
-              className="w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 border border-white/20 text-white flex items-center justify-center backdrop-blur-md pointer-events-auto transition-transform hover:scale-110 shadow-lg"
+              className="w-10 h-10 rounded-full bg-[#09110e]/80 hover:bg-[#101b17] border border-[#1b2f27] text-white flex items-center justify-center backdrop-blur-md pointer-events-auto transition-transform hover:scale-110 shadow-lg"
               aria-label="Previous Slide"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-5 h-5 text-[#d9b884]" />
             </button>
             <button
               onClick={nextSlide}
-              className="w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 border border-white/20 text-white flex items-center justify-center backdrop-blur-md pointer-events-auto transition-transform hover:scale-110 shadow-lg"
+              className="w-10 h-10 rounded-full bg-[#09110e]/80 hover:bg-[#101b17] border border-[#1b2f27] text-white flex items-center justify-center backdrop-blur-md pointer-events-auto transition-transform hover:scale-110 shadow-lg"
               aria-label="Next Slide"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-5 h-5 text-[#d9b884]" />
             </button>
           </div>
 
@@ -336,8 +336,8 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
           </div>
         </div>
 
-        {/* RIGHT PANEL: DARK VOICE ADVISOR COCKPIT (#161513) */}
-        <div className="lg:w-[52%] bg-[#161513] p-6 sm:p-8 lg:p-10 flex flex-col justify-between overflow-y-auto">
+        {/* RIGHT PANEL: DARK VOICE ADVISOR COCKPIT (#0f1a16) */}
+        <div className="lg:w-[52%] bg-[#0f1a16] p-6 sm:p-8 lg:p-10 flex flex-col justify-between overflow-y-auto">
           {/* TOP HEADER: VOICE ADVISOR & AVAILABLE NOW BADGE (WITH RIGHT PADDING FOR CLOSE BUTTON) */}
           <div className="flex items-center justify-between pb-6 pr-12">
             <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-slate-400 font-bold">
@@ -357,7 +357,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
               <div className="relative shrink-0">
                 <div
                   style={{ borderRadius: '64px 64px 0px 0px' }}
-                  className="w-32 h-40 sm:w-36 sm:h-44 overflow-hidden border-2 border-[#c4a572]/80 bg-[#1e1c19] shadow-2xl relative"
+                  className="w-32 h-40 sm:w-36 sm:h-44 overflow-hidden border-2 border-[#d9b884]/80 bg-[#0a1410] shadow-2xl relative"
                 >
                   <img
                     src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80"
@@ -365,14 +365,14 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
                     className="w-full h-full object-cover object-top filter contrast-105 brightness-95"
                   />
                   {/* Subtle golden wave accent inside arch */}
-                  <svg className="absolute bottom-8 left-0 right-0 w-full text-[#c4a572]/70 stroke-current" fill="none" viewBox="0 0 100 20" strokeWidth="1.5">
+                  <svg className="absolute bottom-8 left-0 right-0 w-full text-[#d9b884]/70 stroke-current" fill="none" viewBox="0 0 100 20" strokeWidth="1.5">
                     <path d="M0 10 Q 25 20, 50 10 T 100 10" />
                   </svg>
                   {/* Overlay vignette */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#161513]/80 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f1a16]/90 via-transparent to-transparent" />
                 </div>
                 {/* Gold Tag Badge at Bottom of Arch */}
-                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#d9b884] text-[#161513] text-[9px] font-black tracking-[0.2em] uppercase px-3.5 py-1 rounded-none shadow-md whitespace-nowrap">
+                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#d9b884] text-[#09110e] text-[9px] font-black tracking-[0.2em] uppercase px-3.5 py-1 rounded-none shadow-md whitespace-nowrap">
                   AI ADVISOR
                 </div>
               </div>
@@ -407,7 +407,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
                 <button
                   type="button"
                   onClick={startCall}
-                  className="w-full bg-[#d9b884] hover:bg-[#e6c994] text-[#1c1917] font-sans font-extrabold text-xs sm:text-sm tracking-[0.15em] uppercase py-4 px-7 rounded-none transition-all flex items-center justify-between shadow-xl shadow-[#d9b884]/10 hover:scale-[1.005] active:scale-[0.995] cursor-pointer"
+                  className="w-full bg-[#d9b884] hover:bg-[#e6c994] text-[#09110e] font-sans font-extrabold text-xs sm:text-sm tracking-[0.15em] uppercase py-4 px-7 rounded-none transition-all flex items-center justify-between shadow-xl shadow-[#d9b884]/10 hover:scale-[1.005] active:scale-[0.995] cursor-pointer"
                 >
                   <span>START THE CONVERSATION</span>
                   <ArrowRight className="w-5 h-5 stroke-[2.5]" />
@@ -421,7 +421,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
                 <div className="relative w-24 h-24 mx-auto flex items-center justify-center">
                   <div className="absolute inset-0 rounded-full bg-[#d9b884]/20 animate-ping" />
                   <div className="absolute inset-2 rounded-full bg-[#d9b884]/40 animate-pulse" />
-                  <div className="relative w-16 h-16 rounded-full bg-[#d9b884] flex items-center justify-center text-[#1c1917] shadow-2xl">
+                  <div className="relative w-16 h-16 rounded-full bg-[#d9b884] flex items-center justify-center text-[#09110e] shadow-2xl">
                     <Phone className="w-8 h-8 animate-bounce" />
                   </div>
                 </div>
@@ -445,7 +445,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
             {callStage === 'on_call' && (
               <div className="space-y-6 animate-in fade-in duration-300">
                 {/* Audio Frequency Waveform Visualizer */}
-                <div className="p-4 rounded-2xl bg-[#121110] border border-[#2e2b26] space-y-3">
+                <div className="p-4 rounded-2xl bg-[#0b1511] border border-[#1b2f27] space-y-3">
                   <div className="flex items-center justify-between text-xs text-slate-400">
                     <span className="flex items-center gap-1.5 text-emerald-400 font-mono text-[11px]">
                       <Volume2 className="w-4 h-4 animate-pulse" /> Audio Stream Live
@@ -458,7 +458,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
                     {waveHeights.map((h, i) => (
                       <div
                         key={i}
-                        className="w-1.5 bg-gradient-to-t from-[#c4a572] to-[#f0d8a8] rounded-full transition-all duration-150 ease-in-out"
+                        className="w-1.5 bg-gradient-to-t from-[#d9b884] to-[#f5e6cc] rounded-full transition-all duration-150 ease-in-out"
                         style={{ height: `${isMuted ? 6 : h}%` }}
                       />
                     ))}
@@ -466,7 +466,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
                 </div>
 
                 {/* Real-time Voice Transcript Feed */}
-                <div className="p-4 rounded-2xl bg-[#1c1b18] border border-[#2e2b26] max-h-48 overflow-y-auto space-y-3 text-xs font-sans">
+                <div className="p-4 rounded-2xl bg-[#0b1511] border border-[#1b2f27] max-h-48 overflow-y-auto space-y-3 text-xs font-sans">
                   {transcript.map((msg, i) => (
                     <div
                       key={i}
@@ -475,8 +475,8 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
                       <div
                         className={`p-3 rounded-2xl max-w-[85%] ${
                           msg.sender === 'user'
-                            ? 'bg-[#d9b884] text-[#1c1917] font-semibold rounded-tr-none'
-                            : 'bg-[#121110] text-slate-200 border border-[#2e2b26] rounded-tl-none'
+                            ? 'bg-[#d9b884] text-[#09110e] font-semibold rounded-tr-none'
+                            : 'bg-[#0a120f] text-slate-200 border border-[#1b2f27] rounded-tl-none'
                         }`}
                       >
                         <p className="leading-relaxed">{msg.text}</p>
@@ -493,7 +493,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
                     className={`flex-1 py-3.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 border transition-all ${
                       isMuted
                         ? 'bg-amber-950/80 border-amber-700 text-amber-300'
-                        : 'bg-[#1c1b18] border-[#2e2b26] text-slate-200 hover:bg-slate-800'
+                        : 'bg-[#0a120f] border-[#1b2f27] text-slate-200 hover:bg-[#1b2f27]'
                     }`}
                   >
                     {isMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4 text-emerald-400" />}
@@ -515,7 +515,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
             {/* STAGE 4: AFTER CALL SUMMARY & PROPERTY RECOMMENDATIONS */}
             {callStage === 'after_call' && (
               <div className="space-y-6 animate-in fade-in duration-300">
-                <div className="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-800/40 text-emerald-300 text-xs space-y-2">
+                <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-800/50 text-emerald-300 text-xs space-y-2">
                   <div className="flex items-center gap-2 font-bold text-sm text-emerald-400">
                     <CheckCircle2 className="w-5 h-5" />
                     <span>Call Complete — AI Curation Ready</span>
@@ -530,14 +530,14 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
                   <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-bold block">
                     Curated Property Matches ({selectedCity}):
                   </span>
-                  <div className="p-3 rounded-xl bg-[#121110] border border-[#2e2b26] text-xs font-bold text-slate-200 flex items-center justify-between">
+                  <div className="p-3 rounded-xl bg-[#0b1511] border border-[#1b2f27] text-xs font-bold text-slate-200 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Building2 className="w-4 h-4 text-[#d9b884]" />
                       <span>Sky Residence Penthouse 401</span>
                     </div>
                     <span className="text-[#d9b884] font-black">₹3.45 Cr</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#121110] border border-[#2e2b26] text-xs font-bold text-slate-200 flex items-center justify-between">
+                  <div className="p-3 rounded-xl bg-[#0b1511] border border-[#1b2f27] text-xs font-bold text-slate-200 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Building2 className="w-4 h-4 text-[#d9b884]" />
                       <span>The Horizon Neopolis Suite</span>
@@ -550,7 +550,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
                   <button
                     type="button"
                     onClick={resetCall}
-                    className="flex-1 py-3.5 rounded-xl bg-[#1c1b18] hover:bg-slate-800 text-slate-200 border border-[#2e2b26] text-xs font-bold flex items-center justify-center gap-2"
+                    className="flex-1 py-3.5 rounded-xl bg-[#0a120f] hover:bg-[#1b2f27] text-slate-200 border border-[#1b2f27] text-xs font-bold flex items-center justify-center gap-2"
                   >
                     <RotateCcw className="w-4 h-4 text-[#d9b884]" />
                     <span>Restart Call</span>
@@ -558,7 +558,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
                   <button
                     type="button"
                     onClick={onClose}
-                    className="flex-1 py-3.5 rounded-xl bg-[#d9b884] hover:bg-[#e6c994] text-[#1c1917] font-bold text-xs flex items-center justify-center gap-2"
+                    className="flex-1 py-3.5 rounded-xl bg-[#d9b884] hover:bg-[#e6c994] text-[#09110e] font-bold text-xs flex items-center justify-center gap-2"
                   >
                     <span>View Matches</span>
                     <ArrowRight className="w-4 h-4" />
@@ -569,7 +569,7 @@ export const VoiceAdvisorModal: React.FC<VoiceAdvisorModalProps> = ({
           </div>
 
           {/* FOOTER NOTE (MATCHES REFERENCE DESIGN) */}
-          <div className="pt-4 border-t border-[#2e2b26] text-center lg:text-left text-slate-500 text-[11px] font-sans tracking-wide">
+          <div className="pt-4 border-t border-[#1b2f27] text-center lg:text-left text-slate-400 text-[11px] font-sans tracking-wide">
             Free · No sign-up · About three minutes
           </div>
         </div>
