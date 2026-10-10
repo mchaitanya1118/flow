@@ -533,10 +533,10 @@ export default function HomePage() {
             <div>
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-headline-sm text-xs sm:text-sm font-black py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/25 border border-emerald-500/30 transition-all active:scale-[0.98]"
+                className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-sans text-xs sm:text-sm font-black py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20 border border-emerald-500/30 transition-all active:scale-[0.98] whitespace-nowrap"
               >
                 <span className="material-symbols-outlined text-[18px]">search</span>
-                <span>Explore 4,500+ Verified Homes</span>
+                <span>Search 4,500+ Homes</span>
               </button>
             </div>
           </form>
