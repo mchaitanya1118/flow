@@ -278,15 +278,13 @@ export default function HomePage() {
             playsInline
             preload="auto"
             suppressHydrationWarning
-            style={{ objectFit: 'cover', width: '100%', height: '100%', opacity: Number(cmsVignetteOpacity) / 100 }}
-            className="h-full w-full object-cover object-center transform scale-105 pointer-events-none"
+            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+            className="h-full w-full object-cover object-center transform scale-105 pointer-events-none opacity-100"
           >
             <source src={cmsHeroVideo} type="video/mp4" />
           </video>
         </div>
 
-        {/* Ambient architectural overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/50 via-slate-950/35 to-slate-950/20 pointer-events-none z-0"></div>
         <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-emerald-600/10 blur-3xl pointer-events-none z-0"></div>
         <div className="absolute top-1/2 -right-20 w-[500px] h-[500px] rounded-full bg-amber-500/10 blur-3xl pointer-events-none z-0"></div>
 
